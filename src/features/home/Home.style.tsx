@@ -1142,7 +1142,7 @@ export const ActingTeaserSection = styled(Box)(({ theme }) => ({
     position: 'absolute',
     inset: 0,
     zIndex: 0,
-    backgroundImage: `url('${import.meta.env.BASE_URL}assets/images/Prabas.jpg')`,
+    backgroundImage: `url('${import.meta.env.BASE_URL}assets/Acting/Prabas.jpg')`,
     backgroundSize: 'cover',
     backgroundPosition: 'center 30%',
     filter: 'brightness(0.4)',

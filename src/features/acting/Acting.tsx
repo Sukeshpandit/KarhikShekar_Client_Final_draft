@@ -163,17 +163,17 @@ const reels = [
 ];
 
 const galleryImages = [
-  { src: 'Anger.jpg', span: 'col-span-1 md:col-span-2 row-span-2' },
-  { src: 'heroImage2.png', span: 'col-span-1 row-span-1' },
-  { src: 'heroImage3.png', span: 'col-span-1 row-span-1' },
-  { src: 'Homehero1.JPG', span: 'col-span-1 md:col-span-2 row-span-1' },
-  { src: 'Prabas.jpg', span: 'col-span-1 row-span-2' },
-  { src: 'shared image (1).jpg', span: 'col-span-1 md:col-span-2 row-span-2' },
-  { src: 'shared image (3).jpg', span: 'col-span-1 row-span-1' },
-  { src: 'shared image (4).jpg', span: 'col-span-1 row-span-1' },
-  { src: 'shared image (5).jpg', span: 'col-span-1 row-span-1' },
-  { src: 'shared image (6).jpg', span: 'col-span-1 md:col-span-2 row-span-1' },
-  { src: 'Tiger_prabrakar.jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Acting/Anger.jpg', span: 'col-span-1 md:col-span-2 row-span-2' },
+  { src: 'Gym/heroImage2.png', span: 'col-span-1 row-span-1' },
+  { src: 'Gym/heroImage3.png', span: 'col-span-1 row-span-1' },
+  { src: 'Gym/Homehero1.JPG', span: 'col-span-1 md:col-span-2 row-span-1' },
+  { src: 'Acting/Prabas.jpg', span: 'col-span-1 row-span-2' },
+  { src: 'Acting/shared image (1).jpg', span: 'col-span-1 md:col-span-2 row-span-2' },
+  { src: 'Gym/shared image (3).jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Gym/shared image (4).jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Acting/shared image (5).jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Acting/IMG-20260413-WA0087.jpg', span: 'col-span-1 md:col-span-2 row-span-1' },
+  { src: 'Acting/Tiger_prabrakar.jpg', span: 'col-span-1 row-span-1' },
 ];
 
 export const Acting = ({ setPage }: ActingProps) => {
@@ -306,7 +306,7 @@ export const Acting = ({ setPage }: ActingProps) => {
       <BiographySection>
         <BiographyBackground>
           <img
-            src={`${import.meta.env.BASE_URL}assets/images/Anger.jpg`}
+            src={`${import.meta.env.BASE_URL}assets/Acting/Anger.jpg`}
             alt=""
             aria-hidden
           />
@@ -352,7 +352,7 @@ export const Acting = ({ setPage }: ActingProps) => {
               <BiographyPortraitInner>
                 <img
                   alt="Karthik Shekar Acharya Portrait"
-                  src={`${import.meta.env.BASE_URL}assets/images/Anger.jpg`}
+                  src={`${import.meta.env.BASE_URL}assets/Acting/Anger.jpg`}
                 />
                 <BiographyPortraitOverlay />
               </BiographyPortraitInner>
@@ -410,7 +410,7 @@ export const Acting = ({ setPage }: ActingProps) => {
                   }}
                 >
                   <img
-                    src={`${import.meta.env.BASE_URL}assets/images/${item.src}`}
+                    src={`${import.meta.env.BASE_URL}assets/${item.src}`}
                     alt=""
                   />
                   <GalleryItemOverlay />

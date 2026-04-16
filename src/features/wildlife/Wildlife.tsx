@@ -284,7 +284,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/images/rescue-1.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-1.jpg`
   },
   {
     name: "Russell's Viper",
@@ -292,7 +292,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/images/rescue-2.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-2.jpg`
   },
   {
     name: 'Indian Rock Python',
@@ -300,7 +300,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Non-Venomous',
     danger: 'Low',
     color: 'green',
-    image: `${import.meta.env.BASE_URL}assets/images/rescue-3.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-4.jpg`
   },
   {
     name: 'Common Krait',
@@ -308,7 +308,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/images/rescue-4.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-4.jpg`
   },
   {
     name: 'Rat Snake',
@@ -316,7 +316,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Non-Venomous',
     danger: 'Low',
     color: 'green',
-    image: `${import.meta.env.BASE_URL}assets/images/rescue-5.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-2.jpg`
   },
   {
     name: 'Saw-scaled Viper',
@@ -324,7 +324,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/images/rescue-6.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-1.jpg`
   },
 ];
 
@@ -504,7 +504,7 @@ const HeroSectionComponent = () => (
   <HeroSection>
     <HeroBackground>
       <HeroBackgroundImage
-        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}assets/images/rescue-6.jpg)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}assets/wildlife/rescue-1.jpg)` }}
         initial={{ scale: 1 }}
         animate={{ scale: [1, 1.02, 1] }}
         transition={{ duration: 50, repeat: Infinity, ease: "easeInOut" }}

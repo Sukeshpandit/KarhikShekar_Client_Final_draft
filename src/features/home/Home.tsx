@@ -323,13 +323,13 @@ const HOME_CONTENT = {
       id: PAGES.FITNESS,
       label: 'Fitness',
       tag: 'Training',
-      image: `${import.meta.env.BASE_URL}assets/images/Tiger_prabrakar.jpg`,
+      image: `${import.meta.env.BASE_URL}assets/Acting/Tiger_prabrakar.jpg`,
     },
     {
       id: PAGES.ACTING,
       label: 'Acting',
       tag: 'Cinema',
-      image: `${import.meta.env.BASE_URL}assets/images/Prabas.jpg`,
+      image: `${import.meta.env.BASE_URL}assets/Acting/Prabas.jpg`,
     },
     {
       id: PAGES.WILDLIFE,
@@ -503,7 +503,7 @@ export const Home = ({ setPage }: HomeProps) => {
         <HeroSection>
         <HeroImage
             as={motion.img}
-            src={`${import.meta.env.BASE_URL}assets/images/heroImage2.png`}
+            src={`${import.meta.env.BASE_URL}assets/Gym/heroImage2.png`}
             alt="Karthik Shekar Acharya"
             initial={{ scale: 1.06, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}

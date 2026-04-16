@@ -382,7 +382,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
             style={{ width: '100%', height: '100%' }}
           >
             <img
-              src={`${import.meta.env.BASE_URL}assets/images/heroImage2.png`}
+              src={`${import.meta.env.BASE_URL}assets/Gym/heroImage2.png`}
               alt="Fitness Hero"
               loading="eager"
             />
