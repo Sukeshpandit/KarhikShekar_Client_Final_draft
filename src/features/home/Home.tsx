@@ -102,12 +102,14 @@ import {
   JourneySection,
   JourneyBackground,
   JourneyContainer,
+  TimelineScroll,
   TimelineWrapper,
   TimelineLine,
   TimelineItem,
   TimelineDot,
   TimelineContent,
   MilestoneCard,
+  MilestoneIndex,
   YearBadge,
   MilestoneTitle,
   MilestoneDescription,
@@ -677,9 +679,9 @@ export const Home = ({ setPage }: HomeProps) => {
       {/* ================================================================= */}
       <JourneySection>
         <JourneyBackground />
-        
+
+        {/* Section heading */}
         <JourneyContainer>
-          {/* Section Header */}
           <FadeIn>
             <SectionHeadingContainer>
               <SectionSubtitle>{HOME_CONTENT.journey.subtitle}</SectionSubtitle>
@@ -688,35 +690,52 @@ export const Home = ({ setPage }: HomeProps) => {
               </SectionTitle>
             </SectionHeadingContainer>
           </FadeIn>
+        </JourneyContainer>
 
-          {/* Grid Timeline Cards */}
+        {/* Horizontal scrollable timeline */}
+        <TimelineScroll>
           <Stagger staggerDelay={0.08}>
             <TimelineWrapper>
-              {HOME_CONTENT.journey.milestones.map((milestone, index) => (
-                <TimelineItem key={index}>
-                  <TimelineContent>
-                    <MilestoneCard whileHover={{ scale: 1.03, y: -8 }}>
-                      <Box>
-                        <YearBadge
-                          sx={{
-                            background: `linear-gradient(135deg, ${milestone.color}, ${milestone.color}dd)`,
-                            boxShadow: `0 4px 15px ${milestone.color}40`
-                          }}
-                        >
-                          {milestone.year}
-                        </YearBadge>
-                        <MilestoneTitle>{milestone.title}</MilestoneTitle>
+              {HOME_CONTENT.journey.milestones.map((milestone, index) => {
+                const isEven = index % 2 === 1;
+                return (
+                  <TimelineItem key={index}>
+                    {/* Year block — top for odd, bottom for even */}
+                    <Box sx={isEven ? { mt: 6 } : { mb: 6 }}>
+                      <MilestoneIndex>{String(index + 1).padStart(2, '0')}</MilestoneIndex>
+                      <YearBadge>{milestone.year}</YearBadge>
+                    </Box>
+
+                    {/* Square dot on the center line */}
+                    <TimelineDot />
+
+                    {/* Content block — bottom for odd, top for even */}
+                    <Box sx={isEven ? { pb: 6 } : { pt: 6 }}>
+                      <Box
+                        sx={{
+                          color: '#adc6ff',
+                          fontSize: '2.25rem',
+                          mb: 1,
+                          display: 'flex',
+                          alignItems: 'center',
+                          '& svg': { fontSize: '2.25rem' },
+                        }}
+                      >
+                        {milestone.icon}
                       </Box>
+                      <MilestoneTitle>{milestone.title}</MilestoneTitle>
                       <MilestoneDescription>{milestone.description}</MilestoneDescription>
-                    </MilestoneCard>
-                  </TimelineContent>
-                </TimelineItem>
-              ))}
+                    </Box>
+                  </TimelineItem>
+                );
+              })}
             </TimelineWrapper>
           </Stagger>
+        </TimelineScroll>
 
-          {/* CTA Button */}
-          <Box sx={{ textAlign: 'center', marginTop: { xs: theme.spacing(4), md: theme.spacing(5) } }}>
+        {/* CTA Button */}
+        <JourneyContainer>
+          <Box sx={{ textAlign: 'center', marginTop: theme.spacing(5) }}>
             <JourneyCTAButton
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

@@ -1520,18 +1520,11 @@ export const WildlifeStatLabel = styled('p')(({ theme }) => ({
 // ============================================================================
 
 export const JourneySection = styled(Box)(({ theme }) => ({
-  padding: `${theme.spacing(4)} ${theme.spacing(2)}`,
-  background: 'linear-gradient(135deg, rgba(20, 45, 60, 0.9) 0%, rgba(25, 55, 75, 0.95) 100%)',
+  paddingTop: theme.spacing(10),
+  paddingBottom: theme.spacing(10),
+  background: '#0a1d2c',
   position: 'relative',
   overflow: 'hidden',
-  
-  [theme.breakpoints.up('sm')]: {
-    padding: `${theme.spacing(5)} ${theme.spacing(3)}`,
-  },
-  
-  [theme.breakpoints.up('md')]: {
-    padding: `${theme.spacing(6)} ${theme.spacing(4)}`,
-  },
 }));
 
 export const JourneyBackground = styled(Box)(({ theme }) => ({
@@ -1549,30 +1542,45 @@ export const JourneyBackground = styled(Box)(({ theme }) => ({
 export const JourneyContainer = styled(Box)(({ theme }) => ({
   maxWidth: '1400px',
   margin: '0 auto',
+  padding: `0 ${theme.spacing(4)}`,
   position: 'relative',
   zIndex: 1,
 }));
 
-export const TimelineWrapper = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(4),
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))',
-  autoRows: 'minmax(160px, auto)',
-  gap: theme.spacing(2),
+export const TimelineScroll = styled(Box)({
+  overflowX: 'auto',
+  overflowY: 'visible',
   position: 'relative',
-  
-  [theme.breakpoints.up('sm')]: {
-    gap: theme.spacing(2.5),
-    gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))',
-    autoRows: 'minmax(180px, auto)',
-    marginTop: theme.spacing(5),
-  },
-  
-  [theme.breakpoints.up('md')]: {
-    gap: theme.spacing(3),
-    gridTemplateColumns: 'repeat(6, 1fr)',
-    autoRows: 'minmax(200px, auto)',
-    marginTop: theme.spacing(6),
+  paddingTop: '2.5rem',
+  paddingBottom: '2.5rem',
+  scrollbarWidth: 'thin',
+  scrollbarColor: '#adc6ff #253646',
+  '&::-webkit-scrollbar': { height: '3px' },
+  '&::-webkit-scrollbar-track': { background: '#0f2130' },
+  '&::-webkit-scrollbar-thumb': { background: '#adc6ff', borderRadius: '2px' },
+});
+
+export const TimelineWrapper = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  flexDirection: 'row',
+  alignItems: 'center',
+  paddingLeft: theme.spacing(8),
+  paddingRight: theme.spacing(8),
+  minWidth: 'max-content',
+  gap: theme.spacing(12),
+  position: 'relative',
+
+  // Center horizontal line
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: '50%',
+    left: 0,
+    right: 0,
+    height: '1px',
+    background: 'rgba(66, 71, 84, 0.4)',
+    pointerEvents: 'none',
+    zIndex: 0,
   },
 }));
 
@@ -1580,53 +1588,30 @@ export const TimelineLine = styled(Box)(({ theme }) => ({
   display: 'none',
 }));
 
-export const TimelineItem = styled(motion.div)(({ theme }) => ({
+export const TimelineItem = styled(motion.div)({
+  position: 'relative',
   display: 'flex',
   flexDirection: 'column',
-  position: 'relative',
-  
-  // Varying card heights for masonry effect
-  '&:nth-child(1)': {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 1',
-      gridRow: 'span 1',
-    },
-  },
-  '&:nth-child(2)': {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 1',
-      gridRow: 'span 2',
-    },
-  },
-  '&:nth-child(3)': {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 1',
-      gridRow: 'span 1',
-    },
-  },
-  '&:nth-child(4)': {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 1',
-      gridRow: 'span 2',
-    },
-  },
-  '&:nth-child(5)': {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 1',
-      gridRow: 'span 1',
-       },
-  },
-  '&:nth-child(6)': {
-    [theme.breakpoints.up('md')]: {
-      gridColumn: 'span 1',
-      gridRow: 'span 1',
-    },
-  },
-}));
+  width: '288px',
+  flexShrink: 0,
 
-export const TimelineDot = styled(motion.div)(({ theme }) => ({
-  display: 'none',
-}));
+  // Even items (2nd, 4th, 6th) flip content above / year below
+  '&:nth-child(even)': {
+    flexDirection: 'column-reverse',
+  },
+});
+
+export const TimelineDot = styled(Box)({
+  width: '16px',
+  height: '16px',
+  backgroundColor: '#adc6ff',
+  position: 'absolute',
+  top: '50%',
+  left: 0,
+  transform: 'translate(-50%, -50%)',
+  zIndex: 2,
+  flexShrink: 0,
+});
 
 export const TimelineContent = styled(motion.div)(({ theme }) => ({
   flex: 1,
@@ -1636,98 +1621,49 @@ export const TimelineContent = styled(motion.div)(({ theme }) => ({
   flexDirection: 'column',
 }));
 
-export const MilestoneCard = styled(motion.div)(({ theme }) => ({
-  background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.08) 0%, rgba(100, 100, 100, 0.05) 100%)',
-  backdropFilter: 'blur(12px)',
-  border: '1.5px solid rgba(212, 175, 55, 0.25)',
-  borderRadius: theme.spacing(1.5),
-  padding: theme.spacing(2),
-  position: 'relative',
-  overflow: 'hidden',
-  cursor: 'pointer',
-  transition: 'all 0.3s ease',
+export const MilestoneCard = styled(motion.div)({
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
-  height: '100%',
-  
-  '&:hover': {
-    transform: 'translateY(-6px)',
-    borderColor: 'rgba(212, 175, 55, 0.55)',
-    boxShadow: '0 12px 40px rgba(212, 175, 55, 0.25)',
-  },
-  
-  [theme.breakpoints.up('sm')]: {
-    padding: theme.spacing(2.5),
-  },
-  
-  [theme.breakpoints.up('md')]: {
-    padding: theme.spacing(3),
-  },
-}));
+  background: 'transparent',
+});
 
-export const YearBadge = styled(Box)(({ theme }) => ({
-  display: 'inline-flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  color: 'white',
-  padding: `${theme.spacing(0.75)} ${theme.spacing(1.25)}`,
-  borderRadius: '10px',
-  fontSize: theme.typography.pxToRem(11),
-  fontWeight: 800,
-  marginBottom: theme.spacing(1.5),
+export const MilestoneIndex = styled('span')({
+  fontSize: '4.5rem',
   fontFamily: 'Bebas Neue, sans-serif',
-  letterSpacing: '0.08em',
-  textTransform: 'uppercase',
-  alignSelf: 'flex-start',
-  width: 'fit-content',
-  
-  [theme.breakpoints.up('sm')]: {
-    fontSize: theme.typography.pxToRem(12),
-    marginBottom: theme.spacing(1.75),
-  },
-  
-  [theme.breakpoints.up('md')]: {
-    fontSize: theme.typography.pxToRem(13),
-    marginBottom: theme.spacing(2),
-  },
-}));
-
-export const MilestoneTitle = styled('h4')(({ theme }) => ({
-  fontSize: theme.typography.pxToRem(14),
   fontWeight: 700,
-  color: 'white',
-  marginBottom: theme.spacing(1),
-  lineHeight: 1.35,
-  margin: 0,
-  fontFamily: 'Inter, sans-serif',
-  
-  [theme.breakpoints.up('sm')]: {
-    fontSize: theme.typography.pxToRem(15),
-  },
-  
-  [theme.breakpoints.up('md')]: {
-    fontSize: theme.typography.pxToRem(15.5),
-  },
-}));
+  color: 'rgba(210, 228, 249, 0.1)',
+  lineHeight: 1,
+  display: 'block',
+  userSelect: 'none',
+});
 
-export const MilestoneDescription = styled('p')(({ theme }) => ({
-  fontSize: theme.typography.pxToRem(11),
-  color: 'rgba(255, 255, 255, 0.65)',
-  lineHeight: 1.45,
+export const YearBadge = styled(Box)({
+  fontSize: '3.75rem',
+  fontFamily: 'Bebas Neue, sans-serif',
+  fontWeight: 700,
+  color: '#adc6ff',
+  lineHeight: 1,
+  marginTop: '-1rem',
+  display: 'block',
+});
+
+export const MilestoneTitle = styled('h4')({
+  fontSize: '1.25rem',
+  fontFamily: 'Bebas Neue, Epilogue, sans-serif',
+  fontWeight: 700,
+  color: '#d2e4f9',
+  margin: '0 0 0.5rem 0',
+  lineHeight: 1.3,
+  textTransform: 'uppercase',
+  letterSpacing: '0.05em',
+});
+
+export const MilestoneDescription = styled('p')({
+  fontSize: '0.875rem',
+  color: '#c2c6d6',
+  lineHeight: 1.625,
   margin: 0,
-  marginTop: theme.spacing(0.75),
-  flexGrow: 1,
-  
-  [theme.breakpoints.up('sm')]: {
-    fontSize: theme.typography.pxToRem(12),
-  },
-  
-  [theme.breakpoints.up('md')]: {
-    fontSize: theme.typography.pxToRem(12.5),
-    lineHeight: 1.5,
-  },
-}));
+});
 
 export const JourneyCTAButton = styled(motion.button)(({ theme }) => ({
   background: 'linear-gradient(135deg, #D4AF37, #F4D03F)',
