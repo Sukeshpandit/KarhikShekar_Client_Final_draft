@@ -299,12 +299,6 @@ const HOME_CONTENT = {
       middle: GLOBAL_CONFIG.personal.middleName,
       last: GLOBAL_CONFIG.personal.lastName,
     },
-    quote: {
-      line1: "Strength doesn't live in your",
-      line1Fade: 'muscles',
-      line2: 'It lives in your',
-      line2Highlight: 'will',
-    },
     buttons: {
       primary: 'Explore Journey',
       secondary: 'Book a Session',
@@ -551,7 +545,7 @@ export const Home = ({ setPage }: HomeProps) => {
             </HeroNameBlock>
 
             {/* CTA Buttons */}
-            <HeroCTAContainer
+            {/* <HeroCTAContainer
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.2, duration: 0.5 }}
@@ -570,80 +564,59 @@ export const Home = ({ setPage }: HomeProps) => {
                 >
                 {HOME_CONTENT.hero.buttons.secondary}
                 </HeroSecondaryButton>
-            </HeroCTAContainer>
+            </HeroCTAContainer> */}
             </HeroLeftPanel>
 
-            {/* Right Panel - Quote (Desktop Only) */}
-            <HeroRightPanel>
-            <HeroQuoteBox
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.3, duration: 0.5 }}
-            >
-                <HeroQuoteText>
-                {HOME_CONTENT.hero.quote.line1}{' '}
-                <span style={{ color: 'rgba(150, 150, 150, 0.6)' }}>{HOME_CONTENT.hero.quote.line1Fade}</span>
-                </HeroQuoteText>
-                <HeroQuoteText style={{ marginTop: '0.25rem' }}>
-                {HOME_CONTENT.hero.quote.line2}{' '}
-                <span style={{ color: '#D4AF37' }}>{HOME_CONTENT.hero.quote.line2Highlight}</span>
-                </HeroQuoteText>
-            </HeroQuoteBox>
-            </HeroRightPanel>
         </HeroMainLayout>
-        </HeroSection>
-            {/* ================================================================= */}
-      {/* THUMBNAIL CAROUSEL SECTION */}
-      {/* ================================================================= */}
-      <SlideIn direction="up" delay={0.2}>
-        <CarouselContainer>
-          <CarouselFade className="left" />
-          <CarouselFade className="right" />
+          {/* Thumbnail Carousel - bottom of hero */}
+          <SlideIn direction="up" delay={0.2}>
+            <CarouselContainer>
+              <CarouselFade className="left" />
+              <CarouselFade className="right" />
 
-          <CarouselStrip>
-            {/* First set */}
-            {THUMBNAILS.map((item, index) => (
-              <ThumbnailCard
-                key={index}
-                onClick={() => handlePageChange(item.id)}
-                whileHover={{ scale: 1.02 }}
-              >
-                <ThumbnailImage src={item.image} alt={item.label} />
-                <ThumbnailOverlay />
-                <ThumbnailTag>{item.tag}</ThumbnailTag>
-                <ThumbnailLabel>
-                  <ThumbnailLabelText>{item.label}</ThumbnailLabelText>
-                  <ChevronRightIcon
-                    sx={{
-                      fontSize: '0.75rem',
-                      color: '#D4AF37',
-                      flexShrink: 0,
-                    }}
-                  />
-                </ThumbnailLabel>
-              </ThumbnailCard>
-            ))}
-            {/* Duplicate for continuous scroll */}
-            {THUMBNAILS.map((item, index) => (
-              <ThumbnailCard key={`dup-${index}`} disabled>
-                <ThumbnailImage src={item.image} alt={item.label} />
-                <ThumbnailOverlay />
-                <ThumbnailTag>{item.tag}</ThumbnailTag>
-                <ThumbnailLabel>
-                  <ThumbnailLabelText>{item.label}</ThumbnailLabelText>
-                  <ChevronRightIcon
-                    sx={{
-                      fontSize: '0.75rem',
-                      color: '#D4AF37',
-                      flexShrink: 0,
-                    }}
-                  />
-                </ThumbnailLabel>
-              </ThumbnailCard>
-            ))}
-          </CarouselStrip>
-        </CarouselContainer>
-      </SlideIn>
+              <CarouselStrip>
+                {THUMBNAILS.map((item, index) => (
+                  <ThumbnailCard
+                    key={index}
+                    onClick={() => handlePageChange(item.id)}
+                    whileHover={{ scale: 1.02 }}
+                  >
+                    <ThumbnailImage src={item.image} alt={item.label} />
+                    <ThumbnailOverlay />
+                    <ThumbnailTag>{item.tag}</ThumbnailTag>
+                    <ThumbnailLabel>
+                      <ThumbnailLabelText>{item.label}</ThumbnailLabelText>
+                      <ChevronRightIcon
+                        sx={{
+                          fontSize: '0.75rem',
+                          color: '#D4AF37',
+                          flexShrink: 0,
+                        }}
+                      />
+                    </ThumbnailLabel>
+                  </ThumbnailCard>
+                ))}
+                {THUMBNAILS.map((item, index) => (
+                  <ThumbnailCard key={`dup-${index}`} disabled>
+                    <ThumbnailImage src={item.image} alt={item.label} />
+                    <ThumbnailOverlay />
+                    <ThumbnailTag>{item.tag}</ThumbnailTag>
+                    <ThumbnailLabel>
+                      <ThumbnailLabelText>{item.label}</ThumbnailLabelText>
+                      <ChevronRightIcon
+                        sx={{
+                          fontSize: '0.75rem',
+                          color: '#D4AF37',
+                          flexShrink: 0,
+                        }}
+                      />
+                    </ThumbnailLabel>
+                  </ThumbnailCard>
+                ))}
+              </CarouselStrip>
+            </CarouselContainer>
+          </SlideIn>
+        </HeroSection>
          {/* ================================================================= */}
       {/* MARQUEE SECTION */}
       {/* ================================================================= */}

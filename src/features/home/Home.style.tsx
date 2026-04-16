@@ -42,20 +42,20 @@ export const HeroImage = styled(motion.img)(({ theme }) => ({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  objectPosition: '50% 15%',
+  objectPosition: '50% 0%',
   opacity: 1,
-  
+
   [theme.breakpoints.up('sm')]: {
-    objectPosition: '55% 20%',
+    objectPosition: '55% 5%',
   },
-  
+
   [theme.breakpoints.up('md')]: {
-    objectPosition: '52% 30%',
+    objectPosition: '52% 10%',
     opacity: 1,
   },
-  
+
   [theme.breakpoints.up('lg')]: {
-    objectPosition: '50% 40%',
+    objectPosition: '50% 100%',
     opacity: 1,
   },
 }));
@@ -176,43 +176,43 @@ export const HeroNameBlock = styled(Box)(({ theme }) => ({
 }));
 
 export const HeroTitle = styled('h1')(({ theme }) => ({
-  fontSize: 'clamp(2.4rem, 11vw, 7.5rem)',
+  fontSize: 'clamp(1.8rem, 7vw, 4.5rem)',
   lineHeight: 0.9,
   color: theme.palette.common.white,
   letterSpacing: '-0.02em',
   fontFamily: 'Bebas Neue, sans-serif',
   fontWeight: 700,
   margin: 0,
-  
+
   [theme.breakpoints.up('lg')]: {
-    fontSize: 'clamp(7rem, 10vw, 11rem)',
+    fontSize: 'clamp(4rem, 6vw, 6.5rem)',
   },
 }));
 
 export const HeroSubtitle = styled('h1')(({ theme }) => ({
-  fontSize: 'clamp(2.4rem, 11vw, 7.5rem)',
+  fontSize: 'clamp(1.8rem, 7vw, 4.5rem)',
   lineHeight: 0.9,
   color: theme.palette.primary.main,
   letterSpacing: '-0.02em',
   fontFamily: 'Bebas Neue, sans-serif',
   fontWeight: 700,
   margin: 0,
-   [theme.breakpoints.up('lg')]: {
-    fontSize: 'clamp(7rem, 10vw, 11rem)',
+  [theme.breakpoints.up('lg')]: {
+    fontSize: 'clamp(4rem, 6vw, 6.5rem)',
   },
 }));
 
 export const HeroThirdLine = styled('h1')(({ theme }) => ({
-  fontSize: 'clamp(2.4rem, 11vw, 7.5rem)',
+  fontSize: 'clamp(1.8rem, 7vw, 4.5rem)',
   lineHeight: 0.9,
   color: theme.palette.common.white,
   letterSpacing: '-0.02em',
   fontFamily: 'Bebas Neue, sans-serif',
   fontWeight: 700,
   margin: 0,
-  
+
   [theme.breakpoints.up('lg')]: {
-    fontSize: 'clamp(7rem, 10vw, 11rem)',
+    fontSize: 'clamp(4rem, 6vw, 6.5rem)',
   },
 }));
 
