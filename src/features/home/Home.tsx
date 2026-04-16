@@ -672,32 +672,6 @@ export const Home = ({ setPage }: HomeProps) => {
           </Stagger>
         </Box>
       </StatsSection>
-        {/* ================================================================= */}
-      {/* STATS SECTION */}
-      {/* ================================================================= */}
-      {/* <StatsSection>
-        <FadeIn>
-          <SectionHeadingContainer>
-            <SectionSubtitle>{HOME_CONTENT.stats.subtitle}</SectionSubtitle>
-            <SectionTitle>
-              {HOME_CONTENT.stats.title} <span className="highlight" style={{ color: '#D4AF37' }}>{HOME_CONTENT.stats.titleHighlight}</span>
-            </SectionTitle>
-          </SectionHeadingContainer>
-        </FadeIn>
-        
-        <Stagger staggerDelay={0.1} direction="up">
-          <StatsGrid>
-            {HOME_CONTENT.stats.items.map((stat, index) => (
-              <StatCard 
-                key={index}
-                label={stat.label} 
-                value={stat.value} 
-                icon={stat.icon} 
-              />
-            ))}
-          </StatsGrid>
-        </Stagger>
-      </StatsSection> */}
       {/* ================================================================= */}
       {/* JOURNEY MAP SECTION */}
       {/* ================================================================= */}
