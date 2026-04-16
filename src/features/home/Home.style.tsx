@@ -791,6 +791,24 @@ export const StatsSection = styled(Box)(({ theme }) => ({
   },
 }));
 
+export const StatsBgImage = styled('img')({
+  position: 'absolute',
+  inset: 0,
+  zIndex: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover',
+  objectPosition: '50% 40%',
+});
+
+export const StatsOverlay = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  inset: 0,
+  zIndex: 1,
+  background: `linear-gradient(to bottom, ${theme.palette.background.default}f2 0%, ${theme.palette.background.default}99 50%, ${theme.palette.background.default}f2 100%)`,
+  pointerEvents: 'none',
+}));
+
 export const StatsGrid = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr',

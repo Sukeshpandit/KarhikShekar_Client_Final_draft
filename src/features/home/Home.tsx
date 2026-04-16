@@ -49,6 +49,8 @@ import {
   ThumbnailLabel,
   ThumbnailLabelText,
   StatsSection,
+  StatsBgImage,
+  StatsOverlay,
   StatsGrid,
   SocialSection,
   SocialHeader,
@@ -641,32 +643,39 @@ export const Home = ({ setPage }: HomeProps) => {
       {/* STATS SECTION */}
       {/* ================================================================= */}
       <StatsSection>
-        <FadeIn>
-          <SectionHeadingContainer>
-            <SectionSubtitle>{HOME_CONTENT.stats.subtitle}</SectionSubtitle>
-            <SectionTitle>
-              {HOME_CONTENT.stats.title} <span className="highlight" style={{ color: '#D4AF37' }}>{HOME_CONTENT.stats.titleHighlight}</span>
-            </SectionTitle>
-          </SectionHeadingContainer>
-        </FadeIn>
-        
-        <Stagger staggerDelay={0.1} direction="up">
-          <StatsGrid>
-            {HOME_CONTENT.stats.items.map((stat, index) => (
-              <StatCard 
-                key={index}
-                label={stat.label} 
-                value={stat.value} 
-                icon={stat.icon} 
-              />
-            ))}
-          </StatsGrid>
-        </Stagger>
+        <StatsBgImage
+          src={`${import.meta.env.BASE_URL}assets/Style/towardsCameraB&W.jpg`}
+          alt=""
+        />
+        <StatsOverlay />
+        <Box sx={{ position: 'relative', zIndex: 2 }}>
+          <FadeIn>
+            <SectionHeadingContainer>
+              <SectionSubtitle>{HOME_CONTENT.stats.subtitle}</SectionSubtitle>
+              <SectionTitle>
+                {HOME_CONTENT.stats.title} <span className="highlight" style={{ color: '#D4AF37' }}>{HOME_CONTENT.stats.titleHighlight}</span>
+              </SectionTitle>
+            </SectionHeadingContainer>
+          </FadeIn>
+
+          <Stagger staggerDelay={0.1} direction="up">
+            <StatsGrid>
+              {HOME_CONTENT.stats.items.map((stat, index) => (
+                <StatCard
+                  key={index}
+                  label={stat.label}
+                  value={stat.value}
+                  icon={stat.icon}
+                />
+              ))}
+            </StatsGrid>
+          </Stagger>
+        </Box>
       </StatsSection>
         {/* ================================================================= */}
       {/* STATS SECTION */}
       {/* ================================================================= */}
-      <StatsSection>
+      {/* <StatsSection>
         <FadeIn>
           <SectionHeadingContainer>
             <SectionSubtitle>{HOME_CONTENT.stats.subtitle}</SectionSubtitle>
@@ -688,7 +697,7 @@ export const Home = ({ setPage }: HomeProps) => {
             ))}
           </StatsGrid>
         </Stagger>
-      </StatsSection>
+      </StatsSection> */}
       {/* ================================================================= */}
       {/* JOURNEY MAP SECTION */}
       {/* ================================================================= */}
