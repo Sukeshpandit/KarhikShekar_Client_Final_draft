@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { Box, useTheme } from '@mui/material';
 import { motion } from 'motion/react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
@@ -487,6 +487,51 @@ export const Home = ({ setPage }: HomeProps) => {
     return () => clearInterval(interval);
   }, []);
 
+  // Timeline auto-scroll (left → right → left, ping-pong)
+  const timelineScrollRef = useRef<HTMLDivElement>(null);
+  const scrollDirectionRef = useRef<1 | -1>(1);
+  const scrollPausedRef = useRef(false);
+  const animFrameRef = useRef<number>(0);
+
+  useEffect(() => {
+    const el = timelineScrollRef.current;
+    if (!el) return;
+
+    const SPEED = 0.5; // px per frame (~30 px/s at 60 fps)
+
+    const tick = () => {
+      if (!scrollPausedRef.current) {
+        const max = el.scrollWidth - el.clientWidth;
+        el.scrollLeft += SPEED * scrollDirectionRef.current;
+        if (el.scrollLeft >= max) {
+          el.scrollLeft = max;
+          scrollDirectionRef.current = -1;
+        } else if (el.scrollLeft <= 0) {
+          el.scrollLeft = 0;
+          scrollDirectionRef.current = 1;
+        }
+      }
+      animFrameRef.current = requestAnimationFrame(tick);
+    };
+
+    const pause = () => { scrollPausedRef.current = true; };
+    const resume = () => { scrollPausedRef.current = false; };
+
+    el.addEventListener('mouseenter', pause);
+    el.addEventListener('mouseleave', resume);
+    el.addEventListener('touchstart', pause, { passive: true });
+    el.addEventListener('touchend', resume);
+
+    animFrameRef.current = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(animFrameRef.current);
+      el.removeEventListener('mouseenter', pause);
+      el.removeEventListener('mouseleave', resume);
+      el.removeEventListener('touchstart', pause);
+      el.removeEventListener('touchend', resume);
+    };
+  }, []);
+
   const handlePageChange = (page: PageType) => {
     if (setPage) {
       setPage(page);
@@ -693,7 +738,7 @@ export const Home = ({ setPage }: HomeProps) => {
         </JourneyContainer>
 
         {/* Horizontal scrollable timeline */}
-        <TimelineScroll>
+        <TimelineScroll ref={timelineScrollRef}>
           <Stagger staggerDelay={0.08}>
             <TimelineWrapper>
               {HOME_CONTENT.journey.milestones.map((milestone, index) => {
