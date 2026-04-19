@@ -1,69 +1,57 @@
-import { motion, useScroll, useTransform } from 'motion/react';
+import { motion } from 'motion/react';
 import {
-  Timeline,
   FitnessCenter,
-  Movie,
   EmojiEvents,
-  Star,
-  Visibility,
-  Favorite,
-  PlayArrow,
-  OpenInNew,
-  TrendingUp,
   Psychology,
+  Movie,
+  Star,
+  TrendingUp,
+  Favorite,
+  Visibility,
   LocalFireDepartment,
+  ChevronLeft,
+  ChevronRight,
+  PlayArrow,
 } from '@mui/icons-material';
+import { Box, SvgIconProps } from '@mui/material';
+import { ElementType } from 'react';
 import { PageType } from '../../config/constants';
 import { GLOBAL_CONFIG } from '../../config/global.config';
-import { FadeIn, SlideIn, Stagger, ScaleIn } from '../../shared/components';
 import {
   JourneyWrapper,
-  HeroSection,
-  HeroBackground,
-  HeroContainer,
-  HeroBadge,
-  HeroTitle,
-  HeroDescription,
-  TimelineSection,
-  TimelineProgressBar,
-  ProgressInfo,
-  ProgressBarTrack,
-  ProgressBarFill,
-  TimelineContainer,
-  TimelineLine,
-  TimelineItems,
-  TimelineItem,
-  TimelineYear,
-  TimelineDot,
-  TimelineContent,
-  MilestoneCard,
-  MilestoneHeader,
-  MilestoneIcon,
-  MilestoneTitle,
-  MilestoneCategory,
-  MilestoneDescription,
-  MilestoneMedia,
-  VideoEmbed,
-  ImageGallery,
-  MilestoneFooter,
-  MilestoneStats,
-  StatItem,
-  MilestoneLink,
-  CurrentProjectsSection,
-  SectionHeader,
-  SectionTitle,
-  SectionDescription,
-  ProjectsGrid,
-  ProjectCard,
-  ProjectImage,
-  ProjectBadge,
-  ProjectContent,
-  ProjectTitle,
-  ProjectDescription,
-  ProjectTags,
-  ProjectTag,
-  ProjectActions,
-  ProjectButton,
+  GrainOverlay,
+  Scanlines,
+  PageInner,
+  HeaderBadge,
+  PageTitle,
+  PageSubtitle,
+  BentoGrid,
+  BentoCard,
+  OverlayBottom,
+  OverlayLeft,
+  OverlayFull,
+  YearWatermark,
+  YearWatermarkBlue,
+  CardBottom,
+  CardFull,
+  CardInner,
+  CardCenter,
+  CardLabel,
+  CardTitle,
+  CardTitleXL,
+  CardText,
+  BigStat,
+  SmallLabel,
+  CategoryPill,
+  InlineStats,
+  TrailerBtn,
+  PlayBadge,
+  HRule,
+  GridFooter,
+  FooterQuote,
+  FooterSource,
+  NavBtns,
+  CircleBtn,
   CTASection,
   CTAContainer,
   CTATitle,
@@ -77,24 +65,60 @@ interface JourneyProps {
   setPage?: (page: PageType) => void;
 }
 
-// ==================== MILESTONE DATA ====================
+interface Milestone {
+  id: number;
+  year: string;
+  age: string;
+  category: string;
+  icon: ElementType<SvgIconProps>;
+  iconColor: string;
+  title: string;
+  description: string;
+  type: 'video' | 'images';
+  videoId?: string;
+  images?: string[];
+  stats: { icon: ElementType<SvgIconProps>; label: string }[];
+  link: string;
+}
 
-const MILESTONES = [
+const BASE = import.meta.env.BASE_URL;
+
+// Background images for each milestone card (by index)
+const BG = [
+  `${BASE}assets/Gym/single_prabakar.jpg`,
+  `${BASE}assets/Gym/IMG-20260413-WA0047.jpg`,
+  `${BASE}assets/Gym/IMG-20260413-WA0079.jpg`,
+  `${BASE}assets/Gym/heroImage2.png`,
+  `${BASE}assets/Gym/IMG-20260413-WA0083.jpg`,
+  `${BASE}assets/Acting/IMG-20260413-WA0016.jpg`,
+  `${BASE}assets/Acting/IMG-20260413-WA0059.jpg`,
+  `${BASE}assets/Style/towardsCameraB&W.jpg`,
+];
+
+// Explicit grid positions per milestone (lg = 12-col, md = 4-col)
+const GRID = [
+  { lgCol: '1 / span 7',  lgRow: '1 / span 2', mdCol: '1 / span 4', mdRow: '1 / span 2' },  // M1
+  { lgCol: '8 / span 5',  lgRow: '1 / span 2', mdCol: '1 / span 4', mdRow: '3 / span 2' },  // M2
+  { lgCol: '1 / span 4',  lgRow: '3 / span 3', mdCol: '1 / span 2', mdRow: '5 / span 3' },  // M3
+  { lgCol: '5 / span 8',  lgRow: '3 / span 2', mdCol: '3 / span 2', mdRow: '5 / span 2' },  // M4
+  { lgCol: '5 / span 8',  lgRow: '5 / span 1', mdCol: '1 / span 4', mdRow: '8 / span 1' },  // M5
+  { lgCol: '1 / span 6',  lgRow: '6 / span 2', mdCol: '1 / span 2', mdRow: '9 / span 2' },  // M6
+  { lgCol: '7 / span 6',  lgRow: '6 / span 2', mdCol: '3 / span 2', mdRow: '9 / span 2' },  // M7
+  { lgCol: '1 / span 12', lgRow: '8 / span 2', mdCol: '1 / span 4', mdRow: '11 / span 2' }, // M8
+];
+
+const MILESTONES: Milestone[] = [
   {
     id: 1,
     year: '2015',
     age: '18',
     category: 'FITNESS',
-    align: 'left' as const,
     icon: FitnessCenter,
     iconColor: '#8b5cf6',
     title: 'Fitness Journey Begins',
     description: 'Started my fitness transformation journey at age 18, discovering my passion for bodybuilding and healthy living. Joined my first gym and began learning the fundamentals of strength training.',
     type: 'images',
-    images: [
-      `${import.meta.env.BASE_URL}assets/images/certification-1.jpg`,
-      `${import.meta.env.BASE_URL}assets/images/certification-2.jpg`,
-    ],
+    images: [],
     stats: [
       { icon: TrendingUp, label: 'First Year' },
       { icon: FitnessCenter, label: 'Training Began' },
@@ -106,11 +130,10 @@ const MILESTONES = [
     year: '2018',
     age: '21',
     category: 'FITNESS',
-    align: 'right' as const,
     icon: EmojiEvents,
     iconColor: '#10b981',
     title: 'First Competition Entry',
-    description: 'Competed in my first regional bodybuilding competition. Though I didn\'t win, the experience ignited my competitive spirit and taught me invaluable lessons about discipline and preparation.',
+    description: "Competed in my first regional bodybuilding competition. Though I didn't win, the experience ignited my competitive spirit and taught me invaluable lessons about discipline and preparation.",
     type: 'video',
     videoId: 'oKSWfiVqqXM',
     stats: [
@@ -124,16 +147,12 @@ const MILESTONES = [
     year: '2020',
     age: '23',
     category: 'FITNESS',
-    align: 'left' as const,
     icon: Psychology,
     iconColor: '#D4AF37',
     title: 'Certified Fitness & Nutrition Coach',
     description: 'Obtained international ISSA certification in fitness training and nutrition coaching. This marked my transition from athlete to educator, combining scientific knowledge with practical experience.',
     type: 'images',
-    images: [
-      `${import.meta.env.BASE_URL}assets/images/certification-1.jpg`,
-      `${import.meta.env.BASE_URL}assets/images/certification-2.jpg`,
-    ],
+    images: [],
     stats: [
       { icon: EmojiEvents, label: 'ISSA Certified' },
       { icon: Psychology, label: 'Nutrition Expert' },
@@ -145,11 +164,10 @@ const MILESTONES = [
     year: '2021',
     age: '24',
     category: 'FITNESS',
-    align: 'right' as const,
     icon: LocalFireDepartment,
     iconColor: '#ef4444',
     title: 'State Level Championship Victory',
-    description: 'Won the State Level Men\'s Physique Championship, earning my Pro Card. This victory validated years of hard work and marked my arrival in competitive fitness.',
+    description: "Won the State Level Men's Physique Championship, earning my Pro Card. This victory validated years of hard work and marked my arrival in competitive fitness.",
     type: 'video',
     videoId: 'oKSWfiVqqXM',
     stats: [
@@ -163,7 +181,6 @@ const MILESTONES = [
     year: '2022',
     age: '25',
     category: 'FITNESS',
-    align: 'left' as const,
     icon: TrendingUp,
     iconColor: '#10b981',
     title: 'Online Transformation Program Launch',
@@ -181,33 +198,26 @@ const MILESTONES = [
     year: '2023',
     age: '26',
     category: 'ACTING',
-    align: 'right' as const,
     icon: Movie,
     iconColor: '#ec4899',
-    title: 'Acting Debut - "The Journey Begins"',
+    title: 'Acting Debut — "The Journey Begins"',
     description: 'Made my acting debut in a critically acclaimed regional film. Received praise for delivering a powerful performance that showcased my versatility beyond the fitness world.',
     type: 'images',
-    images: [
-      `${import.meta.env.BASE_URL}assets/images/acting-debut-1.jpg`,
-      `${import.meta.env.BASE_URL}assets/images/acting-debut-2.jpg`,
-      `${import.meta.env.BASE_URL}assets/images/acting-debut-3.jpg`,
-      `${import.meta.env.BASE_URL}assets/images/acting-debut-4.jpg`,
-    ],
+    images: [],
     stats: [
       { icon: Star, label: '4.5/5 Rating' },
       { icon: Movie, label: 'Best Debut Nominee' },
     ],
-      link: 'https://imdb.com',
+    link: 'https://imdb.com',
   },
   {
     id: 7,
     year: '2023',
     age: '26',
     category: 'ACTING',
-    align: 'left' as const,
     icon: Star,
     iconColor: '#f59e0b',
-    title: 'Lead Role - "Warrior\'s Path"',
+    title: "Lead Role — \"Warrior's Path\"",
     description: 'Secured the lead role in action thriller "Warrior\'s Path". Combined my fitness expertise with acting skills to deliver an authentic and physically demanding performance.',
     type: 'video',
     videoId: 'Thy0fpXXlSU',
@@ -222,7 +232,6 @@ const MILESTONES = [
     year: '2024',
     age: '27',
     category: 'FITNESS',
-    align: 'right' as const,
     icon: EmojiEvents,
     iconColor: '#dc2626',
     title: 'Mr. India Bodybuilding Champion',
@@ -237,315 +246,232 @@ const MILESTONES = [
   },
 ];
 
-// ==================== CURRENT PROJECTS ====================
-
-const CURRENT_PROJECTS = [
-  {
-    id: 1,
-    title: 'Action Film - "Iron Will"',
-    description: 'Currently filming an intense action drama where I play a former athlete turned vigilante. Combines my fitness expertise with dramatic acting.',
-    image: `${import.meta.env.BASE_URL}assets/images/project-acting-1.jpg`,
-    status: 'active' as const,
-    category: 'Acting',
-    tags: ['Action', 'Drama', 'Lead Role'],
-    tagColor: '#D4AF37',
-    links: [
-      { label: 'IMDb', url: 'https://imdb.com' },
-      { label: 'Trailer', url: 'https://youtube.com' },
-    ],
-  },
-  {
-    id: 2,
-    title: 'Elite Transformation Bootcamp',
-    description: 'Exclusive 12-week intensive fitness bootcamp for serious athletes. Limited to 20 participants with personalized coaching and nutrition plans.',
-    image: `${import.meta.env.BASE_URL}assets/images/project-fitness-1.jpg`,
-    status: 'active' as const,
-    category: 'Fitness',
-    tags: ['Bootcamp', 'Transformation', 'Elite'],
-    tagColor: '#10b981',
-    links: [
-      { label: 'Enroll Now', url: '#' },
-      { label: 'Success Stories', url: '#' },
-    ],
-  },
-  {
-    id: 3,
-    title: 'Web Series - "The Champion"',
-    description: 'Upcoming sports drama web series based on the journey of an underdog bodybuilder. Set to release in Q2 2024.',
-    image: `${import.meta.env.BASE_URL}assets/images/project-acting-2.jpg`,
-    status: 'upcoming' as const,
-    category: 'Acting',
-    tags: ['Web Series', 'Sports Drama', 'Biopic'],
-    tagColor: '#f59e0b',
-    links: [
-      { label: 'Behind Scenes', url: 'https://youtube.com' },
-      { label: 'Updates', url: '#' },
-    ],
-  },
-  {
-    id: 4,
-    title: 'YouTube Fitness Channel Growth',
-    description: 'Expanding fitness education content with weekly workout tutorials, nutrition guides, and transformation documentaries for 100K+ subscribers.',
-    image: `${import.meta.env.BASE_URL}assets/images/project-fitness-2.jpg`,
-    status: 'active' as const,
-    category: 'Fitness',
-    tags: ['YouTube', 'Education', 'Community'],
-    tagColor: '#ef4444',
-    links: [
-      { label: 'Subscribe', url: GLOBAL_CONFIG.social.youtube.channelUrl },
-      { label: 'Latest Video', url: GLOBAL_CONFIG.social.youtube.channelUrl },
-    ],
-  },
-];
-
-// ==================== COMPONENT ====================
-
 export const Journey = ({ setPage }: JourneyProps) => {
-  const timelineRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: timelineRef,
-    offset: ["start start", "end end"]
-  });
-  
-  const progressWidth = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
-
   return (
     <JourneyWrapper>
-      {/* Hero Section */}
-      <HeroSection>
-        <HeroBackground />
-        <HeroContainer>
-          <HeroBadge
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <Timeline />
-            <span>My Journey</span>
-          </HeroBadge>
+      <GrainOverlay />
+      <Scanlines />
 
-          <HeroTitle
+      <PageInner>
+        {/* ── HEADER ── */}
+        <motion.div
+          initial={{ opacity: 0, y: 24 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7 }}
+        >
+          <HeaderBadge>
+            <span>Biographical Exhibition</span>
+          </HeaderBadge>
+
+          <PageTitle
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
+            transition={{ duration: 0.8, delay: 0.1 }}
           >
-            9 Years of <span className="highlight">Evolution</span>
-          </HeroTitle>
+            THE NON-LINEAR
+            <br />
+            <span className="gradient-text">EVOLUTION</span>
+          </PageTitle>
 
-          <HeroDescription
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-          >
-            From a passionate 18-year-old beginner to National Bodybuilding Champion and Actor. Explore the milestones, achievements, and transformative moments that shaped my journey from 2015 to 2024.
-          </HeroDescription>
-        </HeroContainer>
-      </HeroSection>
+          <PageSubtitle>
+            A curated journey through a life defined by physical discipline, cinematic
+            performance, and the relentless pursuit of excellence — from 2015 to today.
+          </PageSubtitle>
+        </motion.div>
 
-      {/* Timeline Section */}
-      <TimelineSection ref={timelineRef}>
-        <TimelineContainer>
-          {/* Progress Indicator */}
-          <TimelineProgressBar
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-          >
-            <ProgressInfo>
-              <div className="start">
-                <span className="year">2015</span>
-                <span className="age">Age 18 • Start</span>
-              </div>
-              <div className="center" style={{ textAlign: 'center', flex: 1, padding: '0 1rem' }}>
-                <span style={{ 
-                  fontSize: '0.875rem', 
-                  fontWeight: 700, 
-                  color: 'rgba(255, 255, 255, 0.6)',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em'
-                }}>
-                  9 Years Journey
-                </span>
-              </div>
-              <div className="end">
-                <span className="year">2024</span>
-                <span className="age">Age 27 • Present</span>
-              </div>
-            </ProgressInfo>
-            <ProgressBarTrack>
-              <ProgressBarFill style={{ width: progressWidth }} />
-            </ProgressBarTrack>
-          </TimelineProgressBar>
+        {/* ── BENTO GRID ── */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.3 }}
+        >
+          <BentoGrid>
+            {MILESTONES.map((m, i) => {
+              const g = GRID[i];
+              const isWide = i === 7; // M8: full-width climax
+              const isTall = i === 2; // M3: tall 4×3
+              const isCompact = i === 4; // M5: single-row wide
 
-          <TimelineLine />
-          <TimelineItems>
-            {MILESTONES.map((milestone, index) => (
-              <TimelineItem key={milestone.id} align={milestone.align}>
-                {/* Year */}
-                <TimelineYear align={milestone.align}>
-                  <motion.div
-                    initial={{ opacity: 0, x: milestone.align === 'left' ? 50 : -50 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 }}
-                  >
-                    <span className="year">{milestone.year}</span>
-                    <span className="category">Age {milestone.age} • {milestone.category}</span>
-                  </motion.div>
-                </TimelineYear>
-
-                {/* Dot */}
-                <TimelineDot>
-                  <motion.div    initial={{ scale: 0 }}
-                    whileInView={{ scale: 1 }}
-                    viewport={{ once: true }}
-                    transition={{ type: 'spring', stiffness: 200, delay: index * 0.1 + 0.2 }}
+              return (
+                <BentoCard
+                  key={m.id}
+                  sx={{
+                    gridColumn: { xs: 'span 1', md: g.mdCol, lg: g.lgCol },
+                    gridRow: { xs: 'auto', md: g.mdRow, lg: g.lgRow },
+                  }}
+                >
+                  {/* Background image */}
+                  <img
+                    className={isWide ? 'card-img' : 'card-img-zoom'}
+                    src={BG[i]}
+                    alt={m.title}
                   />
-                </TimelineDot>
 
-                {/* Content */}
-                <TimelineContent align={milestone.align}>
-                  <MilestoneCard
-                    initial={{ opacity: 0, y: 50 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.6, delay: index * 0.1 + 0.3 }}
-                    whileHover={{ y: -8 }}
-                  >
-                    <MilestoneHeader>
-                      <div style={{ flex: 1 }}>
-                        <MilestoneTitle>{milestone.title}</MilestoneTitle>
-                        <MilestoneCategory color={milestone.iconColor}>
-                          {milestone.category}
-                        </MilestoneCategory>
-                      </div>
-                      <MilestoneIcon color={milestone.iconColor}>
-                        <milestone.icon />
-                      </MilestoneIcon>
-                    </MilestoneHeader>
+                  {/* Overlay */}
+                  {isWide ? <OverlayFull /> : i % 3 === 1 ? <OverlayLeft /> : <OverlayBottom />}
 
-                    <MilestoneDescription>{milestone.description}</MilestoneDescription>
-
-                    {/* Media */}
-                    {milestone.type === 'video' && milestone.videoId && (
-                      <MilestoneMedia>
-                        <VideoEmbed>
-                          <iframe
-                            src={`https://www.youtube.com/embed/${milestone.videoId}?rel=0&modestbranding=1`}
-                            title={milestone.title}
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                            allowFullScreen
-                            loading="lazy"
-                          />
-                        </VideoEmbed>
-                      </MilestoneMedia>
-                    )}
-
-                    {milestone.type === 'images' && milestone.images && (
-                      <MilestoneMedia>
-                        <ImageGallery>
-                          {milestone.images.map((img, i) => (
-                            <img key={i} src={img} alt={`${milestone.title} ${i + 1}`} loading="lazy" />
-                          ))}
-                        </ImageGallery>
-                      </MilestoneMedia>
-                    )}
-
-                    {/* Footer */}
-                    <MilestoneFooter>
-                      <MilestoneStats>
-                        {milestone.stats.map((stat, i) => (
-                          <StatItem key={i}>
-                            <stat.icon />
-                            <span>{stat.label}</span>
-                          </StatItem>
-                        ))}
-                      </MilestoneStats>
-                      {milestone.link && milestone.link !== '#' && (
-                        <MilestoneLink
-                          endIcon={<OpenInNew fontSize="small" />}
-                          onClick={() => window.open(milestone.link, '_blank', 'noopener,noreferrer')}
-                        >
-                          View More
-                        </MilestoneLink>
-                      )}
-                    </MilestoneFooter>
-                  </MilestoneCard>
-                </TimelineContent>
-              </TimelineItem>
-            ))}
-          </TimelineItems>
-        </TimelineContainer>
-      </TimelineSection>
-
-      {/* Current Projects */}
-      <CurrentProjectsSection>
-        <SectionHeader>
-          <SectionTitle
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            Current <span className="highlight">Projects</span>
-          </SectionTitle>
-          <SectionDescription>
-            Actively working on exciting projects across fitness and entertainment industries
-          </SectionDescription>
-        </SectionHeader>
-
-        <ProjectsGrid>
-          {CURRENT_PROJECTS.map((project, index) => (
-            <ProjectCard
-              key={project.id}
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.6, delay: index * 0.1 }}
-              whileHover={{ y: -12 }}
-            >
-              <ProjectImage>
-                <img src={project.image} alt={project.title} loading="lazy" />
-                <ProjectBadge status={project.status}>
-                  {project.status === 'active' ? '🔥 Active' : '🚀 Coming Soon'}
-                </ProjectBadge>
-              </ProjectImage>
-
-              <ProjectContent>
-                <ProjectTitle>{project.title}</ProjectTitle>
-                <ProjectDescription>{project.description}</ProjectDescription>
-
-                <ProjectTags>
-                  {project.tags.map((tag, i) => (
-                    <ProjectTag key={i} color={project.tagColor}>
-                      {tag}
-                    </ProjectTag>
-                  ))}
-                </ProjectTags>
-
-                <ProjectActions>
-                  {project.links.map((link, i) => (
-                    <ProjectButton
-                      key={i}
-                      onClick={() => {
-                        if (link.url.startsWith('http')) {
-                          window.open(link.url, '_blank', 'noopener,noreferrer');
-                        } else {
-                          window.location.href = link.url;
-                        }
+                  {/* Year watermark */}
+                  {isWide ? (
+                    <YearWatermarkBlue
+                      style={{
+                        top: '50%',
+                        right: '2rem',
+                        left: 'auto',
+                        transform: 'translateY(-50%)',
+                        fontSize: 'clamp(8rem, 18vw, 16rem)',
                       }}
-                      endIcon={link.url.startsWith('http') ? <OpenInNew fontSize="small" /> : <PlayArrow />}
                     >
-                      {link.label}
-                    </ProjectButton>
-                  ))}
-                </ProjectActions>
-              </ProjectContent>
-            </ProjectCard>
-          ))}
-        </ProjectsGrid>
-      </CurrentProjectsSection>
+                      {m.year}
+                    </YearWatermarkBlue>
+                  ) : (
+                    <YearWatermark>{m.year}</YearWatermark>
+                  )}
 
-      {/* CTA Section */}
+                  {/* Card content */}
+                  {isWide ? (
+                    // M8: Full-width climax — centered layout
+                    <CardCenter>
+                      <div style={{ textAlign: 'center' }}>
+                        <CategoryPill accent={m.iconColor} sx={{ justifyContent: 'center' }}>
+                          <m.icon />
+                          <span>{m.category} · AGE {m.age}</span>
+                        </CategoryPill>
+                        <CardTitleXL style={{ fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', marginBottom: '1rem' }}>
+                          {m.title}
+                        </CardTitleXL>
+                        <CardText style={{ maxWidth: '44rem', margin: '0 auto 1.5rem' }}>
+                          {m.description}
+                        </CardText>
+                        <InlineStats sx={{ justifyContent: 'center', borderTop: 'none', paddingTop: 0, marginTop: 0, gap: '3rem' }}>
+                          {m.stats.map((s, si) => (
+                            <div key={si} style={{ textAlign: 'center' }}>
+                              <BigStat style={{ fontSize: '1.25rem' }}>{s.label}</BigStat>
+                            </div>
+                          ))}
+                        </InlineStats>
+                      </div>
+                    </CardCenter>
+                  ) : isTall ? (
+                    // M3: Tall card — full content + CTA button
+                    <CardFull>
+                      {m.type === 'video' && (
+                        <PlayBadge>
+                          <PlayArrow />
+                          <span>Video</span>
+                        </PlayBadge>
+                      )}
+                      <CardLabel style={{ marginBottom: '0.75rem' }}>
+                        {m.category} · {m.year}
+                      </CardLabel>
+                      <CardTitleXL style={{ fontSize: 'clamp(1.75rem, 3vw, 2.5rem)', marginBottom: '0.75rem' }}>
+                        {m.title}
+                      </CardTitleXL>
+                      <CardText style={{ marginBottom: '1.5rem', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                        {m.description}
+                      </CardText>
+                      <InlineStats>
+                        {m.stats.map((s, si) => (
+                          <div key={si}>
+                            <SmallLabel style={{ marginBottom: '0.2rem' }}>{s.label}</SmallLabel>
+                          </div>
+                        ))}
+                      </InlineStats>
+                      {m.link !== '#' && (
+                        <TrailerBtn
+                          style={{ marginTop: '1.25rem' }}
+                          onClick={() => window.open(m.link, '_blank', 'noopener,noreferrer')}
+                        >
+                          {m.type === 'video' ? 'Watch Now' : 'View Details'}
+                          <PlayArrow />
+                        </TrailerBtn>
+                      )}
+                    </CardFull>
+                  ) : isCompact ? (
+                    // M5: Single-row — horizontal compact layout
+                    <CardInner sx={{ flexDirection: 'row', alignItems: 'center', gap: '2rem' }}>
+                      <div style={{ flexShrink: 0 }}>
+                        <CardLabel>{m.category}</CardLabel>
+                        <YearWatermark style={{ position: 'static', display: 'block', fontSize: '3rem', opacity: 0.15 }}>
+                          {m.year}
+                        </YearWatermark>
+                      </div>
+                      <div style={{ flex: 1 }}>
+                        <CardTitle style={{ marginBottom: '0.25rem' }}>{m.title}</CardTitle>
+                        <CardText style={{ display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', fontSize: '0.8rem' }}>
+                          {m.description}
+                        </CardText>
+                      </div>
+                      <InlineStats sx={{ flexDirection: 'column', gap: '0.75rem', border: 'none', paddingTop: 0, flexShrink: 0 }}>
+                        {m.stats.map((s, si) => (
+                          <div key={si} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <s.icon sx={{ fontSize: '0.875rem', color: m.iconColor }} />
+                            <SmallLabel>{s.label}</SmallLabel>
+                          </div>
+                        ))}
+                      </InlineStats>
+                    </CardInner>
+                  ) : (
+                    // Default: bottom-anchored content
+                    <CardBottom>
+                      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, mb: 0.75, flexWrap: 'wrap' }}>
+                        <CategoryPill accent={m.iconColor}>
+                          <m.icon />
+                          <span>{m.category}</span>
+                        </CategoryPill>
+                        {m.type === 'video' && (
+                          <PlayBadge>
+                            <PlayArrow />
+                            <span>Video</span>
+                          </PlayBadge>
+                        )}
+                      </Box>
+                      <CardTitle>{m.title}</CardTitle>
+                      <CardText style={{
+                        marginBottom: '0.75rem',
+                        display: '-webkit-box',
+                        WebkitLineClamp: 2,
+                        WebkitBoxOrient: 'vertical',
+                        overflow: 'hidden',
+                      }}>
+                        {m.description}
+                      </CardText>
+                      <InlineStats>
+                        {m.stats.map((s, si) => (
+                          <div key={si} style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                            <s.icon sx={{ fontSize: '0.875rem', color: m.iconColor }} />
+                            <SmallLabel>{s.label}</SmallLabel>
+                          </div>
+                        ))}
+                      </InlineStats>
+                    </CardBottom>
+                  )}
+                </BentoCard>
+              );
+            })}
+          </BentoGrid>
+        </motion.div>
+
+        {/* ── FOOTER ── */}
+        <GridFooter>
+          <div style={{ maxWidth: '32rem' }}>
+            <FooterQuote>
+              "A performance is not just a scene; it's the culmination of every mile
+              walked in silence."
+            </FooterQuote>
+            <FooterSource>— On the intersection of Discipline and Art</FooterSource>
+          </div>
+          <NavBtns>
+            <CircleBtn onClick={() => setPage?.('fitness')}>
+              <ChevronLeft />
+            </CircleBtn>
+            <CircleBtn $primary onClick={() => setPage?.('contact')}>
+              <ChevronRight />
+            </CircleBtn>
+          </NavBtns>
+        </GridFooter>
+      </PageInner>
+
+      {/* ── CTA ── */}
       <CTASection>
         <CTAContainer>
           <CTATitle
@@ -555,11 +481,10 @@ export const Journey = ({ setPage }: JourneyProps) => {
           >
             Let's Create <span className="highlight">Something Amazing</span>
           </CTATitle>
-
           <CTADescription>
-            Whether it's fitness transformation, acting collaboration, or brand partnerships — let's connect and make it happen.
+            Whether it's fitness transformation, acting collaboration, or brand
+            partnerships — let's connect and make it happen.
           </CTADescription>
-
           <CTAButtons>
             <CTAButton
               whileHover={{ scale: 1.05 }}
