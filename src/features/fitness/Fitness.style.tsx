@@ -14,9 +14,29 @@ export const HeroSection = styled(Box)({
   position: 'relative',
   minHeight: '100vh',
   overflow: 'hidden',
+  display: 'flex',
+  flexDirection: 'column',
 });
 
-export const HeroBackgroundImage = styled(Box)({
+// Mobile-only hero image — same transform settings as Home mobile
+export const FitnessHeroImageMobile = styled('img')(({ theme }) => ({
+  position: 'absolute',
+  inset: 0,
+  zIndex: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+  objectPosition: 'center center',
+  transform: 'scale(1.6) translateY(0%) translateX(-2%)',
+  transformOrigin: 'center center',
+  display: 'block',
+
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+}));
+
+export const HeroBackgroundImage = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   zIndex: 0,
@@ -25,18 +45,29 @@ export const HeroBackgroundImage = styled(Box)({
     height: '100%',
     objectFit: 'cover',
     objectPosition: 'center',
+    display: 'none',
+    [theme.breakpoints.up('md')]: {
+      display: 'block',
+    },
   },
-});
+}));
 
-export const HeroOverlay = styled(Box)({
+export const HeroOverlay = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
-  background: 'linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.3), transparent)',
-});
+  zIndex: 1,
+  pointerEvents: 'none',
+  // Mobile: top-to-bottom gradient (matches Home mobile overlay)
+  background: `linear-gradient(to bottom, ${theme.palette.background.default}cc 0%, ${theme.palette.background.default}55 45%, ${theme.palette.background.default}99 100%)`,
+
+  [theme.breakpoints.up('md')]: {
+    background: 'linear-gradient(to right, rgba(0,0,0,0.6), rgba(0,0,0,0.3), transparent)',
+  },
+}));
 
 export const HeroContent = styled(Box)(({ theme }) => ({
   position: 'relative',
-  minHeight: '100vh',
+  flex: 1,
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'flex-start',
@@ -297,11 +328,9 @@ export const ExperienceImageContainer = styled(Box)(({ theme }) => ({
     width: '100%',
     height: '100%',
     objectFit: 'cover',
-    filter: 'grayscale(100%)',
     transition: 'all 0.7s ease',
   },
   '&:hover img': {
-    filter: 'grayscale(0%)',
     transform: 'scale(1.05)',
   },
 }));

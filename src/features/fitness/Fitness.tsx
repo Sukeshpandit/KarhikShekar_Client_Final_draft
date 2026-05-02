@@ -123,6 +123,7 @@ import {
   FacilityInfoContent,
   FacilityInfoLabel,
   FacilityInfoText,
+  FitnessHeroImageMobile,
   FacilityButton,
   CTASection,
   CTABlob,
@@ -165,14 +166,14 @@ const FITNESS_CONTENT = {
         description: 'Boost Your Stamina And Resilience With Tailored Cardio And Endurance Workouts Designed To Keep You Moving Stronger For Longer',
         metric: '95',
         metricLabel: 'BPM',
-        image: 'https://images.unsplash.com/photo-1552674605-5defe6aa44bb?q=80&w=600&auto=format&fit=crop',
+        image: `${import.meta.env.BASE_URL}assets/Gym/handBalance.jpeg`,
       },
       {
         title: 'Speed Surge',
         description: 'Boost Your Agility And Explosiveness With High-Intensity Sprint And Movement Drills. Speed Surge Is Designed To Take Your Performance To The Next Level',
         metric: '1024',
         metricLabel: 'STEPS',
-        image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?q=80&w=600&auto=format&fit=crop',
+        image: `${import.meta.env.BASE_URL}assets/Gym/body.jpeg`,
       },
     ],
   },
@@ -431,6 +432,13 @@ export const Fitness = ({ setPage }: FitnessProps) => {
     <FitnessWrapper>
       {/* ==================== HERO SECTION ==================== */}
       <HeroSection>
+        {/* Mobile hero image — shown only below md */}
+        <FitnessHeroImageMobile
+          src={`${import.meta.env.BASE_URL}assets/Gym/Filtness_home.jpg`}
+          alt="Fitness Hero"
+        />
+
+        {/* Desktop hero image — shown only from md upward */}
         <HeroBackgroundImage>
           <motion.div
             initial={{ opacity: 0 }}
@@ -443,14 +451,16 @@ export const Fitness = ({ setPage }: FitnessProps) => {
               alt="Fitness Hero"
               loading="eager"
             />
-            <HeroOverlay />
           </motion.div>
         </HeroBackgroundImage>
+
+        {/* Overlay — covers both mobile and desktop images */}
+        <HeroOverlay />
 
         <HeroContent>
           <HeroTextContainer>
             {/* Stats Badge */}
-            <StatsBadge
+            {/* <StatsBadge
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2, duration: 0.6 }}
@@ -462,7 +472,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                 <StatsAvatar sx={{ bgcolor: 'primary.main', opacity: 0.4 }}>100+</StatsAvatar>
               </StatsAvatarGroup>
               <StatsBadgeText>{FITNESS_CONTENT.hero.statsBadge}</StatsBadgeText>
-            </StatsBadge>
+            </StatsBadge> */}
 
             {/* Description */}
             <HeroDescription>
@@ -511,10 +521,12 @@ export const Fitness = ({ setPage }: FitnessProps) => {
             </HeroButtonGroup>
           </HeroTextContainer>
         </HeroContent>
-      </HeroSection>
 
-      {/* ==================== TRANSFORMATION STORIES CAROUSEL ==================== */}
-      <TestimonialCarousel testimonials={testimonials} />
+        {/* Transformation Stories Carousel — bottom of hero, same as Home */}
+        <SlideIn direction="up" delay={0.2}>
+          <TestimonialCarousel testimonials={testimonials} />
+        </SlideIn>
+      </HeroSection>
 
       {/* ==================== EXPERIENCE SECTION ==================== */}
       <Section sx={{ bgcolor: 'background.default' }}>

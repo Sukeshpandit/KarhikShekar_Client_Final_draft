@@ -44,7 +44,7 @@ export const HeroImageMobile = styled('img')(({ theme }) => ({
   height: '100%',
   objectFit: 'contain',
   objectPosition: 'center center',
-  transform: 'scale(2.5) translateY(-2%) translateX(3%)',
+  transform: 'scale(2.5) translateY(-6%) translateX(3%)',
   transformOrigin: 'center center',
   display: 'block',
 
@@ -431,13 +431,14 @@ export const CarouselContainer = styled(Box)(({ theme }) => ({
   flexShrink: 0,
   overflow: 'hidden',
   height: '11rem',
-  
+  transform: 'translateY(-2rem)',
+
   [theme.breakpoints.up('sm')]: {
     height: '13rem',
   },
-  
+
   [theme.breakpoints.up('md')]: {
-       height: '15rem',
+    height: '15rem',
   },
 }));
 
