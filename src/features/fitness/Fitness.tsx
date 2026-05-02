@@ -76,6 +76,9 @@ import {
   PricingGrid,
   PricingCard,
   PopularBadge,
+  OfferBadge,
+  OriginalPrice,
+  SavingsBadge,
   PricingDuration,
   PricingPrice,
   PricingPerMonth,
@@ -94,6 +97,23 @@ import {
   TestimonialName,
   TestimonialText,
   TestimonialComment,
+  SupplementsSection,
+  SupplementsContainer,
+  SupplementsBrandStripWrapper,
+  SupplementsBrandStrip,
+  BrandPill,
+  SupplementBenefitsGrid,
+  SupplementBenefitCard,
+  SupplementBenefitIcon,
+  SupplementBenefitTitle,
+  SupplementBenefitText,
+  SupplementCategoriesGrid,
+  SupplementCategoryCard,
+  SupplementCategoryEmoji,
+  SupplementCategoryName,
+  SupplementCategoryDesc,
+  SupplementCTABox,
+  SupplementOrderButton,
   FacilityGrid,
   FacilityImage,
   FacilityInfo,
@@ -226,8 +246,11 @@ const FITNESS_CONTENT = {
       },
       {
         duration: '12 Months',
-        price: '₹20,000',
-        perMonth: '₹1,667',
+        price: '₹17,000',
+        originalPrice: '₹20,000',
+        savingsLabel: 'You save ₹3,000',
+        offerLabel: '🔥 Limited Offer',
+        perMonth: '₹1,417',
         highlighted: false,
         features: ['Everything included', 'Priority booking', 'Guest passes', '2 PT sessions/month', 'Body composition analysis', 'Supplement discount', 'Exclusive community']
       },
@@ -254,6 +277,40 @@ const FITNESS_CONTENT = {
     button: 'Get Directions',
   },
   
+  supplements: {
+    label: 'Supplements',
+    title: 'Premium Supplements',
+    titleHighlight: 'Best Price Guaranteed',
+    description: 'We deal in authentic supplements from all major national & international brands — sourced directly from authorized distributors so you always get the real deal at the lowest price.',
+    brands: [
+      'Optimum Nutrition', 'MuscleBlaze', 'MyProtein', 'GNC', 'Dymatize',
+      'MuscleTech', 'BSN', 'Scitron', 'Bigmuscles', 'Avvatar', 'Nakpro', 'HealthKart',
+      'Isopure', 'Universal Nutrition', 'BPI Sports', 'ProSupps',
+    ],
+    benefits: [
+      { icon: faAward,      title: '100% Authentic',   text: 'Verified genuine products from authorized distributors only' },
+      { icon: faDollarSign, title: 'Lowest Price',      text: 'Beat any competitor price — guaranteed best deal' },
+      { icon: faDumbbell,   title: 'All Top Brands',    text: 'Wide range across every leading national & international brand' },
+      { icon: faUsers,      title: 'Expert Advice',     text: 'Certified trainers guide you to the right supplement stack' },
+    ],
+    categories: [
+      { emoji: '💪', name: 'Whey Protein',   desc: 'Fast-absorbing muscle builder' },
+      { emoji: '🏋️', name: 'Mass Gainer',    desc: 'High-calorie bulk-up formula' },
+      { emoji: '⚡', name: 'Pre-Workout',    desc: 'Energy, focus & pump booster' },
+      { emoji: '🔬', name: 'Creatine',       desc: 'Strength & power enhancer' },
+      { emoji: '🌿', name: 'BCAAs',          desc: 'Recovery & endurance support' },
+      { emoji: '💊', name: 'Multivitamins',  desc: 'Complete daily micronutrition' },
+      { emoji: '🔥', name: 'Fat Burner',     desc: 'Metabolism & fat-loss support' },
+      { emoji: '🐟', name: 'Omega-3',        desc: 'Joint, heart & brain health' },
+    ],
+    cta: {
+      title: 'Ready to Stack Up?',
+      titleHighlight: 'Order Today',
+      text: "Message us on WhatsApp with what you need — we'll give you the best price, verify authenticity, and arrange delivery straight to you.",
+      button: 'Order via WhatsApp',
+    },
+  },
+
   cta: {
     label: 'Ready',
     title: 'Be Next to',
@@ -545,6 +602,153 @@ export const Fitness = ({ setPage }: FitnessProps) => {
         </SectionContainer>
       </Section>
 
+
+      {/* ==================== MONTHLY PACKAGES ==================== */}
+      <Section sx={{ bgcolor: 'background.default' }}>
+        <SectionContainer>
+          <FadeIn>
+            <SectionHeader>
+              <SectionLabel>{FITNESS_CONTENT.pricing.label}</SectionLabel>
+              <SectionTitle>
+                {FITNESS_CONTENT.pricing.title} <span className="highlight">{FITNESS_CONTENT.pricing.titleHighlight}</span>
+              </SectionTitle>
+              <SectionDescription>
+                {FITNESS_CONTENT.pricing.description}
+              </SectionDescription>
+            </SectionHeader>
+          </FadeIn>
+
+          <Stagger staggerDelay={0.1}>
+            <PricingGrid>
+              {monthlyPackages.map((pkg, i) => (
+                <PricingCard
+                  key={i}
+                  onClick={() => setSelectedPlan(i)}
+                  selected={selectedPlan === i}
+                >
+                  {pkg.highlighted && (
+                    <PopularBadge>{FITNESS_CONTENT.pricing.popularBadge}</PopularBadge>
+                  )}
+                  {(pkg as any).offerLabel && (
+                    <OfferBadge>{(pkg as any).offerLabel}</OfferBadge>
+                  )}
+
+                  <Box sx={{ mb: { xs: 2, md: 3 } }}>
+                    <PricingDuration>{pkg.duration}</PricingDuration>
+                    <Box>
+                      {(pkg as any).originalPrice && (
+                        <OriginalPrice>{(pkg as any).originalPrice}</OriginalPrice>
+                      )}
+                      <PricingPrice>{pkg.price}</PricingPrice>
+                      {(pkg as any).savingsLabel && (
+                        <SavingsBadge>{(pkg as any).savingsLabel}</SavingsBadge>
+                      )}
+                      <PricingPerMonth sx={{ mt: 0.5 }}>({pkg.perMonth}/month)</PricingPerMonth>
+                    </Box>
+                  </Box>
+
+                  <PricingFeaturesList>
+                    {pkg.features.map((feature, j) => (
+                      <PricingFeatureItem key={j}>
+                        <FontAwesomeIcon icon={faCheck} />
+                        <span>{feature}</span>
+                      </PricingFeatureItem>
+                    ))}
+                  </PricingFeaturesList>
+
+                  <PricingButton 
+                    selected={selectedPlan === i}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPlanData(pkg);
+                      setIsPlanFormOpen(true);
+                    }}
+                  >
+                    {FITNESS_CONTENT.pricing.button}
+                  </PricingButton>
+                </PricingCard>
+              ))}
+            </PricingGrid>
+          </Stagger>
+        </SectionContainer>
+      </Section>
+
+      {/* ==================== SUPPLEMENTS SECTION ==================== */}
+      <SupplementsSection>
+        <SupplementsContainer>
+          <FadeIn>
+            <SectionHeader>
+              <SectionLabel>{FITNESS_CONTENT.supplements.label}</SectionLabel>
+              <SectionTitle>
+                {FITNESS_CONTENT.supplements.title}<br />
+                <span className="highlight">{FITNESS_CONTENT.supplements.titleHighlight}</span>
+              </SectionTitle>
+              <SectionDescription sx={{ maxWidth: '720px', mx: 'auto' }}>
+                {FITNESS_CONTENT.supplements.description}
+              </SectionDescription>
+            </SectionHeader>
+          </FadeIn>
+
+          {/* Scrolling brand strip */}
+          <SupplementsBrandStripWrapper>
+            <SupplementsBrandStrip>
+              {[...FITNESS_CONTENT.supplements.brands, ...FITNESS_CONTENT.supplements.brands].map((brand, i) => (
+                <BrandPill key={i}>⭐ {brand}</BrandPill>
+              ))}
+            </SupplementsBrandStrip>
+          </SupplementsBrandStripWrapper>
+
+          {/* Why buy from us */}
+          <Stagger staggerDelay={0.1}>
+            <SupplementBenefitsGrid>
+              {FITNESS_CONTENT.supplements.benefits.map((b, i) => (
+                <SupplementBenefitCard key={i} whileHover={{ y: -4 }} transition={{ type: 'spring', stiffness: 300 }}>
+                  <SupplementBenefitIcon>
+                    <FontAwesomeIcon icon={b.icon} />
+                  </SupplementBenefitIcon>
+                  <SupplementBenefitTitle>{b.title}</SupplementBenefitTitle>
+                  <SupplementBenefitText>{b.text}</SupplementBenefitText>
+                </SupplementBenefitCard>
+              ))}
+            </SupplementBenefitsGrid>
+          </Stagger>
+
+          {/* Supplement categories */}
+          <Stagger staggerDelay={0.07}>
+            <SupplementCategoriesGrid>
+              {FITNESS_CONTENT.supplements.categories.map((cat, i) => (
+                <SupplementCategoryCard key={i} whileHover={{ y: -5 }} transition={{ type: 'spring', stiffness: 300 }}>
+                  <SupplementCategoryEmoji>{cat.emoji}</SupplementCategoryEmoji>
+                  <SupplementCategoryName>{cat.name}</SupplementCategoryName>
+                  <SupplementCategoryDesc>{cat.desc}</SupplementCategoryDesc>
+                </SupplementCategoryCard>
+              ))}
+            </SupplementCategoriesGrid>
+          </Stagger>
+
+          {/* Order CTA */}
+          <FadeIn delay={0.2}>
+            <SupplementCTABox>
+              <SectionLabel>{FITNESS_CONTENT.supplements.cta.title}</SectionLabel>
+              <SectionTitle>
+                <span className="highlight">{FITNESS_CONTENT.supplements.cta.titleHighlight}</span>
+              </SectionTitle>
+              <SectionDescription sx={{ maxWidth: '600px', mx: 'auto' }}>
+                {FITNESS_CONTENT.supplements.cta.text}
+              </SectionDescription>
+              <SupplementOrderButton
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => window.open(`https://wa.me/${GLOBAL_CONFIG.contact.phoneWhatsApp}`, '_blank')}
+              >
+                <FontAwesomeIcon icon={faArrowRight} />
+                {FITNESS_CONTENT.supplements.cta.button}
+              </SupplementOrderButton>
+            </SupplementCTABox>
+          </FadeIn>
+        </SupplementsContainer>
+      </SupplementsSection>
+
       {/* ==================== WHY WE'RE THE BEST ==================== */}
       <Section sx={{ bgcolor: 'background.default' }}>
         <SectionContainer>
@@ -596,68 +800,8 @@ export const Fitness = ({ setPage }: FitnessProps) => {
           </SlideIn>
         </SectionContainer>
       </Section>
-
-      {/* ==================== MONTHLY PACKAGES ==================== */}
-      <Section sx={{ bgcolor: 'background.default' }}>
-        <SectionContainer>
-          <FadeIn>
-            <SectionHeader>
-              <SectionLabel>{FITNESS_CONTENT.pricing.label}</SectionLabel>
-              <SectionTitle>
-                {FITNESS_CONTENT.pricing.title} <span className="highlight">{FITNESS_CONTENT.pricing.titleHighlight}</span>
-              </SectionTitle>
-              <SectionDescription>
-                {FITNESS_CONTENT.pricing.description}
-              </SectionDescription>
-            </SectionHeader>
-          </FadeIn>
-
-          <Stagger staggerDelay={0.1}>
-            <PricingGrid>
-              {monthlyPackages.map((pkg, i) => (
-                <PricingCard
-                  key={i}
-                  onClick={() => setSelectedPlan(i)}
-                  selected={selectedPlan === i}
-                >
-                  {pkg.highlighted && (
-                    <PopularBadge>{FITNESS_CONTENT.pricing.popularBadge}</PopularBadge>
-                  )}
-
-                  <Box sx={{ mb: { xs: 2, md: 3 } }}>
-                    <PricingDuration>{pkg.duration}</PricingDuration>
-                    <Box>
-                      <PricingPrice>{pkg.price}</PricingPrice>
-                      <PricingPerMonth>({pkg.perMonth}/month)</PricingPerMonth>
-                    </Box>
-                  </Box>
-
-                  <PricingFeaturesList>
-                    {pkg.features.map((feature, j) => (
-                      <PricingFeatureItem key={j}>
-                        <FontAwesomeIcon icon={faCheck} />
-                        <span>{feature}</span>
-                      </PricingFeatureItem>
-                    ))}
-                  </PricingFeaturesList>
-
-                  <PricingButton 
-                    selected={selectedPlan === i}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedPlanData(pkg);
-                      setIsPlanFormOpen(true);
-                    }}
-                  >
-                    {FITNESS_CONTENT.pricing.button}
-                  </PricingButton>
-                </PricingCard>
-              ))}
-            </PricingGrid>
-          </Stagger>
-        </SectionContainer>
-      </Section>
-           {/* ==================== GYM FACILITY ==================== */}
+      
+      {/* ==================== GYM FACILITY ==================== */}
       <Section sx={{ bgcolor: 'background.default' }}>
         <SectionContainer>
           <FacilityGrid>

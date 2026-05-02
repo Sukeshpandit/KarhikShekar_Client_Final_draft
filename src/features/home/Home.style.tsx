@@ -420,6 +420,18 @@ export const CarouselFade = styled(Box)(({ theme }) => ({
   },
 }));
 
+export const CarouselScrollTrack = styled('div')({
+  overflowX: 'auto',
+  overflowY: 'hidden',
+  height: '100%',
+  cursor: 'grab',
+  userSelect: 'none',
+  '&::-webkit-scrollbar': { display: 'none' },
+  scrollbarWidth: 'none',
+  msOverflowStyle: 'none',
+  '&:active': { cursor: 'grabbing' },
+});
+
 export const CarouselStrip = styled(motion.div)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -430,17 +442,6 @@ export const CarouselStrip = styled(motion.div)(({ theme }) => ({
   paddingBottom: theme.spacing(0.75),
   paddingLeft: theme.spacing(1),
   paddingRight: theme.spacing(1),
-  
-  animation: 'marquee 40s linear infinite',
-  
-  '&:hover': {
-    animationPlayState: 'paused',
-  },
-  
-  '@keyframes marquee': {
-    '0%': { transform: 'translateX(0)' },
-    '100%': { transform: 'translateX(-50%)' },
-  },
 }));
 
 export const ThumbnailCard = styled(motion.button)(({ theme }) => ({

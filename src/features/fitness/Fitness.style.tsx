@@ -688,6 +688,55 @@ export const PricingPerMonth = styled(Box)(({ theme }) => ({
   color: 'rgba(255,255,255,0.6)',
 }));
 
+export const OfferBadge = styled(Box)(({ theme }) => ({
+  position: 'absolute',
+  top: '-0.75rem',
+  right: '1rem',
+  padding: '0.25rem 0.75rem',
+  background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
+  color: '#fff',
+  fontSize: '0.6rem',
+  fontWeight: 900,
+  borderRadius: '9999px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  boxShadow: '0 2px 12px rgba(239, 68, 68, 0.6)',
+  animation: 'offerPulse 2s ease-in-out infinite',
+  '@keyframes offerPulse': {
+    '0%, 100%': { boxShadow: '0 2px 12px rgba(239, 68, 68, 0.6)' },
+    '50%': { boxShadow: '0 4px 20px rgba(239, 68, 68, 0.9), 0 0 0 4px rgba(239,68,68,0.15)' },
+  },
+  [theme.breakpoints.up('md')]: {
+    top: '-1rem',
+    fontSize: '0.65rem',
+  },
+}));
+
+export const OriginalPrice = styled(Box)(({ theme }) => ({
+  fontSize: '1rem',
+  fontWeight: 600,
+  color: 'rgba(255,255,255,0.35)',
+  textDecoration: 'line-through',
+  lineHeight: 1.2,
+  [theme.breakpoints.up('md')]: {
+    fontSize: '1.25rem',
+  },
+}));
+
+export const SavingsBadge = styled(Box)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '0.25rem',
+  padding: '0.2rem 0.6rem',
+  background: 'rgba(5, 150, 105, 0.15)',
+  border: '1px solid rgba(5, 150, 105, 0.35)',
+  color: '#10b981',
+  fontSize: '0.7rem',
+  fontWeight: 700,
+  borderRadius: '0.375rem',
+  marginTop: '0.35rem',
+  letterSpacing: '0.02em',
+}));
 
 export const PricingFeaturesList = styled(Box)(({ theme }) => ({
   display: 'flex',
@@ -1006,6 +1055,195 @@ export const FacilityButton = styled(Button)(({ theme }) => ({
     padding: '1.25rem 2.5rem',
     fontSize: '0.875rem',
     gap: theme.spacing(1.5),
+  },
+}));
+
+// ==================== SUPPLEMENTS SECTION ====================
+export const SupplementsSection = styled(Box)(({ theme }) => ({
+  background: 'linear-gradient(180deg, #060d18 0%, #0b1624 60%, #060d18 100%)',
+  padding: theme.spacing(8, 2),
+  position: 'relative',
+  overflow: 'hidden',
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(12, 4),
+  },
+}));
+
+export const SupplementsContainer = styled(Box)(({ theme }) => ({
+  maxWidth: '1200px',
+  margin: '0 auto',
+}));
+
+export const SupplementsBrandStripWrapper = styled(Box)({
+  overflow: 'hidden',
+  marginTop: '2.5rem',
+  marginBottom: '3.5rem',
+  maskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+  WebkitMaskImage: 'linear-gradient(to right, transparent 0%, black 10%, black 90%, transparent 100%)',
+});
+
+export const SupplementsBrandStrip = styled(Box)({
+  display: 'flex',
+  gap: '2.5rem',
+  width: 'max-content',
+  animation: 'brandMarquee 28s linear infinite',
+  '@keyframes brandMarquee': {
+    '0%': { transform: 'translateX(0)' },
+    '100%': { transform: 'translateX(-50%)' },
+  },
+});
+
+export const BrandPill = styled(Box)(({ theme }) => ({
+  display: 'flex',
+  alignItems: 'center',
+  gap: theme.spacing(1),
+  padding: '0.35rem 1rem',
+  borderRadius: '9999px',
+  border: '1px solid rgba(212,175,55,0.2)',
+  background: 'rgba(212,175,55,0.05)',
+  fontSize: '0.75rem',
+  fontWeight: 700,
+  color: 'rgba(255,255,255,0.45)',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  whiteSpace: 'nowrap',
+}));
+
+export const SupplementBenefitsGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(6),
+  [theme.breakpoints.up('md')]: {
+    gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: theme.spacing(3),
+  },
+}));
+
+export const SupplementBenefitCard = styled(motion.div)(({ theme }) => ({
+  background: 'linear-gradient(135deg, rgba(212,175,55,0.07), rgba(212,175,55,0.02))',
+  border: '1px solid rgba(212,175,55,0.15)',
+  borderRadius: '1rem',
+  padding: theme.spacing(3, 2),
+  textAlign: 'center',
+  transition: 'border-color 0.3s',
+  '&:hover': {
+    borderColor: 'rgba(212,175,55,0.35)',
+  },
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(4, 3),
+  },
+}));
+
+export const SupplementBenefitIcon = styled(Box)(({ theme }) => ({
+  width: '3rem',
+  height: '3rem',
+  borderRadius: '50%',
+  background: 'rgba(212,175,55,0.1)',
+  border: '1px solid rgba(212,175,55,0.25)',
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  margin: '0 auto',
+  marginBottom: theme.spacing(1.5),
+  color: '#D4AF37',
+  fontSize: '1.1rem',
+}));
+
+export const SupplementBenefitTitle = styled(Box)(({ theme }) => ({
+  fontSize: '0.78rem',
+  fontWeight: 800,
+  color: theme.palette.common.white,
+  letterSpacing: '0.06em',
+  textTransform: 'uppercase',
+  marginBottom: theme.spacing(0.5),
+}));
+
+export const SupplementBenefitText = styled(Box)({
+  fontSize: '0.68rem',
+  color: 'rgba(255,255,255,0.45)',
+  lineHeight: 1.5,
+});
+
+export const SupplementCategoriesGrid = styled(Box)(({ theme }) => ({
+  display: 'grid',
+  gridTemplateColumns: 'repeat(2, 1fr)',
+  gap: theme.spacing(2),
+  marginBottom: theme.spacing(6),
+  [theme.breakpoints.up('sm')]: {
+    gridTemplateColumns: 'repeat(4, 1fr)',
+  },
+  [theme.breakpoints.up('md')]: {
+    gap: theme.spacing(2.5),
+  },
+}));
+
+export const SupplementCategoryCard = styled(motion.div)(({ theme }) => ({
+  background: 'rgba(255,255,255,0.03)',
+  border: '1px solid rgba(255,255,255,0.07)',
+  borderRadius: '1rem',
+  padding: theme.spacing(3, 2),
+  textAlign: 'center',
+  transition: 'all 0.3s',
+  '&:hover': {
+    borderColor: 'rgba(212,175,55,0.3)',
+    background: 'rgba(212,175,55,0.05)',
+    transform: 'translateY(-4px)',
+  },
+}));
+
+export const SupplementCategoryEmoji = styled(Box)(({ theme }) => ({
+  fontSize: '2.25rem',
+  lineHeight: 1,
+  marginBottom: theme.spacing(1.25),
+}));
+
+export const SupplementCategoryName = styled(Box)(({ theme }) => ({
+  fontSize: '0.85rem',
+  fontWeight: 700,
+  color: theme.palette.common.white,
+  marginBottom: theme.spacing(0.5),
+  [theme.breakpoints.up('md')]: {
+    fontSize: '0.9rem',
+  },
+}));
+
+export const SupplementCategoryDesc = styled(Box)({
+  fontSize: '0.68rem',
+  color: 'rgba(255,255,255,0.4)',
+  lineHeight: 1.4,
+});
+
+export const SupplementCTABox = styled(Box)(({ theme }) => ({
+  background: 'linear-gradient(135deg, rgba(212,175,55,0.1), rgba(212,175,55,0.03))',
+  border: '1px solid rgba(212,175,55,0.25)',
+  borderRadius: '1.5rem',
+  padding: theme.spacing(5, 3),
+  textAlign: 'center',
+  [theme.breakpoints.up('md')]: {
+    padding: theme.spacing(7, 10),
+  },
+}));
+
+export const SupplementOrderButton = styled(motion.button)(({ theme }) => ({
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: theme.spacing(1.5),
+  padding: theme.spacing(1.5, 4),
+  background: 'linear-gradient(135deg, #D4AF37, #b8942e)',
+  color: '#000',
+  fontSize: '0.85rem',
+  fontWeight: 800,
+  border: 'none',
+  borderRadius: '9999px',
+  cursor: 'pointer',
+  letterSpacing: '0.06em',
+  textTransform: 'uppercase',
+  marginTop: theme.spacing(3),
+  boxShadow: '0 4px 20px rgba(212,175,55,0.35)',
+  [theme.breakpoints.up('md')]: {
+    fontSize: '0.95rem',
+    padding: theme.spacing(2, 6),
   },
 }));
 

@@ -41,6 +41,7 @@ import {
   HeroQuoteText,
   CarouselContainer,
   CarouselFade,
+  CarouselScrollTrack,
   CarouselStrip,
   ThumbnailCard,
   ThumbnailImage,
@@ -356,10 +357,10 @@ const HOME_CONTENT = {
     title: 'Success',
     titleHighlight: 'By Numbers',
     items: [
-      { label: 'Clients Transformed', value: '1,200+', icon: <GroupsIcon /> },
+      { label: 'Clients Transformed', value: '2000+', icon: <GroupsIcon /> },
       { label: 'Movies & Projects', value: '12+', icon: <MovieIcon /> },
       { label: 'YouTube Views', value: '491.3K', icon: <YouTubeIcon /> },
-      { label: 'Snakes Rescued', value: '850+', icon: <PetsIcon /> },
+      { label: 'WildLife Rescued', value: '10,000+', icon: <PetsIcon /> },
       { label: 'Years Experience', value: '10+', icon: <AccessTimeIcon /> },
     ],
   },
@@ -485,6 +486,100 @@ export const Home = ({ setPage }: HomeProps) => {
       setTaglineIndex((prev) => (prev + 1) % TAGLINES.length);
     }, 3000);
     return () => clearInterval(interval);
+  }, []);
+
+  // Carousel auto-scroll + drag
+  const carouselRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = carouselRef.current;
+    if (!el) return;
+
+    const SPEED = 0.6;
+    let animId: number;
+    let isPaused = false;
+    let isDragging = false;
+    let hasDragged = false;
+    let startX = 0;
+    let startScrollLeft = 0;
+
+    const tick = () => {
+      if (!isPaused && !isDragging) {
+        el.scrollLeft += SPEED;
+      }
+      animId = requestAnimationFrame(tick);
+    };
+
+    // Seamless infinite loop: when past the first copy, jump back
+    const onScroll = () => {
+      if (el.scrollLeft >= el.scrollWidth / 2) {
+        el.scrollLeft -= el.scrollWidth / 2;
+      }
+    };
+
+    const onMouseEnter = () => { isPaused = true; };
+    const onMouseLeave = () => {
+      isPaused = false;
+      isDragging = false;
+      el.style.cursor = 'grab';
+    };
+
+    const onMouseDown = (e: MouseEvent) => {
+      isDragging = true;
+      hasDragged = false;
+      startX = e.pageX;
+      startScrollLeft = el.scrollLeft;
+      el.style.cursor = 'grabbing';
+    };
+
+    const onMouseMove = (e: MouseEvent) => {
+      if (!isDragging) return;
+      const dx = e.pageX - startX;
+      if (Math.abs(dx) > 5) {
+        hasDragged = true;
+        el.scrollLeft = startScrollLeft - dx;
+      }
+    };
+
+    const onMouseUp = () => {
+      isDragging = false;
+      el.style.cursor = 'grab';
+    };
+
+    // Prevent card clicks firing after a drag
+    const onClickCapture = (e: MouseEvent) => {
+      if (hasDragged) {
+        e.stopPropagation();
+        hasDragged = false;
+      }
+    };
+
+    const onTouchStart = () => { isPaused = true; };
+    const onTouchEnd = () => { setTimeout(() => { isPaused = false; }, 1500); };
+
+    el.addEventListener('scroll', onScroll);
+    el.addEventListener('mouseenter', onMouseEnter);
+    el.addEventListener('mouseleave', onMouseLeave);
+    el.addEventListener('mousedown', onMouseDown);
+    el.addEventListener('mousemove', onMouseMove);
+    el.addEventListener('mouseup', onMouseUp);
+    el.addEventListener('click', onClickCapture, true);
+    el.addEventListener('touchstart', onTouchStart, { passive: true });
+    el.addEventListener('touchend', onTouchEnd);
+
+    animId = requestAnimationFrame(tick);
+    return () => {
+      cancelAnimationFrame(animId);
+      el.removeEventListener('scroll', onScroll);
+      el.removeEventListener('mouseenter', onMouseEnter);
+      el.removeEventListener('mouseleave', onMouseLeave);
+      el.removeEventListener('mousedown', onMouseDown);
+      el.removeEventListener('mousemove', onMouseMove);
+      el.removeEventListener('mouseup', onMouseUp);
+      el.removeEventListener('click', onClickCapture, true);
+      el.removeEventListener('touchstart', onTouchStart);
+      el.removeEventListener('touchend', onTouchEnd);
+    };
   }, []);
 
   // Timeline auto-scroll (left → right → left, ping-pong)
@@ -623,6 +718,7 @@ export const Home = ({ setPage }: HomeProps) => {
               <CarouselFade className="left" />
               <CarouselFade className="right" />
 
+              <CarouselScrollTrack ref={carouselRef}>
               <CarouselStrip>
                 {THUMBNAILS.map((item, index) => (
                   <ThumbnailCard
@@ -663,6 +759,7 @@ export const Home = ({ setPage }: HomeProps) => {
                   </ThumbnailCard>
                 ))}
               </CarouselStrip>
+              </CarouselScrollTrack>
             </CarouselContainer>
           </SlideIn>
         </HeroSection>
