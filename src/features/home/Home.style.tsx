@@ -35,6 +35,25 @@ export const HeroSection = styled(Box)(({ theme }) => ({
   },
 }));
 
+// Mobile-only hero image (hidden on md+)
+export const HeroImageMobile = styled('img')(({ theme }) => ({
+  position: 'absolute',
+  inset: 0,
+  zIndex: 0,
+  width: '100%',
+  height: '100%',
+  objectFit: 'contain',
+  objectPosition: 'center center',
+  transform: 'scale(2.5) translateY(-2%) translateX(3%)',
+  transformOrigin: 'center center',
+  display: 'block',
+
+  [theme.breakpoints.up('md')]: {
+    display: 'none',
+  },
+}));
+
+// Desktop-only hero image (hidden below md)
 export const HeroImage = styled(motion.img)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
@@ -42,21 +61,16 @@ export const HeroImage = styled(motion.img)(({ theme }) => ({
   width: '100%',
   height: '100%',
   objectFit: 'cover',
-  objectPosition: '50% 0%',
-  opacity: 1,
-
-  [theme.breakpoints.up('sm')]: {
-    objectPosition: '55% 5%',
-  },
+  objectPosition: '52% 10%',
+  display: 'none',
 
   [theme.breakpoints.up('md')]: {
+    display: 'block',
     objectPosition: '52% 10%',
-    opacity: 1,
   },
 
   [theme.breakpoints.up('lg')]: {
     objectPosition: '50% 100%',
-    opacity: 1,
   },
 }));
 
@@ -64,13 +78,14 @@ export const HeroOverlay = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   zIndex: 1,
-  background: `linear-gradient(to right, ${theme.palette.background.default}dd 0%, ${theme.palette.background.default}99 30%, ${theme.palette.background.default}26 100%)`,
+  // Mobile: top-to-bottom gradient keeps text readable while showing the centered subject
+  background: `linear-gradient(to bottom, ${theme.palette.background.default}cc 0%, ${theme.palette.background.default}55 45%, ${theme.palette.background.default}99 100%)`,
   pointerEvents: 'none',
-  
+
   [theme.breakpoints.up('md')]: {
     background: `linear-gradient(to right, ${theme.palette.background.default}99 0%, ${theme.palette.background.default}80 30%, ${theme.palette.background.default}1a 100%)`,
   },
-  
+
   [theme.breakpoints.up('lg')]: {
     background: `linear-gradient(to right, ${theme.palette.background.default}80 0%, ${theme.palette.background.default}66 30%, ${theme.palette.background.default}0d 100%)`,
   },
@@ -130,23 +145,25 @@ export const HeroLeftPanel = styled(Box)(({ theme }) => ({
   width: '100%',
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'center',
+  justifyContent: 'flex-end',  // anchor name block toward bottom on mobile
   alignItems: 'center',
   paddingLeft: theme.spacing(2),
   paddingRight: theme.spacing(2),
   paddingTop: theme.spacing(3),
   paddingBottom: theme.spacing(2),
-  
+
   [theme.breakpoints.up('sm')]: {
+    justifyContent: 'center',
     paddingLeft: theme.spacing(3),
     paddingRight: theme.spacing(3),
   },
-  
+
   [theme.breakpoints.up('md')]: {
+    justifyContent: 'center',
     paddingLeft: theme.spacing(5),
     paddingRight: theme.spacing(5),
   },
-  
+
   [theme.breakpoints.up('lg')]: {
     width: '42%',
     justifyContent: 'flex-start',
@@ -158,16 +175,20 @@ export const HeroLeftPanel = styled(Box)(({ theme }) => ({
 }));
 
 export const HeroNameBlock = styled(Box)(({ theme }) => ({
-  marginTop: theme.spacing(1),
-  marginBottom: theme.spacing(2),
+  marginTop: 0,
+  marginBottom: theme.spacing(1.5),
   textAlign: 'center',
   width: '100%',
-  maxWidth: '448px',
-  
+  maxWidth: '360px',
+  transform: 'scale(1.5)',
+  transformOrigin: 'center bottom',
+
   [theme.breakpoints.up('sm')]: {
+    transform: 'none',
+    maxWidth: '448px',
     marginBottom: theme.spacing(3),
   },
-  
+
   [theme.breakpoints.up('lg')]: {
     textAlign: 'left',
     maxWidth: 'none',
@@ -176,59 +197,78 @@ export const HeroNameBlock = styled(Box)(({ theme }) => ({
 }));
 
 export const HeroTitle = styled('h1')(({ theme }) => ({
-  fontSize: 'clamp(1.8rem, 7vw, 4.5rem)',
-  lineHeight: 0.9,
+  fontSize: 'clamp(2rem, 8vw, 4.5rem)',
+  lineHeight: 1,
   color: theme.palette.common.white,
   letterSpacing: '-0.02em',
   fontFamily: 'Bebas Neue, sans-serif',
   fontWeight: 700,
   margin: 0,
 
+  [theme.breakpoints.up('sm')]: {
+    fontSize: 'clamp(2.2rem, 7vw, 4.5rem)',
+    lineHeight: 0.95,
+  },
+
   [theme.breakpoints.up('lg')]: {
     fontSize: 'clamp(4rem, 6vw, 6.5rem)',
+    lineHeight: 0.9,
   },
 }));
 
 export const HeroSubtitle = styled('h1')(({ theme }) => ({
-  fontSize: 'clamp(1.8rem, 7vw, 4.5rem)',
-  lineHeight: 0.9,
+  fontSize: 'clamp(2rem, 8vw, 4.5rem)',
+  lineHeight: 1,
   color: theme.palette.primary.main,
   letterSpacing: '-0.02em',
   fontFamily: 'Bebas Neue, sans-serif',
   fontWeight: 700,
   margin: 0,
+
+  [theme.breakpoints.up('sm')]: {
+    fontSize: 'clamp(2.2rem, 7vw, 4.5rem)',
+    lineHeight: 0.95,
+  },
+
   [theme.breakpoints.up('lg')]: {
     fontSize: 'clamp(4rem, 6vw, 6.5rem)',
+    lineHeight: 0.9,
   },
 }));
 
 export const HeroThirdLine = styled('h1')(({ theme }) => ({
-  fontSize: 'clamp(1.8rem, 7vw, 4.5rem)',
-  lineHeight: 0.9,
+  fontSize: 'clamp(2rem, 8vw, 4.5rem)',
+  lineHeight: 1,
   color: theme.palette.common.white,
   letterSpacing: '-0.02em',
   fontFamily: 'Bebas Neue, sans-serif',
   fontWeight: 700,
   margin: 0,
 
+  [theme.breakpoints.up('sm')]: {
+    fontSize: 'clamp(2.2rem, 7vw, 4.5rem)',
+    lineHeight: 0.95,
+  },
+
   [theme.breakpoints.up('lg')]: {
     fontSize: 'clamp(4rem, 6vw, 6.5rem)',
+    lineHeight: 0.9,
   },
 }));
 
 export const TaglineContainer = styled(motion.div)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(1),
-  marginTop: theme.spacing(3),
-  marginBottom: theme.spacing(2),
-  
+  gap: theme.spacing(0.75),
+  marginTop: theme.spacing(1.5),
+  marginBottom: theme.spacing(1),
+
   [theme.breakpoints.up('sm')]: {
     gap: theme.spacing(1.5),
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(3),
+    marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(2),
   },
-  
+
   [theme.breakpoints.up('lg')]: {
     marginTop: theme.spacing(6),
     marginBottom: theme.spacing(5),

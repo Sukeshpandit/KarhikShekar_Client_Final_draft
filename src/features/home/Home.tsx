@@ -19,6 +19,7 @@ import { StatCard, FadeIn, SlideIn, Stagger, ScaleIn, Bounce } from '../../share
 import {
   HomeWrapper,
   HeroSection,
+  HeroImageMobile,
   HeroImage,
   HeroOverlay,
   HeroBlobs,
@@ -639,6 +640,13 @@ export const Home = ({ setPage }: HomeProps) => {
         {/* HERO SECTION - 100svh Fullscreen */}
         {/* ================================================================= */}
         <HeroSection>
+        {/* Mobile hero image — centered, shown only below md */}
+        <HeroImageMobile
+            src={`${import.meta.env.BASE_URL}assets/Gym/Homehero1.JPG`}
+            alt="Karthik Shekar Acharya"
+        />
+
+        {/* Desktop hero image — shown only from md upward */}
         <HeroImage
             as={motion.img}
             src={`${import.meta.env.BASE_URL}assets/Gym/heroImage2.png`}
