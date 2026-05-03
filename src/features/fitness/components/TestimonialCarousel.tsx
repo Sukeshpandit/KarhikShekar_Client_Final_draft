@@ -180,7 +180,7 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
     <>
       <CarouselContainer sx={{
         height: { xs: '270px', sm: '340px', md: '410px' },
-        transform: { xs: 'translateY(1rem)', sm: 'translateY(-2rem)' },
+        transform: { xs: 'translateY(-1rem)', sm: 'translateY(-3rem)' },
       }}>
         <CarouselFade className="left" />
         <CarouselFade className="right" />
