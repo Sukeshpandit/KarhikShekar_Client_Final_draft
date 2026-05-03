@@ -12,21 +12,11 @@ import {
   ThumbnailLabel,
   ThumbnailLabelText,
 } from '../../home/Home.style';
-import {
-  TestimonialImages,
-  TestimonialImagesGrid,
-  TestimonialImageWrapper,
-  TestimonialBadge,
-} from '../Fitness.style';
 
 interface Testimonial {
   name: string;
   results: string;
-  text: string;
-  rating: number;
-  imageBefore: string;
-  imageAfter: string;
-  comment: string;
+  image: string;
 }
 
 interface TestimonialCarouselProps {
@@ -123,26 +113,11 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
           height: 'auto',
         }}
       >
-        <TestimonialImages style={{ aspectRatio: '16/9' }}>
-          <TestimonialImagesGrid>
-            <TestimonialImageWrapper className="before">
-              <ThumbnailImage
-                src={testimonial.imageBefore}
-                alt={`${testimonial.name} before`}
-                style={{ objectFit: 'cover' }}
-              />
-              <TestimonialBadge className="before">BEFORE</TestimonialBadge>
-            </TestimonialImageWrapper>
-            <TestimonialImageWrapper className="after">
-              <ThumbnailImage
-                src={testimonial.imageAfter}
-                alt={`${testimonial.name} after`}
-                style={{ objectFit: 'cover' }}
-              />
-              <TestimonialBadge className="after">AFTER</TestimonialBadge>
-            </TestimonialImageWrapper>
-          </TestimonialImagesGrid>
-        </TestimonialImages>
+        <ThumbnailImage
+          src={testimonial.image}
+          alt={testimonial.name}
+          style={{ objectFit: 'cover', aspectRatio: '3/4', width: '100%', height: 'auto' }}
+        />
         <ThumbnailOverlay />
         <ThumbnailTag>{testimonial.results}</ThumbnailTag>
         <ThumbnailLabel>

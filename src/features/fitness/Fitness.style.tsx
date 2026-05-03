@@ -48,6 +48,10 @@ export const HeroBackgroundImage = styled(Box)(({ theme }) => ({
     display: 'none',
     [theme.breakpoints.up('md')]: {
       display: 'block',
+      objectFit: 'contain',
+      objectPosition: 'center center',
+      transform: 'scale(1.2)',
+      transformOrigin: 'center center',
     },
   },
 }));

@@ -331,88 +331,18 @@ const features = FITNESS_CONTENT.whyUs.features;
 const monthlyPackages = FITNESS_CONTENT.pricing.plans;
 
 // Testimonials data (kept separate as it's used by carousel component)
+const BASE = import.meta.env.BASE_URL;
 const testimonials = [
-  {
-    name: 'Rajesh Kumar',
-    results: 'Lost 28kg in 6 months',
-    text: 'Transformed my entire life with personalized coaching. Best decision I ever made!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=300&auto=format&fit=crop',
-    comment: 'From struggling with fitness to running marathons - the trainers here changed everything!',
-  },
-  {
-    name: 'Priya Singh',
-    results: 'Gained 12kg muscle',
-    text: 'Best investment in my health and confidence I have ever made. Highly recommended!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1517836357463-d25ddfcbf042?q=80&w=300&auto=format&fit=crop',
-    comment: 'The nutrition guidance and personalized programs helped me reach my dream physique!',
-  },
-  {
-    name: 'Arjun Patel',
-    results: 'Won competition',
-    text: 'Professional guidance every step of the journey. Cannot thank them enough!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1552984897-101a775dae11?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=300&auto=format&fit=crop',
-    comment: 'From beginner to competition winner - the expertise and support here is unmatched!',
-  },
-  {
-    name: 'Sneha Reddy',
-    results: 'Lost 15kg in 4 months',
-    text: 'The personalized meal plans and workout routines made all the difference. Finally found a sustainable approach!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?q=80&w=300&auto=format&fit=crop',
-    comment: 'Post-pregnancy transformation that gave me my confidence back. Forever grateful!',
-  },
-  {
-    name: 'Vikram Malhotra',
-    results: 'Increased strength 200%',
-    text: 'Went from barely lifting to deadlifting 180kg! The progressive training system works wonders.',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=300&auto=format&fit=crop',
-    comment: 'The strength gains are incredible. Best trainers in the business!',
-  },
-  {
-    name: 'Ananya Sharma',
-    results: 'Body fat 32% to 18%',
-    text: 'Complete body recomposition in 8 months. The nutrition coaching was game-changing!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=300&auto=format&fit=crop',
-    comment: 'Not just weight loss, but a complete lifestyle transformation. Life-changing experience!',
-  },
-  {
-    name: 'Rohit Desai',
-    results: 'Marathon ready in 5 months',
-    text: 'From couch potato to completing a full marathon. The endurance training program is phenomenal!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1552058544-f2b08422138a?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?q=80&w=300&auto=format&fit=crop',
-    comment: 'Ran my first marathon at 45! Age is just a number with the right guidance.',
-  },
-  {
-    name: 'Kavya Menon',
-    results: 'Gained 8kg lean muscle',
-    text: 'Athletic performance improved dramatically. Now representing my state in powerlifting!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1531123897727-8f129e1688ce?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1550259979-ed79b48d2a30?q=80&w=300&auto=format&fit=crop',
-    comment: 'The sport-specific training took my performance to elite level. Champions train here!',
-  },
-  {
-    name: 'Aditya Iyer',
-    results: 'Lost 35kg in 8 months',
-    text: 'Reversed my pre-diabetes and transformed my health completely. Best investment ever!',
-    rating: 5,
-    imageBefore: 'https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=300&auto=format&fit=crop',
-    imageAfter: 'https://images.unsplash.com/photo-1504593811423-6dd665756598?q=80&w=300&auto=format&fit=crop',
-    comment: 'Not just fitness, but a complete health transformation. My doctor is amazed!',
-  },
+  { name: 'Rajesh Kumar',   results: 'Lost 28kg in 6 months',      image: `${BASE}assets/Transformations/IMG-20260413-WA0022.jpg` },
+  { name: 'Priya Singh',    results: 'Gained 12kg muscle',          image: `${BASE}assets/Transformations/IMG-20260413-WA0024.jpg` },
+  { name: 'Arjun Patel',    results: 'Won competition',             image: `${BASE}assets/Transformations/IMG-20260413-WA0025.jpg` },
+  { name: 'Sneha Reddy',    results: 'Lost 15kg in 4 months',       image: `${BASE}assets/Transformations/IMG-20260413-WA0049.jpg` },
+  { name: 'Vikram Malhotra',results: 'Increased strength 200%',     image: `${BASE}assets/Transformations/IMG-20260413-WA0051.jpg` },
+  { name: 'Ananya Sharma',  results: 'Body fat 32% to 18%',         image: `${BASE}assets/Transformations/IMG-20260413-WA0075.jpg` },
+  { name: 'Rohit Desai',    results: 'Marathon ready in 5 months',  image: `${BASE}assets/Transformations/IMG-20260413-WA0077.jpg` },
+  { name: 'Kavya Menon',    results: 'Gained 8kg lean muscle',      image: `${BASE}assets/Transformations/IMG-20260413-WA0103.jpg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/IMG-20260413-WA0104.jpg` },
+  { name: 'Meera Nair',     results: 'Complete body transformation', image: `${BASE}assets/Transformations/IMG-20260413-WA0105.jpg` },
 ];
 
 export const Fitness = ({ setPage }: FitnessProps) => {
@@ -447,7 +377,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
             style={{ width: '100%', height: '100%' }}
           >
             <img
-              src={`${import.meta.env.BASE_URL}assets/Gym/heroImage2.png`}
+              src={`${import.meta.env.BASE_URL}assets/Gym/IMG-20260413-WA0083.jpg`}
               alt="Fitness Hero"
               loading="eager"
             />

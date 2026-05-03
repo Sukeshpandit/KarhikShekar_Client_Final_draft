@@ -5,12 +5,9 @@ import {defineConfig, loadEnv} from 'vite';
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
   return {
-    base: '/karthik/',
+    base: '/KarhikShekar_Client_Final_draft/',
     plugins: [
       react({
-        // Enable Fast Refresh
-        fastRefresh: true,
-        // Exclude node_modules from transformation
         exclude: /node_modules/,
       }),
     ],
