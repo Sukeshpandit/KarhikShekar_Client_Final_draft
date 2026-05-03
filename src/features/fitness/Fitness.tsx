@@ -878,6 +878,9 @@ export const Fitness = ({ setPage }: FitnessProps) => {
         onClose={() => setIsPlanFormOpen(false)}
         whatsappNumber={GLOBAL_CONFIG.contact.phoneWhatsApp}
         initialPlan={selectedPlanData}
+        availablePlans={FITNESS_CONTENT.pricing.sections.flatMap(s =>
+          s.plans.map(p => ({ ...p, sectionTitle: s.title }))
+        )}
       />
     </FitnessWrapper>
   );

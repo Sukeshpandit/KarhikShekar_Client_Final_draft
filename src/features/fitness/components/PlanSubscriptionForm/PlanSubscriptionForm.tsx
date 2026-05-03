@@ -30,17 +30,21 @@ import {
   ErrorMessage,
 } from './PlanSubscriptionForm.style';
 
+interface PlanOption {
+  duration: string;
+  price: string;
+  perMonth?: string;
+  originalPrice?: string;
+  savingsLabel?: string;
+  sectionTitle?: string;
+}
+
 interface PlanSubscriptionFormProps {
   isOpen: boolean;
   onClose: () => void;
   whatsappNumber: string;
-  initialPlan: {
-    duration: string;
-    price: string;
-    perMonth?: string;
-    originalPrice?: string;
-    savingsLabel?: string;
-  };
+  initialPlan: PlanOption;
+  availablePlans?: PlanOption[];
 }
 
 interface FormData {
@@ -55,12 +59,14 @@ interface FormData {
 const parsePriceString = (price: string): number =>
   parseInt(price.replace(/[₹,]/g, ''), 10) || 0;
 
-export const PlanSubscriptionForm = ({ 
-  isOpen, 
-  onClose, 
+export const PlanSubscriptionForm = ({
+  isOpen,
+  onClose,
   whatsappNumber,
-  initialPlan 
+  initialPlan,
+  availablePlans = [],
 }: PlanSubscriptionFormProps) => {
+  const [currentPlan, setCurrentPlan] = useState<PlanOption>(initialPlan);
   const months = [
     { value: '1', label: 'January' },
     { value: '2', label: 'February' },
@@ -93,6 +99,7 @@ export const PlanSubscriptionForm = ({
 
   useEffect(() => {
     if (isOpen) {
+      setCurrentPlan(initialPlan);
       setFormData(prev => ({ ...prev, startDate: new Date().toISOString().split('T')[0] }));
       setSubmitStatus('idle');
     }
@@ -168,15 +175,15 @@ export const PlanSubscriptionForm = ({
       }
 
       const age = calculateAge(formData.birthDate);
-      const totalPrice = parsePriceString(initialPlan.price);
+      const totalPrice = parsePriceString(currentPlan.price);
       const advanceAmount = 2000;
       const remainingAmount = totalPrice - advanceAmount;
-      const endDate = calculateEndDate(formData.startDate, initialPlan.duration);
-      const scheduleLines = isMonthBased(initialPlan.duration)
+      const endDate = calculateEndDate(formData.startDate, currentPlan.duration);
+      const scheduleLines = isMonthBased(currentPlan.duration)
         ? `🚀 Start Date: ${formatDate(formData.startDate)}\n🏁 End Date: ${formatDate(endDate)}`
         : `🚀 Start Date: ${formatDate(formData.startDate)}`;
-      const perMonthLine = initialPlan.perMonth ? `📊 Per Session/Month: ${initialPlan.perMonth}` : '';
-      const savingsLine = initialPlan.savingsLabel ? `🏷️ Savings: ${initialPlan.savingsLabel}` : '';
+      const perMonthLine = currentPlan.perMonth ? `📊 Per Session/Month: ${currentPlan.perMonth}` : '';
+      const savingsLine = currentPlan.savingsLabel ? `🏷️ Savings: ${currentPlan.savingsLabel}` : '';
 
       const message = `
 🏋️ *Fitness Plan Subscription*
@@ -187,8 +194,8 @@ export const PlanSubscriptionForm = ({
 📅 Date of Birth: ${formatDate(formData.birthDate)}
 
 💳 *Plan Details*
-📦 Selected Plan: ${initialPlan.duration}
-💰 Total Price: ${initialPlan.price}
+📦 Selected Plan: ${currentPlan.duration}
+💰 Total Price: ${currentPlan.price}
 ${perMonthLine}${savingsLine ? '\n' + savingsLine : ''}
 
 📅 *Schedule*
@@ -197,7 +204,7 @@ ${scheduleLines}
 💵 *Payment Breakdown*
 💳 Advance Payment: ₹${advanceAmount.toLocaleString('en-IN')}
 💰 Remaining Amount: ₹${remainingAmount.toLocaleString('en-IN')}
-📊 Total Amount: ${initialPlan.price}
+📊 Total Amount: ${currentPlan.price}
 
 ---
 Sent from Fitness Portal
@@ -244,10 +251,10 @@ Sent from Fitness Portal
     }
   };
 
-  const totalPrice = parsePriceString(initialPlan.price);
+  const totalPrice = parsePriceString(currentPlan.price);
   const advanceAmount = 2000;
   const remainingAmount = totalPrice - advanceAmount;
-  const endDate = calculateEndDate(formData.startDate, initialPlan.duration);
+  const endDate = calculateEndDate(formData.startDate, currentPlan.duration);
 
   return (
     <StyledDialog
@@ -439,12 +446,17 @@ Sent from Fitness Portal
                   </Box>
                 )}
               </Box>
-               {/* Selected Plan — read-only display */}
-              <StyledTextField
+              {/* Selected Plan — switchable dropdown */}
+              <StyledSelect
                 label="Selected Plan"
-                value={`${initialPlan.duration}  —  ${initialPlan.price}`}
+                value={currentPlan.duration}
+                onChange={(e) => {
+                  const picked = availablePlans.find(p => p.duration === e.target.value);
+                  if (picked) setCurrentPlan(picked);
+                }}
                 fullWidth
-                disabled
+                disabled={isSubmitting}
+                select
                 InputProps={{
                   startAdornment: (
                     <InputAdornment position="start">
@@ -452,13 +464,35 @@ Sent from Fitness Portal
                     </InputAdornment>
                   ),
                 }}
-                sx={{
-                  '& .MuiInputBase-root.Mui-disabled': {
-                    color: '#D4AF37',
-                    WebkitTextFillColor: '#D4AF37',
+                SelectProps={{
+                  MenuProps: {
+                    PaperProps: {
+                      sx: {
+                        bgcolor: '#0a1d2c',
+                        '& .MuiMenuItem-root': {
+                          color: '#ffffff',
+                          '&:hover': { bgcolor: 'rgba(212, 175, 55, 0.15)' },
+                          '&.Mui-selected': {
+                            bgcolor: 'rgba(212, 175, 55, 0.25)',
+                            '&:hover': { bgcolor: 'rgba(212, 175, 55, 0.35)' },
+                          },
+                        },
+                      },
+                    },
                   },
                 }}
-              />
+              >
+                {availablePlans.map((p) => (
+                  <MenuItem key={p.duration} value={p.duration}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', lineHeight: 1.3 }}>
+                      <Box sx={{ fontSize: '0.75rem', color: 'rgba(212,175,55,0.7)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                        {p.sectionTitle}
+                      </Box>
+                      <Box>{p.duration} — {p.price}</Box>
+                    </Box>
+                  </MenuItem>
+                ))}
+              </StyledSelect>
 
               {/* Start Date */}
               <StyledTextField
@@ -482,7 +516,7 @@ Sent from Fitness Portal
               />
 
               {/* End Date — only for month-based plans */}
-              {isMonthBased(initialPlan.duration) && (
+              {isMonthBased(currentPlan.duration) && (
                 <StyledTextField
                   label="Plan End Date"
                   value={formatDate(endDate)}
@@ -523,14 +557,14 @@ Sent from Fitness Portal
                 <PriceBreakdownRow>
                   <PriceBreakdownLabel>Total Package</PriceBreakdownLabel>
                   <PriceBreakdownValue className="total">
-                    {initialPlan.price}
+                    {currentPlan.price}
                   </PriceBreakdownValue>
                 </PriceBreakdownRow>
 
                 <Box sx={{ mt: 2, textAlign: 'center', fontSize: '0.813rem', color: 'rgba(255,255,255,0.6)' }}>
-                  📦 {initialPlan.duration}
-                  {initialPlan.perMonth && ` | ${initialPlan.perMonth}/month`}
-                  {initialPlan.savingsLabel && ` | ${initialPlan.savingsLabel}`}
+                  📦 {currentPlan.duration}
+                  {currentPlan.perMonth && ` | ${currentPlan.perMonth}/month`}
+                  {currentPlan.savingsLabel && ` | ${currentPlan.savingsLabel}`}
                 </Box>
               </PriceBreakdownBox>
             </FormFields>
