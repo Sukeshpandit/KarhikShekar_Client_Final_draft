@@ -1,5 +1,7 @@
-import { useEffect, useRef } from 'react';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
+import { useEffect, useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { Box } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import {
   CarouselContainer,
   CarouselFade,
@@ -8,9 +10,6 @@ import {
   ThumbnailCard,
   ThumbnailImage,
   ThumbnailOverlay,
-  ThumbnailTag,
-  ThumbnailLabel,
-  ThumbnailLabelText,
 } from '../../home/Home.style';
 
 interface Testimonial {
@@ -31,6 +30,7 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
   const dragStartX = useRef(0);
   const dragScrollLeft = useRef(0);
   const rafId = useRef<number>(0);
+  const [expandedImage, setExpandedImage] = useState<string | null>(null);
 
   useEffect(() => {
     const el = trackRef.current;
@@ -100,46 +100,115 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
     };
   }, []);
 
+  // Close on Escape key
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setExpandedImage(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  const handleCardClick = (image: string) => {
+    if (!hasDragged.current) setExpandedImage(image);
+  };
+
   const renderCards = (disabled: boolean) =>
     testimonials.map((testimonial, index) => (
       <ThumbnailCard
         key={disabled ? `dup-${index}` : index}
         disabled={disabled}
         whileHover={{ scale: 1.02 }}
+        onClick={() => !disabled && handleCardClick(testimonial.image)}
         sx={{
-          width: { xs: '360px', sm: '320px', md: '380px' },
-          minWidth: { xs: '340px', sm: '320px', md: '350px' },
-          maxWidth: { xs: '380px', sm: '360px', md: '420px' },
+          width: { xs: '240px', sm: '320px', md: '380px' },
+          minWidth: { xs: '220px', sm: '320px', md: '350px' },
+          maxWidth: { xs: '260px', sm: '360px', md: '420px' },
           height: 'auto',
+          cursor: disabled ? 'default' : 'pointer',
         }}
       >
         <ThumbnailImage
           src={testimonial.image}
           alt={testimonial.name}
-          style={{ objectFit: 'cover', aspectRatio: '3/4', width: '100%', height: 'auto' }}
+          style={{ objectFit: 'contain', objectPosition: 'center top', aspectRatio: '2/3', width: '100%', height: 'auto', background: '#0a1d2c' }}
         />
         <ThumbnailOverlay />
-        <ThumbnailTag>{testimonial.results}</ThumbnailTag>
-        <ThumbnailLabel>
-          <ThumbnailLabelText>{testimonial.name}</ThumbnailLabelText>
-          <ChevronRightIcon
-            sx={{ fontSize: '0.75rem', color: '#D4AF37', flexShrink: 0 }}
-          />
-        </ThumbnailLabel>
       </ThumbnailCard>
     ));
 
   return (
-    <CarouselContainer>
-      <CarouselFade className="left" />
-      <CarouselFade className="right" />
+    <>
+      <CarouselContainer>
+        <CarouselFade className="left" />
+        <CarouselFade className="right" />
 
-      <CarouselScrollTrack ref={trackRef}>
-        <CarouselStrip>
-          {renderCards(false)}
-          {renderCards(true)}
-        </CarouselStrip>
-      </CarouselScrollTrack>
-    </CarouselContainer>
+        <CarouselScrollTrack ref={trackRef}>
+          <CarouselStrip>
+            {renderCards(false)}
+            {renderCards(true)}
+          </CarouselStrip>
+        </CarouselScrollTrack>
+      </CarouselContainer>
+
+      {/* Fullscreen Lightbox */}
+      <AnimatePresence>
+        {expandedImage && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setExpandedImage(null)}
+            style={{
+              position: 'fixed',
+              inset: 0,
+              zIndex: 9999,
+              backgroundColor: 'rgba(0,0,0,0.92)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: '1rem',
+            }}
+          >
+            {/* Close button */}
+            <Box
+              onClick={(e) => { e.stopPropagation(); setExpandedImage(null); }}
+              sx={{
+                position: 'absolute',
+                top: 16,
+                right: 16,
+                width: 40,
+                height: 40,
+                borderRadius: '50%',
+                backgroundColor: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                cursor: 'pointer',
+                '&:hover': { backgroundColor: 'rgba(255,255,255,0.2)' },
+              }}
+            >
+              <CloseIcon sx={{ color: 'white', fontSize: 20 }} />
+            </Box>
+
+            {/* Image */}
+            <motion.img
+              src={expandedImage}
+              initial={{ scale: 0.85, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.85, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{
+                maxWidth: '100%',
+                maxHeight: '90vh',
+                objectFit: 'contain',
+                borderRadius: '12px',
+              }}
+            />
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 };
