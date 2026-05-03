@@ -194,13 +194,18 @@ export const StatCard = styled(motion.div)(({ theme }) => ({
   background: 'linear-gradient(135deg, rgba(10, 29, 44, 0.95) 0%, rgba(17, 34, 64, 0.95) 100%)',
   backdropFilter: 'blur(20px)',
   border: '1px solid rgba(212, 175, 55, 0.2)',
-  borderRadius: '20px',
-  padding: theme.spacing(4, 3),
+  borderRadius: '16px',
+  padding: theme.spacing(2, 1.5),
   display: 'flex',
   flexDirection: 'column',
-   alignItems: 'center',
+  alignItems: 'center',
   textAlign: 'center',
-  gap: theme.spacing(2),
+  gap: theme.spacing(1),
+  [theme.breakpoints.up('sm')]: {
+    borderRadius: '20px',
+    padding: theme.spacing(4, 3),
+    gap: theme.spacing(2),
+  },
   position: 'relative',
   overflow: 'hidden',
   cursor: 'pointer',
@@ -228,9 +233,9 @@ export const StatCard = styled(motion.div)(({ theme }) => ({
 }));
 
 export const StatIconWrapper = styled(Box)(({ theme }) => ({
-  width: '72px',
-  height: '72px',
-  borderRadius: '18px',
+  width: '44px',
+  height: '44px',
+  borderRadius: '12px',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -238,9 +243,17 @@ export const StatIconWrapper = styled(Box)(({ theme }) => ({
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   boxShadow: '0 8px 24px rgba(0, 0, 0, 0.4)',
   '& .MuiSvgIcon-root': {
-    fontSize: '32px',
+    fontSize: '20px',
     position: 'relative',
     zIndex: 1,
+  },
+  [theme.breakpoints.up('sm')]: {
+    width: '72px',
+    height: '72px',
+    borderRadius: '18px',
+    '& .MuiSvgIcon-root': {
+      fontSize: '32px',
+    },
   },
   '&::before': {
     content: '""',
@@ -257,16 +270,19 @@ export const StatIconWrapper = styled(Box)(({ theme }) => ({
 
 export const StatLabel = styled(Box)(({ theme }) => ({
   color: 'rgba(255, 255, 255, 0.7)',
-  fontSize: '0.813rem',
+  fontSize: '0.625rem',
   fontWeight: 600,
   textTransform: 'uppercase',
   letterSpacing: '0.5px',
   lineHeight: 1.4,
   maxWidth: '200px',
+  [theme.breakpoints.up('sm')]: {
+    fontSize: '0.813rem',
+  },
 }));
 
 export const StatValue = styled(Box)(({ theme }) => ({
-  fontSize: 'clamp(2.5rem, 4vw, 3.5rem)',
+  fontSize: 'clamp(1.5rem, 5vw, 3.5rem)',
   fontFamily: '"Bebas Neue", sans-serif',
   fontWeight: 900,
   background: 'linear-gradient(135deg, #ffffff 0%, #D4AF37 100%)',

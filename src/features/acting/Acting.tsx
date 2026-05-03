@@ -358,7 +358,7 @@ export const Acting = ({ setPage }: ActingProps) => {
                 ))}
               </BiographyTextContainer>
 
-              <BiographyButtonGroup>
+              {/* <BiographyButtonGroup>
                 <BiographyPrimaryButton
                   sx={{ '&:hover': { transform: 'scale(1.02)' }, '&:active': { transform: 'scale(0.95)' }, transition: 'transform 0.2s' }}
                 >
@@ -369,7 +369,7 @@ export const Acting = ({ setPage }: ActingProps) => {
                 >
                   {ACTING_CONTENT.biography.buttons.secondary}
                 </BiographySecondaryButton>
-              </BiographyButtonGroup>
+              </BiographyButtonGroup> */}
             </BiographyContent>
           </SlideIn>
 

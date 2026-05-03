@@ -284,7 +284,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-1.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/SpecCobra.jpg`
   },
   {
     name: "Russell's Viper",
@@ -292,7 +292,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-2.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/RussellsViper.jpg`
   },
   {
     name: 'Indian Rock Python',
@@ -300,7 +300,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Non-Venomous',
     danger: 'Low',
     color: 'green',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-4.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/RockPython.jpg`
   },
   {
     name: 'Common Krait',
@@ -308,7 +308,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-4.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/common_krait.jpg`
   },
   {
     name: 'Rat Snake',
@@ -316,7 +316,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Non-Venomous',
     danger: 'Low',
     color: 'green',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-2.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/ratSnake.jpg`
   },
   {
     name: 'Saw-scaled Viper',
@@ -324,7 +324,7 @@ const SPECIES_DATA: Species[] = [
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/rescue-1.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/sawScaled.jpg`
   },
 ];
 
@@ -565,27 +565,26 @@ const HeroSectionComponent = () => (
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1, delay: 0.6 }}
       >
-        <Stagger staggerDelay={0.1}>
-          <>
+        <Stagger staggerDelay={0.1} style={{ display: 'contents' }}>
             {IMPACT_STATS.map((stat, index) => {
               const Icon = stat.icon;
-              const gradientColors = stat.color === 'from-red-500 to-pink-500' 
+              const gradientColors = stat.color === 'from-red-500 to-pink-500'
                 ? 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)'
-                : stat.color === 'from-green-500 to-emerald-500' 
+                : stat.color === 'from-green-500 to-emerald-500'
                 ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                : stat.color === 'from-primary to-cyan-500' 
+                : stat.color === 'from-primary to-cyan-500'
                 ? 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)'
                 : 'linear-gradient(135deg, #f97316 0%, #ef4444 100%)';
-              
+
               return (
                 <StatCard key={index}>
                   <StatValue>
-                    <AnimatedCounter 
-                      end={typeof stat.value === 'string' ? 24 : stat.value} 
-                      suffix={stat.suffix || ''} 
+                    <AnimatedCounter
+                      end={typeof stat.value === 'string' ? 24 : stat.value}
+                      suffix={stat.suffix || ''}
                     />
                   </StatValue>
-                  
+
                   <StatIconWrapper
                     sx={{
                       background: gradientColors,
@@ -593,12 +592,11 @@ const HeroSectionComponent = () => (
                   >
                     <Icon />
                   </StatIconWrapper>
-                  
+
                   <StatLabel>{stat.label}</StatLabel>
                 </StatCard>
               );
             })}
-                </>
         </Stagger>
       </StatsGrid>
     </HeroContent>
