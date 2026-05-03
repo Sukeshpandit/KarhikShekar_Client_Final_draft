@@ -646,185 +646,172 @@ export const PricingGrid = styled(Box)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     gridTemplateColumns: 'repeat(2, 1fr)',
   },
-  [theme.breakpoints.up('md')]: {
-    gap: theme.spacing(3),
-  },
   [theme.breakpoints.up('lg')]: {
     gridTemplateColumns: 'repeat(4, 1fr)',
+    gap: theme.spacing(2.5),
   },
 }));
 
 export const PricingCard = styled(motion.div)<{ selected?: boolean }>(({ theme, selected }) => ({
   position: 'relative',
-  borderRadius: '1rem',
-  padding: '1rem',
+  borderRadius: '16px',
+  padding: '1.25rem',
   cursor: 'pointer',
-  transition: 'all 0.3s ease',
-  background: selected
-    ? `linear-gradient(135deg, ${theme.palette.primary.main}33, ${theme.palette.background.paper}80)`
-    : `linear-gradient(135deg, ${theme.palette.background.paper}, ${theme.palette.background.default})`,
+  display: 'flex',
+  flexDirection: 'column',
+  transition: 'border-color 0.25s ease, box-shadow 0.25s ease',
+  background: 'linear-gradient(160deg, #0e1e30 0%, #091625 100%)',
   border: selected
-    ? `2px solid ${theme.palette.primary.main}`
-    : `1px solid ${theme.palette.primary.main}33`,
-  transform: selected ? 'scale(1)' : 'scale(1)',
+    ? `1.5px solid ${theme.palette.primary.main}`
+    : '1.5px solid rgba(255,255,255,0.07)',
+  boxShadow: selected
+    ? `0 0 20px rgba(212,175,55,0.18), inset 0 0 40px rgba(212,175,55,0.04)`
+    : '0 4px 24px rgba(0,0,0,0.3)',
   '&:hover': {
-    borderColor: `${theme.palette.primary.main}80`,
-  },
-  '&:active': {
-    transform: 'scale(0.95)',
+    borderColor: selected ? theme.palette.primary.main : 'rgba(212,175,55,0.35)',
+    boxShadow: selected
+      ? `0 0 24px rgba(212,175,55,0.22)`
+      : '0 4px 32px rgba(0,0,0,0.4)',
   },
   [theme.breakpoints.up('md')]: {
-    padding: '2rem',
-    borderRadius: '1.5rem',
-    transform: selected ? 'scale(1.05)' : 'scale(1)',
+    padding: '1.75rem',
+    borderRadius: '20px',
   },
 }));
 
 export const PopularBadge = styled(Box)(({ theme }) => ({
   position: 'absolute',
-  top: '-0.75rem',
-  left: '50%',
-  transform: 'translateX(-50%)',
-  padding: '0.25rem 1rem',
-  backgroundColor: theme.palette.primary.main,
-  color: theme.palette.common.white,
-  fontSize: '0.75rem',
-  fontWeight: 900,
-  borderRadius: '9999px',
-  [theme.breakpoints.up('md')]: {
-    top: '-1rem',
+  top: '-1px',
+  left: 0,
+  right: 0,
+  height: '3px',
+  background: `linear-gradient(90deg, transparent, ${theme.palette.primary.main}, transparent)`,
+  borderRadius: '20px 20px 0 0',
+  '&::after': {
+    content: '"MOST POPULAR"',
+    position: 'absolute',
+    top: '8px',
+    left: '50%',
+    transform: 'translateX(-50%)',
+    backgroundColor: theme.palette.primary.main,
+    color: '#000',
+    fontSize: '0.6rem',
+    fontWeight: 900,
+    letterSpacing: '0.12em',
+    padding: '0.2rem 0.75rem',
+    borderRadius: '9999px',
+    whiteSpace: 'nowrap',
   },
 }));
 
-export const PricingDuration = styled('h3')(({ theme }) => ({
-  fontSize: '1.125rem',
-  fontWeight: 900,
-  color: theme.palette.common.white,
+export const PricingDuration = styled('p')(({ theme }) => ({
+  margin: 0,
+  fontSize: '0.7rem',
+  fontWeight: 700,
+  letterSpacing: '0.1em',
+  textTransform: 'uppercase',
+  color: 'rgba(255,255,255,0.45)',
   marginBottom: '0.5rem',
-  [theme.breakpoints.up('md')]: {
-    fontSize: '1.5rem',
-  },
 }));
 
 export const PricingPrice = styled(Box)(({ theme }) => ({
-  fontSize: '1.5rem',
+  fontSize: '1.75rem',
   fontWeight: 900,
   color: theme.palette.primary.main,
-  marginBottom: '0.25rem',
+  lineHeight: 1,
+  marginBottom: '0.2rem',
   [theme.breakpoints.up('md')]: {
-    fontSize: '2.25rem',
+    fontSize: '2rem',
   },
 }));
 
-export const PricingPerMonth = styled(Box)(({ theme }) => ({
-  fontSize: '0.75rem',
-  color: 'rgba(255,255,255,0.6)',
-}));
+export const PricingPerMonth = styled(Box)({
+  fontSize: '0.72rem',
+  color: 'rgba(255,255,255,0.4)',
+  letterSpacing: '0.02em',
+});
 
 export const OfferBadge = styled(Box)(({ theme }) => ({
   position: 'absolute',
-  top: '-0.75rem',
+  top: '1rem',
   right: '1rem',
-  padding: '0.25rem 0.75rem',
+  padding: '0.2rem 0.6rem',
   background: 'linear-gradient(135deg, #ef4444, #b91c1c)',
   color: '#fff',
-  fontSize: '0.6rem',
+  fontSize: '0.55rem',
   fontWeight: 900,
   borderRadius: '9999px',
   letterSpacing: '0.08em',
   textTransform: 'uppercase',
-  boxShadow: '0 2px 12px rgba(239, 68, 68, 0.6)',
-  animation: 'offerPulse 2s ease-in-out infinite',
-  '@keyframes offerPulse': {
-    '0%, 100%': { boxShadow: '0 2px 12px rgba(239, 68, 68, 0.6)' },
-    '50%': { boxShadow: '0 4px 20px rgba(239, 68, 68, 0.9), 0 0 0 4px rgba(239,68,68,0.15)' },
-  },
-  [theme.breakpoints.up('md')]: {
-    top: '-1rem',
-    fontSize: '0.65rem',
-  },
 }));
 
-export const OriginalPrice = styled(Box)(({ theme }) => ({
-  fontSize: '1rem',
-  fontWeight: 600,
-  color: 'rgba(255,255,255,0.35)',
+export const OriginalPrice = styled(Box)({
+  fontSize: '0.85rem',
+  fontWeight: 500,
+  color: 'rgba(255,255,255,0.28)',
   textDecoration: 'line-through',
-  lineHeight: 1.2,
-  [theme.breakpoints.up('md')]: {
-    fontSize: '1.25rem',
-  },
-}));
+  lineHeight: 1.4,
+});
 
-export const SavingsBadge = styled(Box)(({ theme }) => ({
+export const SavingsBadge = styled(Box)({
   display: 'inline-flex',
   alignItems: 'center',
-  gap: '0.25rem',
-  padding: '0.2rem 0.6rem',
-  background: 'rgba(5, 150, 105, 0.15)',
-  border: '1px solid rgba(5, 150, 105, 0.35)',
-  color: '#10b981',
-  fontSize: '0.7rem',
+  padding: '0.15rem 0.55rem',
+  background: 'rgba(16,185,129,0.12)',
+  border: '1px solid rgba(16,185,129,0.3)',
+  color: '#34d399',
+  fontSize: '0.65rem',
   fontWeight: 700,
-  borderRadius: '0.375rem',
-  marginTop: '0.35rem',
+  borderRadius: '6px',
+  marginTop: '0.3rem',
   letterSpacing: '0.02em',
-}));
+});
 
 export const PricingFeaturesList = styled(Box)(({ theme }) => ({
   display: 'flex',
   flexDirection: 'column',
-  gap: theme.spacing(1),
+  gap: theme.spacing(0.75),
+  flex: 1,
   marginBottom: theme.spacing(2),
-  [theme.breakpoints.up('md')]: {
-    gap: theme.spacing(1.5),
-    marginBottom: theme.spacing(4),
-  },
+  paddingTop: theme.spacing(1.5),
+  borderTop: '1px solid rgba(255,255,255,0.06)',
 }));
 
 export const PricingFeatureItem = styled(Box)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(1),
-  fontSize: '0.75rem',
-  color: 'rgba(255,255,255,0.7)',
-  [theme.breakpoints.up('md')]: {
-    fontSize: '0.875rem',
-    gap: theme.spacing(1.5),
-  },
+  fontSize: '0.78rem',
+  color: 'rgba(255,255,255,0.65)',
   '& svg': {
-    width: '1rem',
-    height: '1rem',
+    width: '0.7rem',
+    height: '0.7rem',
     flexShrink: 0,
-    [theme.breakpoints.up('md')]: {
-      width: '1.25rem',
-      height: '1.25rem',
-    },
-  },
-  '& span': {
-    display: '-webkit-box',
-    WebkitLineClamp: 2,
-    WebkitBoxOrient: 'vertical',
-    overflow: 'hidden',
+    color: '#34d399',
   },
 }));
 
 export const PricingButton = styled(Button)<{ selected?: boolean }>(({ theme, selected }) => ({
   width: '100%',
-  padding: '0.5rem 1rem',
-  borderRadius: '0.5rem',
-  fontWeight: 900,
-  textTransform: 'uppercase',
-  letterSpacing: '0.1em',
-  fontSize: '0.75rem',
-  transition: 'all 0.3s ease',
-  backgroundColor: selected ? theme.palette.primary.main : 'rgba(255,255,255,0.05)',
-  color: selected ? theme.palette.common.white : theme.palette.common.white,
+  padding: '0.6rem 1rem',
+  borderRadius: '10px',
+  fontWeight: 700,
+  textTransform: 'none',
+  letterSpacing: '0.02em',
+  fontSize: '0.82rem',
+  transition: 'all 0.25s ease',
+  marginTop: 'auto',
+  background: selected
+    ? `linear-gradient(135deg, ${theme.palette.primary.main}, #b8940e)`
+    : 'transparent',
+  color: selected ? '#000' : 'rgba(255,255,255,0.7)',
+  border: selected ? 'none' : '1px solid rgba(255,255,255,0.15)',
   '&:hover': {
-    backgroundColor: selected ? theme.palette.primary.main : 'rgba(255,255,255,0.1)',
-  },
-  [theme.breakpoints.up('md')]: {
-    padding: '0.75rem 1.5rem',
+    background: selected
+      ? `linear-gradient(135deg, ${theme.palette.primary.main}, #b8940e)`
+      : 'rgba(255,255,255,0.06)',
+    color: selected ? '#000' : '#fff',
+    border: selected ? 'none' : '1px solid rgba(255,255,255,0.3)',
   },
 }));
 

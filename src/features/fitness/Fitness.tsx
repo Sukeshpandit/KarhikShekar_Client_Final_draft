@@ -218,42 +218,33 @@ const FITNESS_CONTENT = {
   
   pricing: {
     label: 'Plans',
-    title: 'Monthly',
-    titleHighlight: 'Membership Plans',
+    title: 'Membership',
+    titleHighlight: 'Plans',
     description: 'Choose the perfect plan for your fitness journey',
     popularBadge: 'MOST POPULAR',
     button: 'Choose Plan',
-    plans: [
+    sections: [
       {
-        duration: '1 Month',
-        price: '₹3,000',
-        perMonth: '₹3,000',
-        highlighted: false,
-        features: ['Full gym access', 'Basic equipment', 'Open hours', '5 free classes']
+        title: 'Monthly Gym',
+        plans: [
+          { duration: '1 Month',  price: '₹2,000', perMonth: '₹2,000', highlighted: false, features: ['Full gym access', 'Basic equipment', 'Open hours', '5 free classes'] },
+          { duration: '3 Months', price: '₹3,500', perMonth: '₹1,167', highlighted: false, features: ['Full gym access', 'All equipment', 'Extended hours', 'Unlimited classes'] },
+          { duration: '6 Months', price: '₹4,800', perMonth: '₹800',   highlighted: true,  features: ['Full gym access', 'Premium equipment', '24/7 access', 'Unlimited classes', 'Nutrition guide'] },
+          { duration: '12 Months',price: '₹6,999', perMonth: '₹583',   highlighted: false, features: ['Everything included', 'Priority booking', 'Guest passes', 'Exclusive community'] },
+        ],
       },
       {
-        duration: '3 Months',
-        price: '₹7,500',
-        perMonth: '₹2,500',
-        highlighted: true,
-        features: ['Full gym access', 'All equipment', 'Extended hours', 'Unlimited classes', 'Nutrition guide', '20% off PT sessions']
+        title: 'Personal Training',
+        plans: [
+          { duration: '12 Sessions — Single',  price: '₹10,000', originalPrice: '₹12,000', savingsLabel: 'Save ₹2,000', highlighted: false, features: ['12 one-on-one sessions', 'Custom workout plan', 'Progress tracking', 'Nutrition guidance'] },
+          { duration: '12 Sessions — Couples', price: '₹17,000', originalPrice: '₹20,000', savingsLabel: 'Save ₹3,000', highlighted: true,  features: ['12 sessions for 2', 'Partner workout plans', 'Progress tracking', 'Nutrition guidance'] },
+        ],
       },
       {
-        duration: '6 Months',
-        price: '₹12,000',
-        perMonth: '₹2,000',
-        highlighted: false,
-        features: ['Full gym access', 'Premium equipment', '24/7 access', 'Unlimited classes', 'Nutrition plan', 'Free PT assessment', 'Progress tracking']
-      },
-      {
-        duration: '12 Months',
-        price: '₹17,000',
-        originalPrice: '₹20,000',
-        savingsLabel: 'You save ₹3,000',
-        offerLabel: '🔥 Limited Offer',
-        perMonth: '₹1,417',
-        highlighted: false,
-        features: ['Everything included', 'Priority booking', 'Guest passes', '2 PT sessions/month', 'Body composition analysis', 'Supplement discount', 'Exclusive community']
+        title: 'Personal Training in Gym',
+        plans: [
+          { duration: '12 Sessions', price: '₹5,999', originalPrice: '₹7,999', savingsLabel: 'Save ₹2,000', highlighted: true, features: ['Gym access included', 'Dedicated trainer', 'Custom workout plan', 'Nutrition consultation', 'Progress tracking'] },
+        ],
       },
     ],
   },
@@ -328,7 +319,6 @@ const FITNESS_CONTENT = {
 const experiences = FITNESS_CONTENT.experience.items;
 const trainMethods = FITNESS_CONTENT.methods.items;
 const features = FITNESS_CONTENT.whyUs.features;
-const monthlyPackages = FITNESS_CONTENT.pricing.plans;
 
 // Testimonials data (kept separate as it's used by carousel component)
 const BASE = import.meta.env.BASE_URL;
@@ -346,10 +336,10 @@ const testimonials = [
 ];
 
 export const Fitness = ({ setPage }: FitnessProps) => {
-  const [selectedPlan, setSelectedPlan] = useState(1);
+  const [selectedPlan, setSelectedPlan] = useState(2);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isPlanFormOpen, setIsPlanFormOpen] = useState(false);
-  const [selectedPlanData, setSelectedPlanData] = useState(monthlyPackages[0]);
+  const [selectedPlanData, setSelectedPlanData] = useState<any>(FITNESS_CONTENT.pricing.sections[0].plans[0]);
 
   const handlePageChange = (page: string) => {
     if (setPage) {
@@ -545,7 +535,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
       </Section>
 
 
-      {/* ==================== MONTHLY PACKAGES ==================== */}
+      {/* ==================== MEMBERSHIP PLANS ==================== */}
       <Section sx={{ bgcolor: 'background.default' }}>
         <SectionContainer>
           <FadeIn>
@@ -560,58 +550,78 @@ export const Fitness = ({ setPage }: FitnessProps) => {
             </SectionHeader>
           </FadeIn>
 
-          <Stagger staggerDelay={0.1}>
-            <PricingGrid>
-              {monthlyPackages.map((pkg, i) => (
-                <PricingCard
-                  key={i}
-                  onClick={() => setSelectedPlan(i)}
-                  selected={selectedPlan === i}
-                >
-                  {pkg.highlighted && (
-                    <PopularBadge>{FITNESS_CONTENT.pricing.popularBadge}</PopularBadge>
-                  )}
-                  {(pkg as any).offerLabel && (
-                    <OfferBadge>{(pkg as any).offerLabel}</OfferBadge>
-                  )}
-
-                  <Box sx={{ mb: { xs: 2, md: 3 } }}>
-                    <PricingDuration>{pkg.duration}</PricingDuration>
-                    <Box>
-                      {(pkg as any).originalPrice && (
-                        <OriginalPrice>{(pkg as any).originalPrice}</OriginalPrice>
-                      )}
-                      <PricingPrice>{pkg.price}</PricingPrice>
-                      {(pkg as any).savingsLabel && (
-                        <SavingsBadge>{(pkg as any).savingsLabel}</SavingsBadge>
-                      )}
-                      <PricingPerMonth sx={{ mt: 0.5 }}>({pkg.perMonth}/month)</PricingPerMonth>
-                    </Box>
+          {/* ── Monthly Gym ── */}
+          {(() => {
+            const section = FITNESS_CONTENT.pricing.sections[0];
+            return (
+              <Box sx={{ mb: { xs: 4, md: 6 } }}>
+                <FadeIn>
+                  <Box sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#D4AF37', letterSpacing: '0.12em', textTransform: 'uppercase', mb: 2.5, pb: 1, borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
+                    {section.title}
                   </Box>
+                </FadeIn>
+                <Stagger staggerDelay={0.1}>
+                  <PricingGrid>
+                    {section.plans.map((pkg, i) => {
+                      const planId = i;
+                      return (
+                        <PricingCard key={i} onClick={() => setSelectedPlan(planId)} selected={selectedPlan === planId} sx={pkg.highlighted ? { pt: { xs: '2.2rem', md: '2.5rem' } } : {}}>
+                          {pkg.highlighted && <PopularBadge />}
+                          <Box sx={{ mb: 2 }}>
+                            <PricingDuration>{pkg.duration}</PricingDuration>
+                            <PricingPrice>{pkg.price}</PricingPrice>
+                            {(pkg as any).perMonth && <PricingPerMonth sx={{ mt: 0.5 }}>({(pkg as any).perMonth}/month)</PricingPerMonth>}
+                          </Box>
+                          <PricingFeaturesList>
+                            {pkg.features.map((f, j) => <PricingFeatureItem key={j}><FontAwesomeIcon icon={faCheck} /><span>{f}</span></PricingFeatureItem>)}
+                          </PricingFeaturesList>
+                          <PricingButton selected={selectedPlan === planId} onClick={(e) => { e.stopPropagation(); setSelectedPlanData(pkg); setIsPlanFormOpen(true); }}>{FITNESS_CONTENT.pricing.button}</PricingButton>
+                        </PricingCard>
+                      );
+                    })}
+                  </PricingGrid>
+                </Stagger>
+              </Box>
+            );
+          })()}
 
-                  <PricingFeaturesList>
-                    {pkg.features.map((feature, j) => (
-                      <PricingFeatureItem key={j}>
-                        <FontAwesomeIcon icon={faCheck} />
-                        <span>{feature}</span>
-                      </PricingFeatureItem>
-                    ))}
-                  </PricingFeaturesList>
-
-                  <PricingButton 
-                    selected={selectedPlan === i}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setSelectedPlanData(pkg);
-                      setIsPlanFormOpen(true);
-                    }}
-                  >
-                    {FITNESS_CONTENT.pricing.button}
-                  </PricingButton>
-                </PricingCard>
-              ))}
-            </PricingGrid>
-          </Stagger>
+          {/* ── Personal Training + PT in Gym — side by side ── */}
+          <Box sx={{ display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: { xs: 4, md: 5 }, mt: { xs: 5, md: 7 }, alignItems: 'stretch' }}>
+            {[1, 2].map((si) => {
+              const section = FITNESS_CONTENT.pricing.sections[si];
+              return (
+                <Box key={si} sx={{ display: 'flex', flexDirection: 'column' }}>
+                  <FadeIn>
+                    <Box sx={{ fontSize: '0.8rem', fontWeight: 700, color: '#D4AF37', letterSpacing: '0.12em', textTransform: 'uppercase', mb: 2.5, pb: 1, borderBottom: '1px solid rgba(212,175,55,0.2)' }}>
+                      {section.title}
+                    </Box>
+                  </FadeIn>
+                  <Stagger staggerDelay={0.1}>
+                    <PricingGrid sx={{ flex: 1, gridTemplateColumns: { xs: '1fr', sm: `repeat(${section.plans.length}, 1fr)` }, alignContent: 'start' }}>
+                      {section.plans.map((pkg, i) => {
+                        const planId = si * 100 + i;
+                        return (
+                          <PricingCard key={i} onClick={() => setSelectedPlan(planId)} selected={selectedPlan === planId} sx={{ ...(pkg.highlighted ? { pt: { xs: '2.2rem', md: '2.5rem' } } : {}), height: section.plans.length === 1 ? '100%' : 'auto' }}>
+                            {pkg.highlighted && <PopularBadge />}
+                            <Box sx={{ mb: 2 }}>
+                              <PricingDuration>{pkg.duration}</PricingDuration>
+                              {(pkg as any).originalPrice && <OriginalPrice>{(pkg as any).originalPrice}</OriginalPrice>}
+                              <PricingPrice>{pkg.price}</PricingPrice>
+                              {(pkg as any).savingsLabel && <SavingsBadge>{(pkg as any).savingsLabel}</SavingsBadge>}
+                            </Box>
+                            <PricingFeaturesList>
+                              {pkg.features.map((f, j) => <PricingFeatureItem key={j}><FontAwesomeIcon icon={faCheck} /><span>{f}</span></PricingFeatureItem>)}
+                            </PricingFeaturesList>
+                            <PricingButton selected={selectedPlan === planId} onClick={(e) => { e.stopPropagation(); setSelectedPlanData(pkg); setIsPlanFormOpen(true); }}>{FITNESS_CONTENT.pricing.button}</PricingButton>
+                          </PricingCard>
+                        );
+                      })}
+                    </PricingGrid>
+                  </Stagger>
+                </Box>
+              );
+            })}
+          </Box>
         </SectionContainer>
       </Section>
 
