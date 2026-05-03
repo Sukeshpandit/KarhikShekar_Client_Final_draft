@@ -184,7 +184,7 @@ export const Footer = ({ setPage }: FooterProps) => {
               <LocationOn sx={{ fontSize: 14 }} />
               <div>
                 <p>{GLOBAL_CONFIG.business.gym.name}</p>
-                <p>{GLOBAL_CONFIG.contact.city}, {GLOBAL_CONFIG.contact.state}, India</p>
+                <p>{GLOBAL_CONFIG.contact.address.city}, {GLOBAL_CONFIG.contact.address.state}, India</p>
               </div>
             </Styles.LocationInfo>
 

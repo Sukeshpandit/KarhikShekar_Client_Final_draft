@@ -12,7 +12,7 @@ export default defineConfig(({mode}) => {
       }),
     ],
     define: {
-      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),
+      'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY || ''),
     },
     resolve: {
       alias: {
@@ -20,13 +20,9 @@ export default defineConfig(({mode}) => {
       },
     },
     build: {
-      // Optimize bundle size
-      minify: 'terser',
-      terserOptions: {
-        compress: {
-          drop_console: true,
-          drop_debugger: true,
-        },
+      minify: 'esbuild',
+      esbuildOptions: {
+        drop: ['console', 'debugger'],
       },
       // Enable code splitting
       rollupOptions: {
