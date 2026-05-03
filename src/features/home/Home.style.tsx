@@ -430,15 +430,15 @@ export const CarouselContainer = styled(Box)(({ theme }) => ({
   zIndex: 20,
   flexShrink: 0,
   overflow: 'hidden',
-  height: '340px',
+  height: '11rem',
   transform: 'translateY(-2rem)',
 
   [theme.breakpoints.up('sm')]: {
-    height: '420px',
+    height: '13rem',
   },
 
   [theme.breakpoints.up('md')]: {
-    height: '500px',
+    height: '15rem',
   },
 }));
 

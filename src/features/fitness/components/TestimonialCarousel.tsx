@@ -22,7 +22,7 @@ interface TestimonialCarouselProps {
 const SPROCKET_SIZE = 20;
 const sprocketSvg = `data:image/svg+xml,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="${SPROCKET_SIZE}" height="${SPROCKET_SIZE}">` +
-  `<rect x="4" y="5" width="12" height="10" rx="2" fill="rgba(255,255,255,0.12)"/>` +
+  `<rect x="4" y="5" width="12" height="10" rx="2" fill="rgba(255,255,255,0.06)"/>` +
   `</svg>`
 )}`;
 
@@ -137,7 +137,7 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
         whileHover={!disabled ? { scale: 1.03, zIndex: 2 } : {}}
         onClick={() => !disabled && handleCardClick(t.image)}
         sx={{
-          width: { xs: '200px', sm: '260px', md: '320px' },
+          width: { xs: '160px', sm: '210px', md: '260px' },
           flexShrink: 0,
           cursor: disabled ? 'default' : 'pointer',
           border: '3px solid #222',
@@ -178,7 +178,10 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
 
   return (
     <>
-      <CarouselContainer>
+      <CarouselContainer sx={{
+        height: { xs: '270px', sm: '340px', md: '410px' },
+        transform: { xs: 'translateY(1rem)', sm: 'translateY(-2rem)' },
+      }}>
         <CarouselFade className="left" />
         <CarouselFade className="right" />
 
