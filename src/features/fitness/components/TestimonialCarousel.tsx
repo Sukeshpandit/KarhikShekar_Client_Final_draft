@@ -22,7 +22,7 @@ interface TestimonialCarouselProps {
 const SPROCKET_SIZE = 20;
 const sprocketSvg = `data:image/svg+xml,${encodeURIComponent(
   `<svg xmlns="http://www.w3.org/2000/svg" width="${SPROCKET_SIZE}" height="${SPROCKET_SIZE}">` +
-  `<rect x="4" y="5" width="12" height="10" rx="2" fill="rgba(255,255,255,0.06)"/>` +
+  `<rect x="4" y="5" width="12" height="10" rx="2" fill="rgba(212,175,55,0.18)"/>` +
   `</svg>`
 )}`;
 
@@ -31,7 +31,7 @@ const SprocketRow = () => (
     sx={{
       height: `${SPROCKET_SIZE}px`,
       alignSelf: 'stretch',
-      background: '#0d0d0d',
+      background: '#071525',
       backgroundImage: `url("${sprocketSvg}")`,
       backgroundRepeat: 'repeat-x',
       backgroundSize: `${SPROCKET_SIZE}px ${SPROCKET_SIZE}px`,
@@ -140,7 +140,7 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
           width: { xs: '160px', sm: '210px', md: '260px' },
           flexShrink: 0,
           cursor: disabled ? 'default' : 'pointer',
-          border: '3px solid #222',
+          border: '3px solid #0d2035',
           outline: '1px solid rgba(255,255,255,0.08)',
           overflow: 'hidden',
           position: 'relative',
@@ -179,8 +179,8 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
   return (
     <>
       <CarouselContainer sx={{
-        height: { xs: '270px', sm: '340px', md: '410px' },
-        transform: { xs: 'translateY(-1rem)', sm: 'translateY(-3rem)' },
+        height: { xs: '340px', sm: '420px', md: '500px' },
+        transform: { xs: 'translateY(1rem)', sm: 'translateY(-2rem)' },
       }}>
         <CarouselFade className="left" />
         <CarouselFade className="right" />
@@ -191,14 +191,14 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
             display: 'inline-flex',
             flexDirection: 'column',
             minWidth: 'max-content',
-            background: '#0d0d0d',
+            background: '#071525',
             boxShadow: '0 8px 40px rgba(0,0,0,0.6)',
           }}>
             {/* Top sprocket holes */}
             <SprocketRow />
 
             {/* Thin separator line */}
-            <Box sx={{ height: '3px', background: '#1a1a1a', alignSelf: 'stretch', flexShrink: 0 }} />
+            <Box sx={{ height: '3px', background: 'rgba(212,175,55,0.15)', alignSelf: 'stretch', flexShrink: 0 }} />
 
             {/* Image frames */}
             <Box sx={{
@@ -206,7 +206,7 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
               gap: '6px',
               px: '6px',
               py: '6px',
-              background: '#0d0d0d',
+              background: '#071525',
               alignItems: 'stretch',
             }}>
               {renderFrames(false)}
@@ -214,7 +214,7 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
             </Box>
 
             {/* Thin separator line */}
-            <Box sx={{ height: '3px', background: '#1a1a1a', alignSelf: 'stretch', flexShrink: 0 }} />
+            <Box sx={{ height: '3px', background: 'rgba(212,175,55,0.15)', alignSelf: 'stretch', flexShrink: 0 }} />
 
             {/* Bottom sprocket holes */}
             <SprocketRow />

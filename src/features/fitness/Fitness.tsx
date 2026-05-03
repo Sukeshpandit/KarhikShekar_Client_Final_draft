@@ -395,7 +395,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
             </StatsBadge> */}
 
             {/* Description */}
-            <HeroDescription>
+            {/* <HeroDescription>
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -404,7 +404,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
               >
                 {FITNESS_CONTENT.hero.description}
               </motion.p>
-            </HeroDescription>
+            </HeroDescription> */}
 
             {/* Main Heading */}
             <HeroTitle
@@ -484,7 +484,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                   <ExperienceCardContent>
                     <ExperienceCardTitle>{exp.title}</ExperienceCardTitle>
                     <ExperienceCardDescription>{exp.description}</ExperienceCardDescription>
-                    <ExperienceButton>{FITNESS_CONTENT.experience.readMore}</ExperienceButton>
+                    {/* <ExperienceButton>{FITNESS_CONTENT.experience.readMore}</ExperienceButton> */}
                   </ExperienceCardContent>
                 </ExperienceCard>
               ))}
