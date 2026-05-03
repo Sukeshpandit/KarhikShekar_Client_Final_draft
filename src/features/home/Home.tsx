@@ -886,14 +886,14 @@ export const Home = ({ setPage }: HomeProps) => {
         {/* CTA Button */}
         <JourneyContainer>
           <Box sx={{ textAlign: 'center', marginTop: theme.spacing(5) }}>
-            <JourneyCTAButton
+            {/* <JourneyCTAButton
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => handlePageChange(PAGES.JOURNEY)}
             >
               {HOME_CONTENT.journey.button}
               <ChevronRightIcon />
-            </JourneyCTAButton>
+            </JourneyCTAButton> */}
           </Box>
         </JourneyContainer>
       </JourneySection>

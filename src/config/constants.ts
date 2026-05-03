@@ -16,7 +16,7 @@ export const NAV_ITEMS = [
   { id: PAGES.FITNESS, label: 'Fitness', href: '/fitness' },
   { id: PAGES.ACTING, label: 'Acting', href: '/acting' },
   { id: PAGES.WILDLIFE, label: 'Wildlife', href: '/wildlife' },
-  { id: PAGES.JOURNEY, label: 'Journey', href: '/journey' },
+  // { id: PAGES.JOURNEY, label: 'Journey', href: '/journey' },
   { id: PAGES.CONTACT, label: 'Contact', href: '/contact' },
 ];
 

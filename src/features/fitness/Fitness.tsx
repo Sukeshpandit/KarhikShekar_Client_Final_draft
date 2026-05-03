@@ -440,14 +440,14 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                      {FITNESS_CONTENT.hero.buttons.primary}
                 <FontAwesomeIcon icon={faArrowRight} />
               </HeroPrimaryButton>
-              <HeroSecondaryButton
+              {/* <HeroSecondaryButton
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => handlePageChange(PAGES.JOURNEY)}
               >
                 {FITNESS_CONTENT.hero.buttons.secondary}
                 <FontAwesomeIcon icon={faArrowRight} />
-              </HeroSecondaryButton>
+              </HeroSecondaryButton> */}
             </HeroButtonGroup>
           </HeroTextContainer>
         </HeroContent>
