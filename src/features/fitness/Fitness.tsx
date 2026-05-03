@@ -443,9 +443,11 @@ export const Fitness = ({ setPage }: FitnessProps) => {
         </HeroContent>
 
         {/* Transformation Stories Carousel — bottom of hero, same as Home */}
-        <SlideIn direction="up" delay={0.2}>
-          <TestimonialCarousel testimonials={testimonials} />
-        </SlideIn>
+        <Box sx={{ mt: { xs: 10, sm: 14, md: 20 } }}>
+          <SlideIn direction="up" delay={0.2}>
+            <TestimonialCarousel testimonials={testimonials} />
+          </SlideIn>
+        </Box>
       </HeroSection>
 
       {/* ==================== EXPERIENCE SECTION ==================== */}
