@@ -6,10 +6,6 @@ import {
   CarouselContainer,
   CarouselFade,
   CarouselScrollTrack,
-  CarouselStrip,
-  ThumbnailCard,
-  ThumbnailImage,
-  ThumbnailOverlay,
 } from '../../home/Home.style';
 
 interface Testimonial {
@@ -21,6 +17,29 @@ interface Testimonial {
 interface TestimonialCarouselProps {
   testimonials: Testimonial[];
 }
+
+// SVG tile for sprocket holes — white rounded rectangle on transparent background
+const SPROCKET_SIZE = 20;
+const sprocketSvg = `data:image/svg+xml,${encodeURIComponent(
+  `<svg xmlns="http://www.w3.org/2000/svg" width="${SPROCKET_SIZE}" height="${SPROCKET_SIZE}">` +
+  `<rect x="4" y="5" width="12" height="10" rx="2" fill="rgba(255,255,255,0.12)"/>` +
+  `</svg>`
+)}`;
+
+const SprocketRow = () => (
+  <Box
+    sx={{
+      height: `${SPROCKET_SIZE}px`,
+      alignSelf: 'stretch',
+      background: '#0d0d0d',
+      backgroundImage: `url("${sprocketSvg}")`,
+      backgroundRepeat: 'repeat-x',
+      backgroundSize: `${SPROCKET_SIZE}px ${SPROCKET_SIZE}px`,
+      backgroundPosition: '0 0',
+      flexShrink: 0,
+    }}
+  />
+);
 
 export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) => {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -100,7 +119,6 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
     };
   }, []);
 
-  // Close on Escape key
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setExpandedImage(null); };
     window.addEventListener('keydown', onKey);
@@ -111,28 +129,51 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
     if (!hasDragged.current) setExpandedImage(image);
   };
 
-  const renderCards = (disabled: boolean) =>
-    testimonials.map((testimonial, index) => (
-      <ThumbnailCard
+  const renderFrames = (disabled: boolean) =>
+    testimonials.map((t, index) => (
+      <Box
         key={disabled ? `dup-${index}` : index}
-        disabled={disabled}
-        whileHover={{ scale: 1.02 }}
-        onClick={() => !disabled && handleCardClick(testimonial.image)}
+        component={motion.div}
+        whileHover={!disabled ? { scale: 1.03, zIndex: 2 } : {}}
+        onClick={() => !disabled && handleCardClick(t.image)}
         sx={{
-          width: { xs: '240px', sm: '320px', md: '380px' },
-          minWidth: { xs: '220px', sm: '320px', md: '350px' },
-          maxWidth: { xs: '260px', sm: '360px', md: '420px' },
-          height: 'auto',
+          width: { xs: '200px', sm: '260px', md: '320px' },
+          flexShrink: 0,
           cursor: disabled ? 'default' : 'pointer',
+          border: '3px solid #222',
+          outline: '1px solid rgba(255,255,255,0.08)',
+          overflow: 'hidden',
+          position: 'relative',
+          transition: 'border-color 0.2s',
+          '&:hover': !disabled ? { borderColor: 'rgba(212,175,55,0.6)' } : {},
         }}
       >
-        <ThumbnailImage
-          src={testimonial.image}
-          alt={testimonial.name}
-          style={{ objectFit: 'contain', objectPosition: 'center top', aspectRatio: '2/3', width: '100%', height: 'auto', background: '#0a1d2c' }}
+        <img
+          src={t.image}
+          alt={t.name}
+          style={{
+            width: '100%',
+            aspectRatio: '3/4',
+            objectFit: 'cover',
+            objectPosition: 'center top',
+            display: 'block',
+          }}
         />
-        <ThumbnailOverlay />
-      </ThumbnailCard>
+        {/* Frame number overlay */}
+        {!disabled && (
+          <Box sx={{
+            position: 'absolute',
+            bottom: 4,
+            right: 6,
+            fontSize: '9px',
+            color: 'rgba(255,255,255,0.3)',
+            fontFamily: 'monospace',
+            letterSpacing: '0.1em',
+          }}>
+            {String(index + 1).padStart(2, '0')}A
+          </Box>
+        )}
+      </Box>
     ));
 
   return (
@@ -142,10 +183,39 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
         <CarouselFade className="right" />
 
         <CarouselScrollTrack ref={trackRef}>
-          <CarouselStrip>
-            {renderCards(false)}
-            {renderCards(true)}
-          </CarouselStrip>
+          {/* Film strip */}
+          <Box sx={{
+            display: 'inline-flex',
+            flexDirection: 'column',
+            minWidth: 'max-content',
+            background: '#0d0d0d',
+            boxShadow: '0 8px 40px rgba(0,0,0,0.6)',
+          }}>
+            {/* Top sprocket holes */}
+            <SprocketRow />
+
+            {/* Thin separator line */}
+            <Box sx={{ height: '3px', background: '#1a1a1a', alignSelf: 'stretch', flexShrink: 0 }} />
+
+            {/* Image frames */}
+            <Box sx={{
+              display: 'flex',
+              gap: '6px',
+              px: '6px',
+              py: '6px',
+              background: '#0d0d0d',
+              alignItems: 'stretch',
+            }}>
+              {renderFrames(false)}
+              {renderFrames(true)}
+            </Box>
+
+            {/* Thin separator line */}
+            <Box sx={{ height: '3px', background: '#1a1a1a', alignSelf: 'stretch', flexShrink: 0 }} />
+
+            {/* Bottom sprocket holes */}
+            <SprocketRow />
+          </Box>
         </CarouselScrollTrack>
       </CarouselContainer>
 
@@ -169,7 +239,6 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
               padding: '1rem',
             }}
           >
-            {/* Close button */}
             <Box
               onClick={(e) => { e.stopPropagation(); setExpandedImage(null); }}
               sx={{
@@ -191,7 +260,6 @@ export const TestimonialCarousel = ({ testimonials }: TestimonialCarouselProps) 
               <CloseIcon sx={{ color: 'white', fontSize: 20 }} />
             </Box>
 
-            {/* Image */}
             <motion.img
               src={expandedImage}
               initial={{ scale: 0.85, opacity: 0 }}
