@@ -96,7 +96,7 @@ const ACTING_CONTENT = {
         label: 'Language',
         value: 'KANNADA',
         description: '(Native Speaker)',
-        span: { xs: 2, md: 1 }, // Grid column span
+        span: { xs: 1, md: 1 }, // Grid column span
       },
     ],
     buttons: {
@@ -200,18 +200,24 @@ export const Acting = ({ setPage }: ActingProps) => {
           <HeroAmbientGlow sx={{ top: '-10%', left: '-10%', background: 'rgba(201,168,76,0.05)', filter: 'blur(120px)' }} />
           <HeroAmbientGlow sx={{ bottom: '-10%', right: '-10%', background: 'rgba(41,59,75,0.2)', filter: 'blur(120px)' }} />
 
+          <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 40 }}>
+            <ActingBits />
+          </Box>
+
           <HeroContent>
             <HeroInner>
               {/* Professional Badge */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-              >
-                <HeroBadge>
-                  <HeroBadgeText>{ACTING_CONTENT.hero.badge}</HeroBadgeText>
-                </HeroBadge>
-              </motion.div>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  <HeroBadge>
+                    <HeroBadgeText>{ACTING_CONTENT.hero.badge}</HeroBadgeText>
+                  </HeroBadge>
+                </motion.div>
+              </Box>
 
               {/* Main Title */}
               <motion.div
@@ -226,32 +232,51 @@ export const Acting = ({ setPage }: ActingProps) => {
                 </HeroTitle>
               </motion.div>
 
-              {/* Subtitle */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.5 }}
-              >
-                <HeroSubtitle>
-                  {ACTING_CONTENT.hero.subtitle}
-                </HeroSubtitle>
-              </motion.div>
+              {/* Subtitle — desktop only */}
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <HeroSubtitle>
+                    {ACTING_CONTENT.hero.subtitle}
+                  </HeroSubtitle>
+                </motion.div>
+              </Box>
 
               {/* Description */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-             transition={{ duration: 0.6, delay: 0.6 }}
-              >
-                <HeroDescription>
-                  Bringing <strong>raw intensity</strong> and <strong>authentic depth</strong> to every role. 
-                  With 8+ years of experience in action and dramatic cinema, I deliver performances 
-                  that resonate beyond the screen.
-                </HeroDescription>
-              </motion.div>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  <HeroDescription>
+                    Bringing <strong>raw intensity</strong> and <strong>authentic depth</strong> to every role.
+                    With 8+ years of experience in action and dramatic cinema, I deliver performances
+                    that resonate beyond the screen.
+                  </HeroDescription>
+                </motion.div>
+              </Box>
 
-              <HeroSpacer />
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <HeroSpacer />
+              </Box>
 
               {/* Stats Grid */}
+              <Box sx={{ mt: { xs: 'auto', sm: 0 }, mb: { xs: '10vh', sm: 0 } }}>
+              {/* Subtitle — mobile only, above stats */}
+              <Box sx={{ display: { xs: 'block', sm: 'none' }, mb: 1.5 }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.5 }}
+                >
+                  <HeroSubtitle>
+                    {ACTING_CONTENT.hero.subtitle}
+                  </HeroSubtitle>
+                </motion.div>
+              </Box>
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -271,33 +296,34 @@ export const Acting = ({ setPage }: ActingProps) => {
                   ))}
                 </HeroStatsGrid>
               </motion.div>
+              </Box>
 
               {/* CTA Buttons */}
-              <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.8 }}
-              >
-                <HeroButtonGroup>
-                  <HeroPrimaryButton
-                    sx={{ '&:hover': { transform: 'scale(1.02)' }, '&:active': { transform: 'scale(0.95)' }, transition: 'transform 0.2s' }}
-                  >
-                    {ACTING_CONTENT.hero.buttons.primary}
-                  </HeroPrimaryButton>
-                  <HeroSecondaryButton
-                    sx={{ '&:hover': { transform: 'scale(1.02)' }, '&:active': { transform: 'scale(0.95)' }, transition: 'transform 0.2s' }}
-                  >
-                    <FontAwesomeIcon icon={faPlay} />
-                    {ACTING_CONTENT.hero.buttons.secondary}
-                  </HeroSecondaryButton>
-                </HeroButtonGroup>
-              </motion.div>
+              <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                >
+                  <HeroButtonGroup>
+                    <HeroPrimaryButton
+                      sx={{ '&:hover': { transform: 'scale(1.02)' }, '&:active': { transform: 'scale(0.95)' }, transition: 'transform 0.2s' }}
+                    >
+                      {ACTING_CONTENT.hero.buttons.primary}
+                    </HeroPrimaryButton>
+                    <HeroSecondaryButton
+                      sx={{ '&:hover': { transform: 'scale(1.02)' }, '&:active': { transform: 'scale(0.95)' }, transition: 'transform 0.2s' }}
+                    >
+                      <FontAwesomeIcon icon={faPlay} />
+                      {ACTING_CONTENT.hero.buttons.secondary}
+                    </HeroSecondaryButton>
+                  </HeroButtonGroup>
+                </motion.div>
+              </Box>
             </HeroInner>
           </HeroContent>
         </HeroSection>
       </HeroStickyWrapper>
-        {/* ==================== ACTING BITS ==================== */}
-      <ActingBits />
 
       {/* ==================== SHOWREEL STACK ==================== */}
       {/* <ShowreelStack reels={reels} /> */}

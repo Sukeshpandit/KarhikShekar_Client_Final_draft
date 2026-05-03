@@ -32,42 +32,58 @@ export const HeroDarkTint = styled(Box)(({ theme }) => ({
   inset: 0,
   zIndex: 10,
   backgroundColor: theme.palette.background.default,
-  opacity: 0.4,
+  opacity: 0.15,
   pointerEvents: 'none',
+  [theme.breakpoints.up('sm')]: {
+    opacity: 0.4,
+  },
 }));
 
-export const HeroGradientLeft = styled(Box)({
+export const HeroGradientLeft = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   zIndex: 20,
   pointerEvents: 'none',
-  background: 'linear-gradient(to right, #021523 0%, rgba(2,21,35,0.82) 40%, transparent 100%)',
-});
+  background: 'rgba(2,21,35,0.2)',
+  [theme.breakpoints.up('sm')]: {
+    background: 'linear-gradient(to right, #021523 0%, rgba(2,21,35,0.82) 40%, transparent 100%)',
+  },
+}));
 
 export const HeroGradientBottom = styled(Box)(({ theme }) => ({
   position: 'absolute',
   inset: 0,
   zIndex: 20,
-  background: `linear-gradient(to top, ${theme.palette.background.default}, rgba(10, 29, 44, 0.4), transparent)`,
+  background: `linear-gradient(to top, ${theme.palette.background.default} 20%, rgba(10,29,44,0.75) 55%, transparent)`,
   pointerEvents: 'none',
+  [theme.breakpoints.up('sm')]: {
+    background: `linear-gradient(to top, ${theme.palette.background.default}, rgba(10, 29, 44, 0.4), transparent)`,
+  },
 }));
 
 export const HeroVideo = styled('video')(({ theme }) => ({
   position: 'absolute',
-  top: 0,
-  right: 0,
-  height: '100%',
-  width: '100%',
+  top: '50%',
+  left: '50%',
+  right: 'auto',
+  width: '100vh',
+  height: '100vw',
   objectFit: 'cover',
-  filter: 'grayscale(30%)',
+  filter: 'grayscale(20%)',
   transition: 'all 1s ease',
-  opacity: 0.7,
+  opacity: 0.9,
+  transform: 'translate(-50%, -50%) rotate(-90deg)',
   '&:hover': {
     filter: 'grayscale(0%)',
   },
   [theme.breakpoints.up('sm')]: {
+    top: 0,
+    left: 'auto',
+    right: 0,
     width: '60%',
+    height: '100%',
     opacity: 1,
+    transform: 'none',
   },
   [theme.breakpoints.up('md')]: {
     right: '55px',
@@ -91,9 +107,10 @@ export const HeroContent = styled(Box)(({ theme }) => ({
   flexGrow: 1,
   display: 'flex',
   flexDirection: 'column',
-  justifyContent: 'space-between',
-  padding: '4rem 1.5rem 2rem',
+  justifyContent: 'flex-end',
+  padding: '4rem 1.5rem 8rem',
   [theme.breakpoints.up('sm')]: {
+    justifyContent: 'space-between',
     padding: '5rem 2rem 2rem',
   },
   [theme.breakpoints.up('md')]: {
