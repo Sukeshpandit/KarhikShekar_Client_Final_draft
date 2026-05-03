@@ -4,8 +4,8 @@ import { motion } from 'motion/react';
 
 export const StyledDialog = styled(Dialog)(({ theme }) => ({
   '& .MuiBackdrop-root': {
-    backgroundColor: 'rgba(0, 0, 0, 0.85)',
-    backdropFilter: 'blur(8px)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)',
+    backdropFilter: 'blur(16px)',
   },
   '& .MuiDialog-paper': {
     backgroundColor: '#0a1d2c',
@@ -17,8 +17,12 @@ export const StyledDialog = styled(Dialog)(({ theme }) => ({
     width: '100%',
     margin: '16px',
     [theme.breakpoints.down('sm')]: {
-      margin: '8px',
-      borderRadius: '16px',
+      margin: '16px',
+      borderRadius: '14px',
+      maxHeight: 'calc(100vh - 32px)',
+      overflowY: 'auto',
+      transform: 'scale(0.88)',
+      transformOrigin: 'center center',
     },
   },
 }));
@@ -26,7 +30,7 @@ export const StyledDialog = styled(Dialog)(({ theme }) => ({
 export const StyledDialogContent = styled(DialogContent)(({ theme }) => ({
   padding: theme.spacing(4),
   [theme.breakpoints.down('sm')]: {
-    padding: theme.spacing(3, 2),
+    padding: theme.spacing(2, 1.5),
   },
   position: 'relative',
   overflow: 'visible',
@@ -57,9 +61,12 @@ export const CloseButton = styled(Button)({
 export const FormHeader = styled('div')(({ theme }) => ({
   marginBottom: theme.spacing(4),
   textAlign: 'center',
+  [theme.breakpoints.down('sm')]: {
+    marginBottom: theme.spacing(2),
+  },
 }));
 
-export const FormTitle = styled('h2')({
+export const FormTitle = styled('h2')(({ theme }) => ({
   fontSize: '2rem',
   fontWeight: 700,
   color: '#ffffff',
@@ -68,7 +75,11 @@ export const FormTitle = styled('h2')({
   '& .highlight': {
     color: '#D4AF37',
   },
-});
+  [theme.breakpoints.down('sm')]: {
+    fontSize: '1.5rem',
+    marginBottom: '8px',
+  },
+}));
 
 export const FormDescription = styled('p')({
   fontSize: '0.95rem',
