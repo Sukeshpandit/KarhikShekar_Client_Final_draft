@@ -223,6 +223,7 @@ export const GlobalWhatsAppButton = () => {
         onClose={() => setIsPlanFormOpen(false)}
         whatsappNumber={whatsappNumber}
         initialPlan={selectedPlanData}
+        availablePlans={monthlyPackages}
       />
 
       <SnakeRescueForm

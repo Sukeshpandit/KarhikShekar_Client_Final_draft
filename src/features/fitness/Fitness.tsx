@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'motion/react';
-import { Box } from '@mui/material';
+import { Box, Dialog, DialogContent, IconButton } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faArrowRight,
@@ -241,7 +242,7 @@ const FITNESS_CONTENT = {
         ],
       },
       {
-        title: 'Personal Training in Gym',
+        title: 'Personal Training in Power House Gym',
         plans: [
           { duration: '12 Sessions', price: '₹5,999', originalPrice: '₹7,999', savingsLabel: 'Save ₹2,000', highlighted: true, features: ['Gym access included', 'Dedicated trainer', 'Custom workout plan', 'Nutrition consultation', 'Progress tracking'] },
         ],
@@ -286,14 +287,46 @@ const FITNESS_CONTENT = {
       { icon: faUsers,      title: 'Expert Advice',     text: 'Certified trainers guide you to the right supplement stack' },
     ],
     categories: [
-      { emoji: '💪', name: 'Whey Protein',   desc: 'Fast-absorbing muscle builder' },
-      { emoji: '🏋️', name: 'Mass Gainer',    desc: 'High-calorie bulk-up formula' },
-      { emoji: '⚡', name: 'Pre-Workout',    desc: 'Energy, focus & pump booster' },
-      { emoji: '🔬', name: 'Creatine',       desc: 'Strength & power enhancer' },
-      { emoji: '🌿', name: 'BCAAs',          desc: 'Recovery & endurance support' },
-      { emoji: '💊', name: 'Multivitamins',  desc: 'Complete daily micronutrition' },
-      { emoji: '🔥', name: 'Fat Burner',     desc: 'Metabolism & fat-loss support' },
-      { emoji: '🐟', name: 'Omega-3',        desc: 'Joint, heart & brain health' },
+      { emoji: '💪', name: 'Whey Protein', desc: 'Fast-absorbing muscle builder', products: [
+        { name: 'ON Gold Standard Whey', desc: 'The #1 selling whey protein globally. 24g protein per serving with minimal fat and carbs — ideal for lean muscle and recovery.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927065725_1_e4cd4d22-bde2-4538-9b43-c261ab1b24c8.jpg?v=1773663774&width=200' },
+        { name: 'MuscleBlaze Biozyme Whey', desc: 'Clinically tested with a BioZyme enzyme blend for superior absorption. 25g protein per serving.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/39078/prd_3907787-MuscleBlaze-Biozyme-Performance-Whey-4.4-lb-Rich-Chocolate_o.jpg' },
+        { name: 'MyProtein Impact Whey', desc: 'Budget-friendly with 21g protein per serving, 50+ flavours, and a clean ingredient profile.', image: 'https://static.thcdn.com/productimg/original/10530943-2175262135686325.jpg' },
+      ]},
+      { emoji: '🏋️', name: 'Mass Gainer', desc: 'High-calorie bulk-up formula', products: [
+        { name: 'ON Serious Mass', desc: '1,250 calories and 50g protein per serving. Loaded with complex carbs and creatine for serious bulking.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/1110152_1_43efaf6f-3293-4107-ba6b-f12d32faae8d.webp?v=1752258610&width=200' },
+        { name: 'MuscleBlaze Super Mass Gainer', desc: '178g carbs and 31g protein per serving with a complex carb blend for sustained energy and size.', image: 'https://img6.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/37800/prd_3779965-MuscleBlaze-Super-Gainer-XXL-Weight-Gainer-6.6-lb-Chocolate_o.jpg' },
+        { name: 'Dymatize Super Mass Gainer', desc: '1,280 calories per serving with added BCAAs and creatine — perfect for hardgainers.', image: 'https://dymatize.imgix.net/production/products/SUPER_MASS_GAINER_GOURMET_VANILLA_Product_Thumbnail_Product_Detail_Page_540x678.jpg?w=200&h=200&fit=crop&auto=format' },
+      ]},
+      { emoji: '⚡', name: 'Pre-Workout', desc: 'Energy, focus & pump booster', products: [
+        { name: 'C4 Original (Cellucor)', desc: "One of the world's most popular pre-workouts. 150mg caffeine, beta-alanine, and creatine nitrate for energy and pumps.", image: 'https://cellucor.com/cdn/shop/files/C4AN_1002_Brand_C4YellowLabel_Transition_C4Original_CoreFlavors_BasicPDPs-OG-IBR-Hero-Grey.png?v=1773235672' },
+        { name: 'ON Gold Standard Pre-Workout', desc: '175mg caffeine with creatine, beta-alanine, and vitamin D for clean, focused energy.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927068900_1_6a4cfdd7-dd35-42eb-a43f-41438aef3738.jpg?v=1772714230&width=200' },
+        { name: 'MuscleBlaze Pre Workout 300', desc: '300mg caffeine plus citrulline and beta-alanine for extreme energy and endurance.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/30066/prd_3006517-MuscleBlaze-PRE-Workout-300-0.55-lb-Fruit-Punch_o.jpg' },
+      ]},
+      { emoji: '🔬', name: 'Creatine', desc: 'Strength & power enhancer', products: [
+        { name: 'ON Micronized Creatine', desc: 'Pure creatine monohydrate — 5g per serving, unflavored, mixes easily. Proven for strength and power gains.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927066623_1.jpg?v=1773302233&width=200' },
+        { name: 'MuscleTech Platinum Creatine', desc: 'Ultra-pure creatine monohydrate, lab-tested for potency and purity with no fillers.', image: 'https://www.muscletech.com/cdn/shop/files/platinum-creatine-grape-freeze.jpg?v=1766074513&width=200' },
+        { name: 'MuscleBlaze Creatine', desc: 'Micronized creatine monohydrate with an added absorption complex for faster uptake and results.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/35711/prd_3571057-MuscleBlaze-Creatine-Monohydrate-CreAMP-0.22-lb-Unflavoured_o.jpg' },
+      ]},
+      { emoji: '🌿', name: 'BCAAs', desc: 'Recovery & endurance support', products: [
+        { name: 'Scivation Xtend', desc: 'The #1 BCAA brand. 7g BCAAs in the proven 2:1:1 ratio plus electrolytes for hydration and recovery.', image: 'https://cellucor.com/cdn/shop/files/XTEND_1144_Digital_Relabel_FlowThrough_Assets_PDPs_OnGreyBackground-XTEND-OG30-BRI.png?v=1771552623' },
+        { name: 'ON BCAA 5000', desc: '5g BCAAs per serving with no added sugar — ideal as intra-workout fuel to reduce muscle breakdown.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927068573_1.jpg?v=1772711768&width=200' },
+        { name: 'MusclePharm BCAA', desc: '3:1:2 ratio formula with added glutamine for enhanced recovery and muscle preservation.', image: 'https://musclepharm.com/cdn/shop/files/BCAA_Fruit_Punch.jpg?v=1754064987&width=200' },
+      ]},
+      { emoji: '💊', name: 'Multivitamins', desc: 'Complete daily micronutrition', products: [
+        { name: 'ON Opti-Men', desc: '75+ active ingredients including 25 vitamins and minerals across 4 blends optimized for active men.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/1156608_1_bd16ce60-fa01-42b4-872a-fd291f8fb5ad.png?v=1773300765&width=200' },
+        { name: 'Animal Pak (Universal)', desc: 'The original sports multivitamin — 44 nutrients plus amino acids and performance complexes in one pack.', image: 'https://www.animalpak.com/cdn/shop/files/Pak_30packs_1200x1200_c93173e6-ae7a-4bb2-af16-26ff14b86cd1.jpg?v=1770220089' },
+        { name: 'MuscleBlaze MB-Vite', desc: 'Complete multivitamin with immunity blend and antioxidants, formulated for Indian athletes.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/39689/prd_3968831-MuscleBlaze-MBVITE-Daily-Multivitamin-for-Enhanced-Energy-Stamina-Gut-Health-60-tablets-Unflavoured_o.jpg' },
+      ]},
+      { emoji: '🔥', name: 'Fat Burner', desc: 'Metabolism & fat-loss support', products: [
+        { name: 'Hydroxycut Hardcore Elite', desc: "America's #1 selling weight loss brand. Caffeine anhydrous, C. canephora robusta, and L-theanine for thermogenic fat loss.", image: 'https://www.hydroxycut.com/cdn/shop/files/hydroxycut-hardcore.png?v=1720482764' },
+        { name: 'MuscleTech Hydroxycut Hardcore', desc: 'Intense thermogenic formula with caffeine and key weight-loss compounds backed by clinical studies.', image: 'https://www.muscletech.com/cdn/shop/files/mt-hydroxycut-hardcore-elite.png?v=1742823172' },
+        { name: 'MuscleBlaze Fat Burner PRO', desc: 'Thermogenic formula with green tea extract, CLA, and caffeine for sustained metabolism support.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/40259/prd_4025891-MuscleBlaze-MB-Fat-Burner-PRO-60-tablets-Unflavoured_o.jpg' },
+      ]},
+      { emoji: '🐟', name: 'Omega-3', desc: 'Joint, heart & brain health', products: [
+        { name: 'ON Fish Oil', desc: '300mg EPA + DHA per softgel from deep-water fish. Supports cardiovascular, cognitive, and joint health.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927070439_1.jpg?v=1773300765&width=200' },
+        { name: 'MuscleTech Platinum Omega-3', desc: 'Triple-strength fish oil with 465mg EPA and 375mg DHA per serving for maximum benefit.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927070439_1.jpg?v=1773300765&width=200' },
+        { name: 'MuscleBlaze Fish Oil', desc: 'Cold-processed omega-3 with enteric coating to prevent fishy aftertaste and ensure full absorption.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/32066/prd_3206541-MuscleBlaze-Omega-3-Fish-Oil-Gold-3x-Triple-Strength-EPA-DHA-60-capsules_o.jpg' },
+      ]},
     ],
     cta: {
       title: 'Ready to Stack Up?',
@@ -340,6 +373,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isPlanFormOpen, setIsPlanFormOpen] = useState(false);
   const [selectedPlanData, setSelectedPlanData] = useState<any>(FITNESS_CONTENT.pricing.sections[0].plans[0]);
+  const [supplementCategory, setSupplementCategory] = useState<typeof FITNESS_CONTENT.supplements.categories[0] | null>(null);
 
   const handlePageChange = (page: string) => {
     if (setPage) {
@@ -671,7 +705,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
           <Stagger staggerDelay={0.07}>
             <SupplementCategoriesGrid>
               {FITNESS_CONTENT.supplements.categories.map((cat, i) => (
-                <SupplementCategoryCard key={i} whileHover={{ y: -5 }} transition={{ type: 'spring', stiffness: 300 }}>
+                <SupplementCategoryCard key={i} whileHover={{ y: -5 }} transition={{ type: 'spring', stiffness: 300 }} onClick={() => setSupplementCategory(cat)} style={{ cursor: 'pointer' }}>
                   <SupplementCategoryEmoji>{cat.emoji}</SupplementCategoryEmoji>
                   <SupplementCategoryName>{cat.name}</SupplementCategoryName>
                   <SupplementCategoryDesc>{cat.desc}</SupplementCategoryDesc>
@@ -864,6 +898,75 @@ export const Fitness = ({ setPage }: FitnessProps) => {
           </CTAContent>
         </FadeIn>
       </CTASection>
+
+      {/* Supplement Category Popup */}
+      <Dialog
+        open={!!supplementCategory}
+        onClose={() => setSupplementCategory(null)}
+        maxWidth="xs"
+        fullWidth
+        PaperProps={{
+          sx: {
+            bgcolor: '#0a1d2c',
+            backgroundImage: 'linear-gradient(135deg, #0a1d2c 0%, #112240 100%)',
+            border: '1px solid rgba(212,175,55,0.25)',
+            borderRadius: '16px',
+            boxShadow: '0 25px 50px rgba(0,0,0,0.6)',
+            mx: 2,
+          },
+        }}
+        BackdropProps={{ sx: { backdropFilter: 'blur(12px)', bgcolor: 'rgba(0,0,0,0.7)' } }}
+      >
+        <DialogContent sx={{ p: { xs: 2.5, sm: 3 }, position: 'relative' }}>
+          <IconButton
+            onClick={() => setSupplementCategory(null)}
+            size="small"
+            sx={{ position: 'absolute', top: 10, right: 10, color: 'rgba(255,255,255,0.5)', '&:hover': { color: '#D4AF37' } }}
+          >
+            <CloseIcon fontSize="small" />
+          </IconButton>
+
+          {supplementCategory && (
+            <>
+              {/* Header */}
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2.5, pr: 3 }}>
+                <Box sx={{ fontSize: '2rem', lineHeight: 1 }}>{supplementCategory.emoji}</Box>
+                <Box>
+                  <Box sx={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>{supplementCategory.name}</Box>
+                  <Box sx={{ fontSize: '0.75rem', color: 'rgba(212,175,55,0.8)', mt: 0.3 }}>{supplementCategory.desc}</Box>
+                </Box>
+              </Box>
+
+              <Box sx={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(212,175,55,0.6)', letterSpacing: '0.12em', textTransform: 'uppercase', mb: 1.5, borderBottom: '1px solid rgba(212,175,55,0.12)', pb: 0.75 }}>
+                Popular Products
+              </Box>
+
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
+                {supplementCategory.products.map((p, i) => (
+                  <Box key={i} sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start', p: 1.5, borderRadius: '10px', bgcolor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
+                    <Box
+                      component="img"
+                      src={p.image}
+                      alt={p.name}
+                      referrerPolicy="no-referrer"
+                      onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.style.display = 'none'; }}
+                      sx={{ width: 60, height: 60, borderRadius: '8px', objectFit: 'cover', flexShrink: 0, bgcolor: 'rgba(255,255,255,0.06)' }}
+                    />
+                    <Box sx={{ minWidth: 0 }}>
+                      <Box sx={{ fontSize: '0.875rem', fontWeight: 600, color: '#fff', mb: 0.4 }}>{p.name}</Box>
+                      <Box sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 }}>{p.desc}</Box>
+                    </Box>
+                  </Box>
+                ))}
+              </Box>
+
+              <Box sx={{ mt: 2.5, textAlign: 'center', fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)' }}>
+                Ask us for best price & availability via WhatsApp
+              </Box>
+            </>
+          )}
+        </DialogContent>
+      </Dialog>
 
       {/* Transformation Form Modal */}
       <TransformationForm
