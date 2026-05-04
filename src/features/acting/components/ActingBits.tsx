@@ -1,7 +1,7 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, IconButton } from '@mui/material';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlay, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons';
+import CloseIcon from '@mui/icons-material/Close';
+import { AnimatePresence, motion } from 'motion/react';
 import {
   CarouselSection,
   CarouselContainer,
@@ -14,360 +14,207 @@ interface Clip {
   title: string;
   label: string;
   videoSrc: string;
-  thumbnail: string;
 }
 
-interface ClipCardComponentProps {
-  clip: Clip;
-  onHoverChange: (h: boolean) => void;
-}
+const getYouTubeId = (url: string): string | null => {
+  const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
+  return match && match[2].length === 11 ? match[2] : null;
+};
 
-const ClipCardComponent = ({ clip, onHoverChange }: ClipCardComponentProps) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
+const VideoLightbox = ({ clip, onClose }: { clip: Clip; onClose: () => void }) => {
+  const isYouTube = clip.videoSrc.includes('youtube.com') || clip.videoSrc.includes('youtu.be');
+  const youtubeId = isYouTube ? getYouTubeId(clip.videoSrc) : null;
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onClose]);
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.2 }}
+      onClick={onClose}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        zIndex: 9999,
+        backgroundColor: 'rgba(0,0,0,0.92)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: '1rem',
+      }}
+    >
+      <motion.div
+        initial={{ scale: 0.88, opacity: 0 }}
+        animate={{ scale: 1, opacity: 1 }}
+        exit={{ scale: 0.88, opacity: 0 }}
+        transition={{ duration: 0.25 }}
+        onClick={(e) => e.stopPropagation()}
+        style={{ position: 'relative', width: '100%', maxWidth: '960px', aspectRatio: '16/9' }}
+      >
+        {/* Close button */}
+        <IconButton
+          onClick={onClose}
+          size="small"
+          sx={{
+            position: 'absolute',
+            top: -44,
+            right: 0,
+            color: 'rgba(255,255,255,0.7)',
+            bgcolor: 'rgba(255,255,255,0.1)',
+            border: '1px solid rgba(255,255,255,0.2)',
+            '&:hover': { color: '#C9A84C', bgcolor: 'rgba(201,168,76,0.15)' },
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+
+        {/* Title */}
+        <Box sx={{ position: 'absolute', top: -40, left: 0, fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.1rem', letterSpacing: '0.05em', color: '#C9A84C' }}>
+          {clip.title}
+        </Box>
+
+        {/* Regular video */}
+        {!isYouTube && (
+          <Box
+            component="video"
+            src={clip.videoSrc}
+            autoPlay
+            controls
+            playsInline
+            sx={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '12px', display: 'block' }}
+          />
+        )}
+
+        {/* YouTube */}
+        {youtubeId && (
+          <Box
+            component="iframe"
+            src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&controls=1&modestbranding=1&rel=0`}
+            sx={{ width: '100%', height: '100%', border: 'none', borderRadius: '12px', display: 'block' }}
+            allow="autoplay; fullscreen; encrypted-media"
+            allowFullScreen
+          />
+        )}
+      </motion.div>
+    </motion.div>
+  );
+};
+
+const ClipCardComponent = ({ clip, onHoverChange, onOpen }: { clip: Clip; onHoverChange: (h: boolean) => void; onOpen: () => void }) => {
   const [hovered, setHovered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
 
   const isYouTube = clip.videoSrc.includes('youtube.com') || clip.videoSrc.includes('youtu.be');
-  
-  // Detect if device supports hover (not a touch device)
   const isHoverDevice = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const youtubeId = isYouTube ? getYouTubeId(clip.videoSrc) : null;
 
-  // Extract YouTube ID
-  const getYouTubeId = (url: string): string | null => {
-    if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-    const match = url.match(regExp);
-    return (match && match[2].length === 11) ? match[2] : null;
-  };
-
-  const enter = () => {
-    setHovered(true);
-    // Only pause animation on hover devices (desktop)
-    if (isHoverDevice) {
-      onHoverChange(true);
-    }
-    // Auto-preview on hover only if not playing
-    if (!isPlaying && videoRef.current && clip.videoSrc && !isYouTube) {
-      videoRef.current.play().catch(() => {});
-    }
-  };
-
-  const leave = () => {
-    setHovered(false);
-    // Only resume animation on hover devices (desktop) and if not playing
-    if (isHoverDevice && !isPlaying) {
-      onHoverChange(false);
-    }
-    // Stop preview on hover leave if not in playing mode
-    if (!isPlaying && videoRef.current) {
-      videoRef.current.pause();
-      videoRef.current.currentTime = 0;
-    }
-  };
-
-  const handleClick = () => {
-    if (isYouTube) {
-      // For YouTube, toggle playing state
-      const newPlayingState = !isPlaying;
-      setIsPlaying(newPlayingState);
-      // Pause carousel when playing, resume when stopped
-      onHoverChange(newPlayingState);
-    } else if (videoRef.current) {
-      // For regular videos, toggle play/pause
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-        // Resume carousel
-        onHoverChange(false);
-      } else {
-        videoRef.current.play().catch(() => {});
-        setIsPlaying(true);
-        // Pause carousel
-        onHoverChange(true);
-      }
-    }
-  };
+  const enter = () => { setHovered(true);  if (isHoverDevice) onHoverChange(true); };
+  const leave = () => { setHovered(false); if (isHoverDevice) onHoverChange(false); };
 
   return (
     <ClipCard
-      className={`clip-card ${hovered || isPlaying ? 'hovered' : ''}`}
+      className="clip-card"
       onMouseEnter={enter}
       onMouseLeave={leave}
-      onClick={handleClick}
-      sx={{ cursor: clip.videoSrc ? 'pointer' : 'default' }}
+      onClick={onOpen}
+      sx={{ cursor: 'pointer' }}
     >
-      {/* Thumbnail */}
-      <Box
-        component="img"
-        src={clip.thumbnail}
-        alt={clip.title}
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          width: '100%',
-          height: '100%',
-          objectFit: 'cover',
-          transition: 'all 0.5s ease',
-          opacity: (hovered || isPlaying) && clip.videoSrc ? 0 : 1,
-          transform: hovered ? 'scale(1.05)' : 'scale(1)',
-        }}
-      />
-
-      {/* Regular Video */}
-      {clip.videoSrc && !isYouTube && (
+      {/* Regular video */}
+      {!isYouTube && (
         <Box
           component="video"
-          ref={videoRef}
           src={clip.videoSrc}
-          muted={!isPlaying}
+          autoPlay
+          muted
           loop
           playsInline
-          controls={isPlaying}
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            transition: 'opacity 0.5s ease',
-            opacity: (hovered || isPlaying) ? 1 : 0,
-          }}
+          sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }}
         />
       )}
 
-      {/* YouTube Video */}
-      {clip.videoSrc && isYouTube && isPlaying && (
+      {/* YouTube embed (muted background preview) */}
+      {youtubeId && (
         <Box
           component="iframe"
-          src={`https://www.youtube.com/embed/${getYouTubeId(clip.videoSrc)}?autoplay=1&controls=1&modestbranding=1`}
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            width: '100%',
-            height: '100%',
-            border: 'none',
-          }}
+          src={`https://www.youtube.com/embed/${youtubeId}?autoplay=1&mute=1&loop=1&controls=0&modestbranding=1&playsinline=1&playlist=${youtubeId}`}
+          sx={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', pointerEvents: 'none' }}
           allow="autoplay; fullscreen; encrypted-media"
           allowFullScreen
         />
       )}
 
-      {/* Gradient overlay */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          background: 'linear-gradient(to top, rgba(10,29,44,0.9), rgba(10,29,44,0.2), transparent)',
-        }}
-      />
+      {/* Gradient */}
+      <Box sx={{ position: 'absolute', inset: 0, background: 'linear-gradient(to top, rgba(10,29,44,0.9), rgba(10,29,44,0.2), transparent)' }} />
 
-      {/* Label badge */}
+      {/* Label */}
       <Box sx={{ position: 'absolute', top: '0.75rem', left: '0.75rem' }}>
-        <Box
-          component="span"
-          sx={{
-            fontSize: '0.5625rem',
-            fontFamily: '"Inter", sans-serif',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            letterSpacing: '0.2em',
-            padding: '0.25rem 0.625rem',
-            borderRadius: '9999px',
-            bgcolor: 'rgba(201,168,76,0.15)',
-            border: '1px solid rgba(201,168,76,0.25)',
-            color: '#C9A84C',
-            backdropFilter: 'blur(10px)',
-          }}
-        >
+        <Box component="span" sx={{ fontSize: '0.5625rem', fontFamily: '"Inter", sans-serif', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.2em', padding: '0.25rem 0.625rem', borderRadius: '9999px', bgcolor: 'rgba(201,168,76,0.15)', border: '1px solid rgba(201,168,76,0.25)', color: '#C9A84C', backdropFilter: 'blur(10px)' }}>
           {clip.label}
         </Box>
       </Box>
 
-      {/* Idle play icon */}
-      {!isPlaying && (
-        <Box
-          sx={{
-            position: 'absolute',
-            inset: 0,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            pointerEvents: 'none',
-          }}
-        >
-          <Box
-            sx={{
-              width: '2.5rem',
-              height: '2.5rem',
-              borderRadius: '50%',
-              bgcolor: 'rgba(255,255,255,0.1)',
-              border: '1px solid rgba(255,255,255,0.2)',
-              backdropFilter: 'blur(10px)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
-            <FontAwesomeIcon icon={faPlay} style={{ fontSize: '0.875rem', color: 'white', marginLeft: '0.125rem' }} />
+      {/* Fullscreen hint on hover */}
+      {hovered && (
+        <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+          <Box sx={{ px: 2, py: 0.75, borderRadius: '9999px', bgcolor: 'rgba(201,168,76,0.2)', border: '1px solid rgba(201,168,76,0.4)', backdropFilter: 'blur(10px)', color: '#C9A84C', fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            Watch
           </Box>
         </Box>
       )}
 
-      {/* Bottom title */}
-      <Box
-        sx={{
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          p: 2,
-        }}
-      >
-        <Box
-          sx={{
-            fontFamily: '"Bebas Neue", sans-serif',
-            fontSize: '1.125rem',
-            letterSpacing: '-0.01em',
-            transition: 'color 0.3s ease',
-            color: hovered ? '#C9A84C' : 'white',
-          }}
-        >
+      {/* Title */}
+      <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, p: 2 }}>
+        <Box sx={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.125rem', letterSpacing: '-0.01em', transition: 'color 0.3s ease', color: hovered ? '#C9A84C' : 'white' }}>
           {clip.title}
         </Box>
       </Box>
 
       {/* Gold border on hover */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          borderRadius: '1rem',
-          border: hovered ? '1px solid rgba(201,168,76,0.4)' : '1px solid rgba(255,255,255,0.08)',
-          pointerEvents: 'none',
-          transition: 'all 0.3s ease',
-        }}
-      />
+      <Box sx={{ position: 'absolute', inset: 0, borderRadius: '1rem', border: hovered ? '1px solid rgba(201,168,76,0.4)' : '1px solid rgba(255,255,255,0.08)', pointerEvents: 'none', transition: 'all 0.3s ease' }} />
     </ClipCard>
   );
 };
 
-interface ActingBitsProps {}
-
-export const ActingBits = ({}: ActingBitsProps = {}) => {
+export const ActingBits = () => {
   const testVideo = `${import.meta.env.BASE_URL}assets/video/hero.mp4`;
-  const scrollContainerRef = useRef<HTMLDivElement>(null);
-    const clips: Clip[] = [
-    { title: 'The Silent Warrior', label: 'Action', videoSrc: 'https://youtu.be/RZxYXO4PHG8', thumbnail: 'https://picsum.photos/seed/bit-1/800/450' },
-    { title: 'Shadow Protocol', label: 'Thriller', videoSrc: testVideo, thumbnail: 'https://picsum.photos/seed/bit-2/800/450' },
-    { title: 'City of Gold', label: 'Crime', videoSrc: testVideo, thumbnail: 'https://picsum.photos/seed/bit-3/800/450' },
-    { title: 'The Last Stand', label: 'Action', videoSrc: testVideo, thumbnail: 'https://picsum.photos/seed/bit-4/800/450' },
-    { title: 'Midnight Chase', label: 'Thriller', videoSrc: testVideo, thumbnail: 'https://picsum.photos/seed/bit-5/800/450' },
-    { title: 'Broken Ties', label: 'Drama', videoSrc: testVideo, thumbnail: 'https://picsum.photos/seed/bit-6/800/450' },
+  const [pauseAnimation, setPauseAnimation] = useState(false);
+  const [activeClip, setActiveClip] = useState<Clip | null>(null);
+
+  const clips: Clip[] = [
+    { title: 'The Silent Warrior', label: 'Action',  videoSrc: 'https://youtu.be/RZxYXO4PHG8' },
+    { title: 'Shadow Protocol',    label: 'Thriller', videoSrc: testVideo },
+    { title: 'City of Gold',       label: 'Crime',    videoSrc: testVideo },
+    { title: 'The Last Stand',     label: 'Action',   videoSrc: testVideo },
+    { title: 'Midnight Chase',     label: 'Thriller', videoSrc: testVideo },
   ];
 
-  const [pauseAnimation, setPauseAnimation] = useState(false);
+  return (
+    <>
+      <CarouselSection>
+        <CarouselContainer>
+          <CarouselFade side="left" />
+          <CarouselFade side="right" />
+          <CarouselTrack paused={pauseAnimation || !!activeClip}>
+            {clips.map((clip, i) => (
+              <ClipCardComponent key={i} clip={clip} onHoverChange={setPauseAnimation} onOpen={() => setActiveClip(clip)} />
+            ))}
+            {clips.map((clip, i) => (
+              <ClipCardComponent key={`dup-${i}`} clip={clip} onHoverChange={setPauseAnimation} onOpen={() => setActiveClip(clip)} />
+            ))}
+          </CarouselTrack>
+        </CarouselContainer>
+      </CarouselSection>
 
-  const scrollLeft = () => {
-    if (scrollContainerRef.current) {
-      // Get the first card element to measure its width
-      const firstCard = scrollContainerRef.current.querySelector('.clip-card');
-      if (firstCard) {
-        const cardWidth = firstCard.clientWidth;
-        const gap = 20; // 1.25rem gap in pixels (20px)
-        const scrollAmount = cardWidth + gap;
-        scrollContainerRef.current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-      }
-    }
-  };
-
-  const scrollRight = () => {
-    if (scrollContainerRef.current) {
-      // Get the first card element to measure its width
-      const firstCard = scrollContainerRef.current.querySelector('.clip-card');
-      if (firstCard) {
-        const cardWidth = firstCard.clientWidth;
-        const gap = 20; // 1.25rem gap in pixels (20px)
-        const scrollAmount = cardWidth + gap;
-        scrollContainerRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
-      }
-    }
-  };
-    return (
-    <CarouselSection>
-      {/* Left Navigation Button */}
-      <IconButton
-        onClick={scrollLeft}
-        sx={{
-          position: 'absolute',
-          left: { xs: '0.5rem', md: '1rem' },
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 20,
-          width: { xs: '2.5rem', md: '3rem' },
-          height: { xs: '2.5rem', md: '3rem' },
-          bgcolor: 'rgba(201,168,76,0.15)',
-          border: '1px solid rgba(201,168,76,0.3)',
-          backdropFilter: 'blur(10px)',
-          color: '#C9A84C',
-          transition: 'all 0.3s ease',
-          '&:hover': {
-            bgcolor: 'rgba(201,168,76,0.25)',
-            borderColor: 'rgba(201,168,76,0.5)',
-            transform: 'translateY(-50%) scale(1.1)',
-          },
-        }}
-      >
-        <FontAwesomeIcon icon={faChevronLeft} style={{ fontSize: '1rem' }} />
-      </IconButton>
-
-      {/* Right Navigation Button */}
-      <IconButton
-        onClick={scrollRight}
-        sx={{
-          position: 'absolute',
-          right: { xs: '0.5rem', md: '1rem' },
-          top: '50%',
-          transform: 'translateY(-50%)',
-          zIndex: 20,
-          width: { xs: '2.5rem', md: '3rem' },
-          height: { xs: '2.5rem', md: '3rem' },
-          bgcolor: 'rgba(201,168,76,0.15)',
-          border: '1px solid rgba(201,168,76,0.3)',
-          backdropFilter: 'blur(10px)',
-          color: '#C9A84C',
-          transition: 'all 0.3s ease',
-          '&:hover': {
-            bgcolor: 'rgba(201,168,76,0.25)',
-            borderColor: 'rgba(201,168,76,0.5)',
-            transform: 'translateY(-50%) scale(1.1)',
-          },
-        }}
-      >
-        <FontAwesomeIcon icon={faChevronRight} style={{ fontSize: '1rem' }} />
-      </IconButton>
-
-      <CarouselContainer ref={scrollContainerRef}>
-        <CarouselFade side="left" />
-        <CarouselFade side="right" />
-
-        <CarouselTrack paused={pauseAnimation}>
-          {clips.map((clip, i) => (
-            <ClipCardComponent
-              key={i}
-              clip={clip}
-              onHoverChange={(h) => setPauseAnimation(h)}
-            />
-          ))}
-          {/* Duplicate for continuous scroll */}
-          {clips.map((clip, i) => (
-            <ClipCardComponent
-              key={`dup-${i}`}
-              clip={clip}
-              onHoverChange={(h) => setPauseAnimation(h)}
-            />
-          ))}
-        </CarouselTrack>
-      </CarouselContainer>
-    </CarouselSection>
+      <AnimatePresence>
+        {activeClip && (
+          <VideoLightbox clip={activeClip} onClose={() => setActiveClip(null)} />
+        )}
+      </AnimatePresence>
+    </>
   );
 };

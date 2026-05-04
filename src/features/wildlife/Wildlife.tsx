@@ -504,12 +504,12 @@ const HeroSectionComponent = () => (
   <HeroSection>
     <HeroBackground>
       <HeroBackgroundImage
-        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}assets/wildlife/rescue-1.jpg)` }}
+        style={{ backgroundImage: `url(${import.meta.env.BASE_URL}assets/wildlife/Hero-Background.jpg)` }}
         initial={{ scale: 1 }}
         animate={{ scale: [1, 1.02, 1] }}
         transition={{ duration: 50, repeat: Infinity, ease: "easeInOut" }}
       />
-      <HeroBackgroundOverlay />
+      {/* <HeroBackgroundOverlay /> */}
     </HeroBackground>
 
     <HeroContent>

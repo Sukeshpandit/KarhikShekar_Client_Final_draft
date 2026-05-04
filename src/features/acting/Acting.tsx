@@ -199,7 +199,8 @@ export const Acting = ({ setPage }: ActingProps) => {
 
           <HeroAmbientGlow sx={{ top: '-10%', left: '-10%', background: 'rgba(201,168,76,0.05)', filter: 'blur(120px)' }} />
           <HeroAmbientGlow sx={{ bottom: '-10%', right: '-10%', background: 'rgba(41,59,75,0.2)', filter: 'blur(120px)' }} />
-
+     
+          {/* ==================== ACTING BITS ==================== */}
           <Box sx={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 40 }}>
             <ActingBits />
           </Box>
@@ -386,9 +387,6 @@ export const Acting = ({ setPage }: ActingProps) => {
           </SlideIn>
         </BiographyGrid>
       </BiographySection>
-
-      {/* ==================== ACTING BITS ==================== */}
-      {/* <ActingBits /> */}
 
       {/* ==================== PRESS & REVIEWS ==================== */}
       <PressReviews />
