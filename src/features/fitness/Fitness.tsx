@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { motion } from 'motion/react';
+import { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence } from 'motion/react';
 import { Box, Dialog, DialogContent, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -187,17 +187,14 @@ const FITNESS_CONTENT = {
       {
         title: 'Personal Training',
         desc: 'One-on-one coaching with expert trainers',
-        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=400&auto=format&fit=crop',
+        image: '',
+        videoSrc: `${import.meta.env.BASE_URL}assets/Gym/Videos/personal_training.mp4`,
       },
       {
         title: 'Competition Preparation',
         desc: 'Expert guidance for bodybuilding, fitness, and athletic competitions. Tailored plans for peak performance and stage readiness.',
-        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=400&auto=format&fit=crop',
-      },
-      {
-        title: 'Online Coaching',
-        desc: 'Flexible remote training for busy schedules',
-        image: 'https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=400&auto=format&fit=crop',
+        image: '',
+        videoSrc: `${import.meta.env.BASE_URL}assets/Gym/Videos/Compitation_prep_video.mp4`,
       },
     ],
   },
@@ -348,6 +345,49 @@ const FITNESS_CONTENT = {
   },
 };
 
+// Lazy video preview — plays muted in viewport, click opens fullscreen
+const LazyVideoPreview = ({ src, onClick }: { src: string; onClick: () => void }) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const wrapRef  = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = wrapRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const v = videoRef.current;
+        if (!v) return;
+        if (entry.isIntersecting) v.play().catch(() => {});
+        else                      v.pause();
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  return (
+    <Box ref={wrapRef} onClick={onClick} sx={{ position: 'absolute', inset: 0, cursor: 'pointer' }}>
+      <Box
+        component="video"
+        ref={videoRef}
+        src={src}
+        muted
+        loop
+        playsInline
+        preload="metadata"
+        sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+      />
+      {/* Subtle "play" hint centred over the preview */}
+      <Box sx={{ position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center', pointerEvents: 'none' }}>
+        <Box sx={{ px: 2.5, py: 0.8, borderRadius: '9999px', bgcolor: 'rgba(212,175,55,0.18)', border: '1px solid rgba(212,175,55,0.45)', backdropFilter: 'blur(8px)', color: '#D4AF37', fontSize: '0.7rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase' }}>
+          ▶ Watch Full Video
+        </Box>
+      </Box>
+    </Box>
+  );
+};
+
 // Legacy exports for backward compatibility
 const experiences = FITNESS_CONTENT.experience.items;
 const trainMethods = FITNESS_CONTENT.methods.items;
@@ -374,6 +414,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
   const [isPlanFormOpen, setIsPlanFormOpen] = useState(false);
   const [selectedPlanData, setSelectedPlanData] = useState<any>(FITNESS_CONTENT.pricing.sections[0].plans[0]);
   const [supplementCategory, setSupplementCategory] = useState<typeof FITNESS_CONTENT.supplements.categories[0] | null>(null);
+  const [activeMethodVideo, setActiveMethodVideo] = useState<string | null>(null);
 
   const handlePageChange = (page: string) => {
     if (setPage) {
@@ -542,20 +583,27 @@ export const Fitness = ({ setPage }: FitnessProps) => {
           </FadeIn>
 
           <Stagger staggerDelay={0.15}>
-            <MethodsGrid>
+            <MethodsGrid sx={{ gridTemplateColumns: { xs: '1fr', md: 'repeat(2, 1fr)' } }}>
               {trainMethods.map((method, i) => (
                 <MethodCard key={i}>
-                  <MethodImageContainer>
-                    <img
-                      src={method.image || [
-                        'https://images.unsplash.com/photo-1517960413843-0aee8e2d471c?q=80&w=600&auto=format&fit=crop',
-                        'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop',
-                        'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop',
-                      ][i % 3]}
-                      alt={method.title}
-                      referrerPolicy="no-referrer"
-                    />
-                    <MethodImageOverlay />
+                  <MethodImageContainer sx={{ position: 'relative' }}>
+                    {(method as any).videoSrc ? (
+                      <LazyVideoPreview
+                        src={(method as any).videoSrc}
+                        onClick={() => setActiveMethodVideo((method as any).videoSrc)}
+                      />
+                    ) : (
+                      <img
+                        src={method.image || [
+                          'https://images.unsplash.com/photo-1517960413843-0aee8e2d471c?q=80&w=600&auto=format&fit=crop',
+                          'https://images.unsplash.com/photo-1506744038136-46273834b3fb?q=80&w=600&auto=format&fit=crop',
+                          'https://images.unsplash.com/photo-1518611012118-696072aa579a?q=80&w=600&auto=format&fit=crop',
+                        ][i % 3]}
+                        alt={method.title}
+                        referrerPolicy="no-referrer"
+                      />
+                    )}
+                    <MethodImageOverlay sx={{ pointerEvents: 'none' }} />
                     <MethodBadge>{method.title}</MethodBadge>
                   </MethodImageContainer>
 
@@ -967,6 +1015,45 @@ export const Fitness = ({ setPage }: FitnessProps) => {
           )}
         </DialogContent>
       </Dialog>
+
+      {/* Method Video Fullscreen Modal */}
+      <AnimatePresence>
+        {activeMethodVideo && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
+            onClick={() => setActiveMethodVideo(null)}
+            style={{ position: 'fixed', inset: 0, zIndex: 9999, backgroundColor: 'rgba(0,0,0,0.93)', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}
+          >
+            <motion.div
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.88, opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              onClick={(e) => e.stopPropagation()}
+              style={{ position: 'relative', width: '100%', maxWidth: '960px', aspectRatio: '16/9' }}
+            >
+              <IconButton
+                onClick={() => setActiveMethodVideo(null)}
+                size="small"
+                sx={{ position: 'absolute', top: -44, right: 0, color: 'rgba(255,255,255,0.7)', bgcolor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(255,255,255,0.2)', '&:hover': { color: '#D4AF37', bgcolor: 'rgba(212,175,55,0.15)' } }}
+              >
+                <CloseIcon />
+              </IconButton>
+              <Box
+                component="video"
+                src={activeMethodVideo}
+                autoPlay
+                controls
+                playsInline
+                sx={{ width: '100%', height: '100%', objectFit: 'contain', borderRadius: '12px', display: 'block', outline: 'none' }}
+              />
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Transformation Form Modal */}
       <TransformationForm

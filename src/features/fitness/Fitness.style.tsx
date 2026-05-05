@@ -475,7 +475,7 @@ export const MethodCard = styled(motion.div)(({ theme }) => ({
 }));
 export const MethodImageContainer = styled(Box)(({ theme }) => ({
   position: 'relative',
-  aspectRatio: '1/1',
+  aspectRatio: '5/4',
   overflow: 'hidden',
   background: theme.palette.background.paper,
   '& img': {
