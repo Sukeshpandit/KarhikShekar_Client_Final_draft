@@ -614,12 +614,9 @@ export const FeatureLabel = styled(Box)(({ theme }) => ({
   },
 }));
 
-export const FeatureImageContainer = styled(motion.div)(({ theme }) => ({
-  display: 'none',
-  [theme.breakpoints.up('lg')]: {
-    display: 'block',
-  },
-}));
+export const FeatureImageContainer = styled(motion.div)({
+  display: 'block',
+});
 
 export const FeatureImage = styled(Box)({
   position: 'relative',

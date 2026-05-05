@@ -821,13 +821,12 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                 {/* Right Side Image */}
                 <ScaleIn delay={0.4}>
                   <FeatureImageContainer>
-                    <FeatureImage>
-                      <img
-                        src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=500&auto=format&fit=crop"
-                        alt="Fitness athlete"
-                        referrerPolicy="no-referrer"
+                    <FeatureImage sx={{ position: 'relative', aspectRatio: '25/16', height: 'auto' }}>
+                      <LazyVideoPreview
+                        src={`${import.meta.env.BASE_URL}assets/Gym/Videos/Gym_view.mp4`}
+                        onClick={() => setActiveMethodVideo(`${import.meta.env.BASE_URL}assets/Gym/Videos/Gym_view.mp4`)}
                       />
-                      <FeatureImageOverlay />
+                      <FeatureImageOverlay sx={{ pointerEvents: 'none' }} />
                     </FeatureImage>
                   </FeatureImageContainer>
                 </ScaleIn>
