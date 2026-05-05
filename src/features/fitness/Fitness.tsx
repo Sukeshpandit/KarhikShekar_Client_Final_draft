@@ -406,6 +406,11 @@ const testimonials = [
   { name: 'Kavya Menon',    results: 'Gained 8kg lean muscle',      image: `${BASE}assets/Transformations/IMG-20260413-WA0103.jpg` },
   { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/IMG-20260413-WA0104.jpg` },
   { name: 'Meera Nair',     results: 'Complete body transformation', image: `${BASE}assets/Transformations/IMG-20260413-WA0105.jpg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF1.jpg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF2.jpg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF3.jpg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF4.jpg` },
+
 ];
 
 export const Fitness = ({ setPage }: FitnessProps) => {
