@@ -164,15 +164,21 @@ const reels = [
 
 const galleryImages = [
   { src: 'Acting/Anger.jpg', span: 'col-span-1 md:col-span-2 row-span-2' },
-  { src: 'Gym/heroImage2.png', span: 'col-span-1 row-span-1' },
-  { src: 'Gym/heroImage3.png', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/gajarama2.jpeg', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/Ambarisha1.jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/onPaper2.jpeg', span: 'col-span-1 row-span-1' },
   { src: 'Gym/Homehero1.JPG', span: 'col-span-1 md:col-span-2 row-span-1' },
   { src: 'Acting/Prabas.jpg', span: 'col-span-1 row-span-2' },
+  { src: 'Posters/onStage.jpeg', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/KamalSri1.jpeg', span: 'col-span-1 row-span-1' },
   { src: 'Acting/shared image (1).jpg', span: 'col-span-1 md:col-span-2 row-span-2' },
+  { src: 'Posters/onPaper.jpeg', span: 'col-span-1 row-span-1' },
   { src: 'Gym/shared image (3).jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/onPaper3.jpeg', span: 'col-span-1 row-span-1' },
   { src: 'Gym/shared image (4).jpg', span: 'col-span-1 row-span-1' },
-  { src: 'Acting/shared image (5).jpg', span: 'col-span-1 row-span-1' },
-  { src: 'Acting/IMG-20260413-WA0087.jpg', span: 'col-span-1 md:col-span-2 row-span-1' },
+  { src: 'Posters/KamalSri2.jpeg', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/Ambarisha.jpg', span: 'col-span-1 row-span-1' },
+  { src: 'Posters/cutout.jpeg', span: 'col-span-1 md:col-span-2 row-span-1' },
   { src: 'Acting/Tiger_prabrakar.jpg', span: 'col-span-1 row-span-1' },
 ];
 

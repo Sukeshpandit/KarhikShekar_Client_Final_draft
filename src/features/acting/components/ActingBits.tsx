@@ -186,11 +186,13 @@ export const ActingBits = () => {
   const [activeClip, setActiveClip] = useState<Clip | null>(null);
 
   const clips: Clip[] = [
-    { title: 'The Silent Warrior', label: 'Action',  videoSrc: 'https://youtu.be/RZxYXO4PHG8' },
-    { title: 'Shadow Protocol',    label: 'Thriller', videoSrc: testVideo },
-    { title: 'City of Gold',       label: 'Crime',    videoSrc: testVideo },
-    { title: 'The Last Stand',     label: 'Action',   videoSrc: testVideo },
-    { title: 'Midnight Chase',     label: 'Thriller', videoSrc: testVideo },
+    // { title: 'The Silent Warrior', label: 'Action',  videoSrc: 'https://youtu.be/RZxYXO4PHG8' },
+    { title: 'Shadow Protocol',    label: 'Thriller', videoSrc: `${import.meta.env.BASE_URL}assets/Acting/reel/reelItem.mp4` },
+    { title: 'City of Gold',       label: 'Crime',    videoSrc: `${import.meta.env.BASE_URL}assets/Acting/reel/reelItem2.mp4` },
+    { title: 'The Last Stand',     label: 'Action',   videoSrc: `${import.meta.env.BASE_URL}assets/Acting/reel/reelItem3.mp4` },
+    { title: 'Midnight Chase',     label: 'Thriller', videoSrc: `${import.meta.env.BASE_URL}assets/Acting/reel/reelItem4.mp4` },
+    { title: 'Midnight Chase',     label: 'Thriller', videoSrc: `${import.meta.env.BASE_URL}assets/Acting/reel/reelItem5.mp4` },
+    { title: 'Midnight Chase',     label: 'Thriller', videoSrc: `${import.meta.env.BASE_URL}assets/Acting/reel/reelItem6.mp4` },
   ];
 
   return (
