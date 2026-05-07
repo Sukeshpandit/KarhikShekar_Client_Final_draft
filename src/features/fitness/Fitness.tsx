@@ -406,11 +406,13 @@ const testimonials = [
   { name: 'Kavya Menon',    results: 'Gained 8kg lean muscle',      image: `${BASE}assets/Transformations/IMG-20260413-WA0103.jpg` },
   { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/IMG-20260413-WA0104.jpg` },
   { name: 'Meera Nair',     results: 'Complete body transformation', image: `${BASE}assets/Transformations/IMG-20260413-WA0105.jpg` },
-  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF1.jpg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF1.jpeg` },
   { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF2.jpg` },
   { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF3.jpg` },
   { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF4.jpg` },
-
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF5.jpeg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF6.jpeg` },
+  { name: 'Aditya Iyer',    results: 'Lost 35kg in 8 months',       image: `${BASE}assets/Transformations/TF7.jpeg` },
 ];
 
 export const Fitness = ({ setPage }: FitnessProps) => {
@@ -824,7 +826,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                 </Stagger>
 
                 {/* Right Side Image */}
-                <ScaleIn delay={0.4}>
+                {/* <ScaleIn delay={0.4}>
                   <FeatureImageContainer>
                     <FeatureImage sx={{ position: 'relative', aspectRatio: '25/16', height: 'auto' }}>
                       <LazyVideoPreview
@@ -834,7 +836,14 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                       <FeatureImageOverlay sx={{ pointerEvents: 'none' }} />
                     </FeatureImage>
                   </FeatureImageContainer>
-                </ScaleIn>
+                </ScaleIn> */}
+                  <FacilityImage>
+                <img
+                  src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1200&auto=format&fit=crop"
+                  alt="Gym Facility"
+                  referrerPolicy="no-referrer"
+                />
+              </FacilityImage>
               </FeaturesInnerGrid>
             </FeaturesCardContainer>
           </SlideIn>
@@ -846,13 +855,17 @@ export const Fitness = ({ setPage }: FitnessProps) => {
         <SectionContainer>
           <FacilityGrid>
             <SlideIn direction="left">
-              <FacilityImage>
-                <img
-                  src="https://images.unsplash.com/photo-1461896836934-ffe607ba8211?q=80&w=1200&auto=format&fit=crop"
-                  alt="Gym Facility"
-                  referrerPolicy="no-referrer"
-                />
-              </FacilityImage>
+              <ScaleIn delay={0.4}>
+                  <FeatureImageContainer>
+                    <FeatureImage sx={{ position: 'relative', aspectRatio: '25/16', height: 'auto' }}>
+                      <LazyVideoPreview
+                        src={`${import.meta.env.BASE_URL}assets/Gym/Videos/Gym_view.mp4`}
+                        onClick={() => setActiveMethodVideo(`${import.meta.env.BASE_URL}assets/Gym/Videos/Gym_view.mp4`)}
+                      />
+                      <FeatureImageOverlay sx={{ pointerEvents: 'none' }} />
+                    </FeatureImage>
+                  </FeatureImageContainer>
+                </ScaleIn>
             </SlideIn>
 
             <SlideIn direction="right">

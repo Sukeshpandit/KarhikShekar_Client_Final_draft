@@ -362,7 +362,7 @@ const HOME_CONTENT = {
       { label: 'Movies & Projects', value: '12+', icon: <MovieIcon /> },
       { label: 'YouTube Views', value: '491.3K', icon: <YouTubeIcon /> },
       { label: 'WildLife Rescued', value: '10,000+', icon: <PetsIcon /> },
-      { label: 'Years Experience', value: '10+', icon: <AccessTimeIcon /> },
+      { label: 'Years Experience', value: '18+', icon: <AccessTimeIcon /> },
     ],
   },
   
