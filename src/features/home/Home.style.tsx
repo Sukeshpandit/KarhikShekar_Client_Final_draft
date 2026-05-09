@@ -945,26 +945,74 @@ export const SocialStats = styled(Box)(({ theme }) => ({
 }));
 
 export const StatBox = styled(motion.div)(({ theme }) => ({
+  position: 'relative',
+  overflow: 'hidden',
   padding: theme.spacing(2.5),
-  paddingLeft: theme.spacing(2.5),
-  paddingRight: theme.spacing(2.5),
   display: 'flex',
   alignItems: 'center',
   gap: theme.spacing(2),
-  borderRadius: theme.spacing(1.5),
+  borderRadius: '20px',
   width: '100%',
-  background: 'rgba(255, 255, 255, 0.05)',
-  backdropFilter: 'blur(10px)',
-  border: '1px solid rgba(255, 255, 255, 0.1)',
-  
+
+  // Water morphism base — deep translucent water layer
+  background: 'rgba(6, 55, 130, 0.08)',
+  backdropFilter: 'blur(24px) saturate(170%) brightness(1.05)',
+  WebkitBackdropFilter: 'blur(24px) saturate(170%) brightness(1.05)',
+  border: '1px solid rgba(110, 210, 255, 0.16)',
+  boxShadow: [
+    'inset 0 1.5px 0 rgba(150, 235, 255, 0.22)',  // wet surface top highlight
+    'inset 0 -1px 0 rgba(0, 50, 140, 0.14)',       // depth at bottom
+    '0 8px 32px rgba(0, 30, 100, 0.14)',            // underwater depth shadow
+    '0 2px 8px rgba(0, 0, 0, 0.08)',
+  ].join(', '),
+  transition: 'background 0.4s ease, box-shadow 0.4s ease, border-color 0.4s ease',
+
+  // Water surface wash — top ambient light diffusion
+  '&::before': {
+    content: '""',
+    position: 'absolute',
+    top: 0, left: 0, right: 0,
+    height: '48%',
+    background: 'linear-gradient(180deg, rgba(150, 235, 255, 0.10) 0%, rgba(100, 200, 255, 0) 100%)',
+    borderRadius: '20px 20px 0 0',
+    pointerEvents: 'none',
+    zIndex: 0,
+  },
+
+  // Diagonal ripple caustic — light bending through water
+  '&::after': {
+    content: '""',
+    position: 'absolute',
+    top: '-50%', left: '-8%',
+    width: '42%', height: '200%',
+    background: 'linear-gradient(112deg, transparent 33%, rgba(150, 235, 255, 0.08) 50%, transparent 67%)',
+    pointerEvents: 'none',
+    zIndex: 0,
+    transform: 'skewX(-7deg)',
+  },
+
+  '& > *': { position: 'relative', zIndex: 1 },
+
+  '&:hover': {
+    background: 'rgba(10, 75, 170, 0.13)',
+    borderColor: 'rgba(120, 225, 255, 0.30)',
+    boxShadow: [
+      'inset 0 2px 0 rgba(170, 245, 255, 0.30)',
+      'inset 0 -1px 0 rgba(0, 50, 140, 0.18)',
+      '0 16px 48px rgba(0, 30, 100, 0.20)',
+      '0 4px 12px rgba(0, 0, 0, 0.10)',
+    ].join(', '),
+  },
+
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(3),
     gap: theme.spacing(2.5),
-    borderRadius: theme.spacing(1.875),
+    borderRadius: '22px',
     flex: '1 1 calc(50% - 10px)',
     minWidth: '200px',
+    '&::before': { borderRadius: '22px 22px 0 0' },
   },
-  
+
   [theme.breakpoints.up('md')]: {
     flex: '0 1 auto',
     width: 'auto',
@@ -972,20 +1020,21 @@ export const StatBox = styled(motion.div)(({ theme }) => ({
 }));
 
 export const StatIcon = styled(Box)(({ theme }) => ({
-  width: theme.spacing(5),
-  height: theme.spacing(5),
-  backgroundColor: 'rgba(59, 130, 246, 0.1)',
-  borderRadius: theme.spacing(0.75),
+  width: theme.spacing(5.5),
+  height: theme.spacing(5.5),
+  borderRadius: '50%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: theme.palette.primary.main,
   flexShrink: 0,
-  
+  background: 'rgba(0, 120, 220, 0.12)',
+  backdropFilter: 'blur(8px)',
+  border: '1px solid rgba(120, 215, 255, 0.20)',
+  boxShadow: 'inset 0 1px 0 rgba(180, 245, 255, 0.20), 0 4px 14px rgba(0, 80, 200, 0.12)',
+
   [theme.breakpoints.up('sm')]: {
-    width: theme.spacing(6),
-    height: theme.spacing(6),
-    borderRadius: theme.spacing(1),
+    width: theme.spacing(6.5),
+    height: theme.spacing(6.5),
   },
 }));
 

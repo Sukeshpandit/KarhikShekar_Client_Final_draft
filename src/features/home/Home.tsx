@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Box, useTheme } from '@mui/material';
-import { motion } from 'motion/react';
+import { motion, AnimatePresence } from 'motion/react';
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import YouTubeIcon from '@mui/icons-material/YouTube';
 import InstagramIcon from '@mui/icons-material/Instagram';
@@ -13,7 +13,7 @@ import AccessTimeIcon from '@mui/icons-material/AccessTime';
 import ShieldIcon from '@mui/icons-material/Shield';
 import Star from '@mui/icons-material/Star';
 
-import { PageType, PAGES } from '../../config/constants';
+import { PageType } from '../../config/constants';
 import { GLOBAL_CONFIG } from '../../config/global.config';
 import { StatCard, FadeIn, SlideIn, Stagger, ScaleIn, Bounce } from '../../shared/components';
 import {
@@ -48,8 +48,6 @@ import {
   ThumbnailImage,
   ThumbnailOverlay,
   ThumbnailTag,
-  ThumbnailLabel,
-  ThumbnailLabelText,
   StatsSection,
   StatsBgImage,
   StatsOverlay,
@@ -318,32 +316,7 @@ const HOME_CONTENT = {
     { text: 'Wildlife Rescuer', icon: <PetsIcon />, color: '#f59e0b' },
   ],
   
-  thumbnails: [
-    {
-      id: PAGES.FITNESS,
-      label: 'Fitness',
-      tag: 'Training',
-      image: `${import.meta.env.BASE_URL}assets/Acting/Tiger_prabrakar.jpg`,
-    },
-    {
-      id: PAGES.ACTING,
-      label: 'Acting',
-      tag: 'Cinema',
-      image: `${import.meta.env.BASE_URL}assets/Acting/Prabas.jpg`,
-    },
-    {
-      id: PAGES.WILDLIFE,
-      label: 'Wildlife',
-      tag: 'Rescue',
-      image: 'https://images.unsplash.com/photo-1531386151447-fd76ad50012f?w=480&q=70',
-    },
-    // {
-    //   id: PAGES.JOURNEY,
-    //   label: 'Journey',
-    //   tag: 'Path',
-    //   image: 'https://picsum.photos/seed/karthik-gallery/480/300',
-    // },
-  ],
+  thumbnails: [],
   
   marquee: [
     'National Bodybuilder',
@@ -443,11 +416,42 @@ const HOME_CONTENT = {
 
 // Legacy exports for backward compatibility
 const TAGLINES = HOME_CONTENT.taglines;
-const THUMBNAILS = HOME_CONTENT.thumbnails;
 const MARQUEE_ITEMS = HOME_CONTENT.marquee;
 
-export const Home = ({ setPage }: HomeProps) => {
+// Gallery carousel — images + reels from all asset folders
+const _BASE = import.meta.env.BASE_URL;
+
+type CarouselItem = { src: string; category: string; type: 'image' | 'video' };
+
+const CAROUSEL_IMAGES: CarouselItem[] = [
+  { src: `${_BASE}assets/Acting/smoke.jpeg`,                   category: 'Acting',   type: 'image' },
+  { src: `${_BASE}assets/Gym/body.jpeg`,                       category: 'Fitness',  type: 'image' },
+  { src: `${_BASE}assets/Acting/reel/reelItem.mp4`,            category: 'Reel',     type: 'video' },
+  { src: `${_BASE}assets/Acting/IMG-20260413-WA0100.jpg`,      category: 'Cinema',   type: 'image' },
+  { src: `${_BASE}assets/Acting/withceleb.jpeg`,               category: 'Acting',   type: 'image' },
+  { src: `${_BASE}assets/Gym/showOnStage.jpeg`,                category: 'Fitness',  type: 'image' },
+  { src: `${_BASE}assets/Style/IMG-20260413-WA0063.jpg`,       category: 'Style',    type: 'image' },
+  { src: `${_BASE}assets/Acting/reel/reelItem2.mp4`,           category: 'Reel',     type: 'video' },
+  { src: `${_BASE}assets/Posters/onPaper.jpeg`,                category: 'Cinema',   type: 'image' },
+  { src: `${_BASE}assets/Acting/Anger.jpg`,                    category: 'Acting',   type: 'image' },
+  { src: `${_BASE}assets/Gym/poseInGym.jpeg`,                  category: 'Fitness',  type: 'image' },
+  { src: `${_BASE}assets/Style/IMG-20260413-WA0053.jpg`,       category: 'Style',    type: 'image' },
+  { src: `${_BASE}assets/Posters/onStage.jpeg`,                category: 'Cinema',   type: 'image' },
+  { src: `${_BASE}assets/Acting/dubbing.jpeg`,                 category: 'Acting',   type: 'image' },
+  { src: `${_BASE}assets/Gym/handBalance.jpeg`,                category: 'Fitness',  type: 'image' },
+];
+
+export const Home = (_props: HomeProps) => {
   const theme = useTheme();
+  // Lightbox state
+  const [lightboxItem, setLightboxItem] = useState<CarouselItem | null>(null);
+
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxItem(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
   // State for tagline cycling
   const [taglineIndex, setTaglineIndex] = useState(0);
   
@@ -628,12 +632,6 @@ export const Home = ({ setPage }: HomeProps) => {
     };
   }, []);
 
-  const handlePageChange = (page: PageType) => {
-    if (setPage) {
-      setPage(page);
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-  };
   return (
     <HomeWrapper>
         {/* ================================================================= */}
@@ -642,14 +640,14 @@ export const Home = ({ setPage }: HomeProps) => {
         <HeroSection>
         {/* Mobile hero image — centered, shown only below md */}
         <HeroImageMobile
-            src={`${import.meta.env.BASE_URL}assets/Gym/Homehero1.JPG`}
+            src={`${import.meta.env.BASE_URL}assets/Acting/smoke_background_mobile.png`}
             alt="Karthik Shekar Acharya"
         />
 
         {/* Desktop hero image — shown only from md upward */}
         <HeroImage
             as={motion.img}
-            src={`${import.meta.env.BASE_URL}assets/Gym/heroImage2.png`}
+            src={`${import.meta.env.BASE_URL}assets/Acting/smoke_background1.png`}
             alt="Karthik Shekar Acharya"
             initial={{ scale: 1.06, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -727,46 +725,48 @@ export const Home = ({ setPage }: HomeProps) => {
               <CarouselFade className="right" />
 
               <CarouselScrollTrack ref={carouselRef}>
-              <CarouselStrip>
-                {THUMBNAILS.map((item, index) => (
-                  <ThumbnailCard
-                    key={index}
-                    onClick={() => handlePageChange(item.id)}
-                    whileHover={{ scale: 1.02 }}
-                  >
-                    <ThumbnailImage src={item.image} alt={item.label} />
-                    <ThumbnailOverlay />
-                    <ThumbnailTag>{item.tag}</ThumbnailTag>
-                    <ThumbnailLabel>
-                      <ThumbnailLabelText>{item.label}</ThumbnailLabelText>
-                      <ChevronRightIcon
-                        sx={{
-                          fontSize: '0.75rem',
-                          color: '#D4AF37',
-                          flexShrink: 0,
-                        }}
-                      />
-                    </ThumbnailLabel>
-                  </ThumbnailCard>
-                ))}
-                {THUMBNAILS.map((item, index) => (
-                  <ThumbnailCard key={`dup-${index}`} disabled>
-                    <ThumbnailImage src={item.image} alt={item.label} />
-                    <ThumbnailOverlay />
-                    <ThumbnailTag>{item.tag}</ThumbnailTag>
-                    <ThumbnailLabel>
-                      <ThumbnailLabelText>{item.label}</ThumbnailLabelText>
-                      <ChevronRightIcon
-                        sx={{
-                          fontSize: '0.75rem',
-                          color: '#D4AF37',
-                          flexShrink: 0,
-                        }}
-                      />
-                    </ThumbnailLabel>
-                  </ThumbnailCard>
-                ))}
-              </CarouselStrip>
+                <CarouselStrip>
+                  {[...CAROUSEL_IMAGES, ...CAROUSEL_IMAGES].map((item, index) => (
+                    <ThumbnailCard
+                      key={index}
+                      whileHover={{ scale: 1.02 }}
+                      onClick={() => setLightboxItem(item)}
+                      style={{ cursor: 'pointer' }}
+                    >
+                      {item.type === 'video' ? (
+                        <>
+                          <video
+                            src={item.src}
+                            autoPlay
+                            loop
+                            muted
+                            playsInline
+                            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                          />
+                          {/* Play badge for video cards */}
+                          <Box sx={{
+                            position: 'absolute', inset: 0, display: 'flex',
+                            alignItems: 'center', justifyContent: 'center', zIndex: 2,
+                          }}>
+                            <Box sx={{
+                              width: 44, height: 44, borderRadius: '50%',
+                              background: 'rgba(0,0,0,0.55)',
+                              backdropFilter: 'blur(6px)',
+                              border: '1.5px solid rgba(255,255,255,0.35)',
+                              display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            }}>
+                              <PlayArrowIcon sx={{ fontSize: '1.4rem', color: '#fff' }} />
+                            </Box>
+                          </Box>
+                        </>
+                      ) : (
+                        <ThumbnailImage src={item.src} alt={item.category} />
+                      )}
+                      <ThumbnailOverlay />
+                      {/* <ThumbnailTag>{item.category}</ThumbnailTag> */}
+                    </ThumbnailCard>
+                  ))}
+                </CarouselStrip>
               </CarouselScrollTrack>
             </CarouselContainer>
           </SlideIn>
@@ -915,12 +915,11 @@ export const Home = ({ setPage }: HomeProps) => {
           <Stagger staggerDelay={0.1}>
             <SocialStats>
               {/* YouTube Stats - Live Data */}
-              <StatBox 
-                whileHover={{ scale: 1.05, y: -4 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                style={{ 
-                  background: 'linear-gradient(135deg, rgba(255, 0, 0, 0.1) 0%, rgba(139, 0, 0, 0.05) 100%)',
-                  borderLeft: '3px solid #FF0000'
+              <StatBox
+                whileHover={{ y: -6, transition: { type: 'spring', stiffness: 360, damping: 22 } }}
+                style={{
+                  background: 'linear-gradient(140deg, rgba(6,55,130,0.10) 0%, rgba(220,0,0,0.08) 100%)',
+                  borderColor: 'rgba(255, 90, 90, 0.28)',
                 }}
               >
                 <StatIcon>
@@ -948,12 +947,11 @@ export const Home = ({ setPage }: HomeProps) => {
               </StatBox>
 
               {/* Instagram Stats */}
-              <StatBox 
-                whileHover={{ scale: 1.05, y: -4 }}
-                transition={{ type: "spring", stiffness: 300 }}
-                style={{ 
-                  background: 'linear-gradient(135deg, rgba(225, 48, 108, 0.1) 0%, rgba(193, 53, 132, 0.05) 100%)',
-                  borderLeft: '3px solid #E1306C'
+              <StatBox
+                whileHover={{ y: -6, transition: { type: 'spring', stiffness: 360, damping: 22 } }}
+                style={{
+                  background: 'linear-gradient(140deg, rgba(6,55,130,0.10) 0%, rgba(200,40,110,0.08) 100%)',
+                  borderColor: 'rgba(225, 80, 150, 0.28)',
                 }}
               >
                 <StatIcon>
@@ -972,12 +970,11 @@ export const Home = ({ setPage }: HomeProps) => {
 
               {/* Total Videos */}
               {youtubeStats?.totalVideos && (
-                <StatBox 
-                  whileHover={{ scale: 1.05, y: -4 }}
-                  transition={{ type: "spring", stiffness: 300 }}
-                  style={{ 
-                    background: 'linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%)',
-                    borderLeft: '3px solid #D4AF37'
+                <StatBox
+                  whileHover={{ y: -6, transition: { type: 'spring', stiffness: 360, damping: 22 } }}
+                  style={{
+                    background: 'linear-gradient(140deg, rgba(6,55,130,0.10) 0%, rgba(180,130,0,0.08) 100%)',
+                    borderColor: 'rgba(212, 175, 55, 0.30)',
                   }}
                 >
                   <StatIcon>
@@ -1057,7 +1054,75 @@ export const Home = ({ setPage }: HomeProps) => {
         </ViewAllButton>
       </SocialSection>
 
- 
+      {/* ================================================================= */}
+      {/* FULLSCREEN LIGHTBOX */}
+      {/* ================================================================= */}
+      <AnimatePresence>
+        {lightboxItem && (
+          <motion.div
+            key="lightbox-backdrop"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            onClick={() => setLightboxItem(null)}
+            style={{
+              position: 'fixed', inset: 0, zIndex: 9999,
+              background: 'rgba(0,0,0,0.90)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}
+          >
+            {/* Close button */}
+            <Box
+              onClick={() => setLightboxItem(null)}
+              sx={{
+                position: 'absolute', top: 20, right: 24,
+                width: 40, height: 40, borderRadius: '50%',
+                background: 'rgba(255,255,255,0.12)',
+                border: '1px solid rgba(255,255,255,0.25)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                cursor: 'pointer', fontSize: '1.2rem', color: '#fff',
+                '&:hover': { background: 'rgba(255,255,255,0.22)' },
+              }}
+            >
+              ✕
+            </Box>
+
+            {/* Content — stop propagation so clicking media doesn't close */}
+            <motion.div
+              key="lightbox-content"
+              initial={{ scale: 0.88, opacity: 0 }}
+              animate={{ scale: 1,    opacity: 1 }}
+              exit={{ scale: 0.88,    opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 320, damping: 28 }}
+              onClick={e => e.stopPropagation()}
+              style={{ maxWidth: '95vw', maxHeight: '95vh', display: 'flex' }}
+            >
+              {lightboxItem.type === 'video' ? (
+                <video
+                  src={lightboxItem.src}
+                  controls
+                  autoPlay
+                  style={{
+                    maxWidth: '95vw', maxHeight: '90vh',
+                    borderRadius: 16, outline: 'none',
+                  }}
+                />
+              ) : (
+                <img
+                  src={lightboxItem.src}
+                  alt={lightboxItem.category}
+                  style={{
+                    maxWidth: '95vw', maxHeight: '90vh',
+                    borderRadius: 16, objectFit: 'contain',
+                  }}
+                />
+              )}
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
     </HomeWrapper>
   );
 };
