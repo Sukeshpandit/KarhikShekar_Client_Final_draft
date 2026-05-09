@@ -1,13 +1,6 @@
 import { memo } from 'react';
-import {
-  StatCardScene,
-  StatCardWrapper,
-  StatCardFront,
-  StatCardBack,
-  StatIcon,
-  StatValue,
-  StatLabel,
-} from './StatCard.style';
+import { motion } from 'motion/react';
+import { LiquidCard, StatIconWrap, StatValue, StatLabel } from './StatCard.style';
 
 interface StatCardProps {
   label: string;
@@ -15,39 +8,21 @@ interface StatCardProps {
   icon: React.ReactNode;
 }
 
-const StatCardComponent: React.FC<StatCardProps> = ({ label, value, icon }) => {
-  return (
-    <StatCardScene>
-      <StatCardWrapper>
-        {/* Front face */}
-        <StatCardFront>
-          <StatIcon>{icon}</StatIcon>
-          <StatValue>{value}</StatValue>
-          <StatLabel>{label}</StatLabel>
-        </StatCardFront>
+const springConfig = { type: 'spring', stiffness: 380, damping: 22 } as const;
+const tapConfig   = { type: 'spring', stiffness: 500, damping: 30 } as const;
 
-        {/* Back face — gold mirror */}
-        <StatCardBack>
-          <StatIcon sx={{ color: '#D4AF37', background: 'radial-gradient(circle, rgba(212,175,55,0.25) 0%, transparent 70%)' }}>
-            {icon}
-          </StatIcon>
-          <StatValue
-            sx={{
-              background: 'linear-gradient(135deg, #fff 0%, #D4AF37 60%, #fff 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundClip: 'text',
-            }}
-          >
-            {value}
-          </StatValue>
-          <StatLabel sx={{ color: 'rgba(255,255,255,0.95)', letterSpacing: '0.2em' }}>
-            {label}
-          </StatLabel>
-        </StatCardBack>
-      </StatCardWrapper>
-    </StatCardScene>
-  );
-};
+const StatCardComponent: React.FC<StatCardProps> = ({ label, value, icon }) => (
+  <motion.div
+    whileHover={{ y: -9, scale: 1.025, transition: springConfig }}
+    whileTap={{ scale: 0.975, transition: tapConfig }}
+    style={{ borderRadius: 28, display: 'flex', justifyContent: 'center' }}
+  >
+    <LiquidCard>
+      <StatIconWrap>{icon}</StatIconWrap>
+      <StatValue>{value}</StatValue>
+      <StatLabel>{label}</StatLabel>
+    </LiquidCard>
+  </motion.div>
+);
 
 export const StatCard = memo(StatCardComponent);

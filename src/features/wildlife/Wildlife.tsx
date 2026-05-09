@@ -32,6 +32,7 @@ import {
   HeroBackground,
   HeroBackgroundImage,
   HeroBackgroundOverlay,
+  HeroCinematicOverlay,
   HeroContent,
   HeroBadge,
   HeroTitle,
@@ -138,6 +139,7 @@ interface Species {
   danger: 'High' | 'Low';
   color: 'red' | 'green';
   image: string;
+  objectPosition?: string;
 }
 
 interface Testimonial {
@@ -174,7 +176,7 @@ const CONFIG = {
     name: GLOBAL_CONFIG.personal.firstName,
     surname: `${GLOBAL_CONFIG.personal.middleName} ${GLOBAL_CONFIG.personal.lastName}`,
     tagline: GLOBAL_CONFIG.titles.wildlife,
-    description: '500+ Lives Saved | 10+ Years Experience | 24/7 Emergency Response',
+    description: '10000+ Lives Saved | 20+ Years Experience | 24/7 Emergency Response',
     badge: 'Certified Wildlife Rescuer',
   },
 };
@@ -319,12 +321,13 @@ const SPECIES_DATA: Species[] = [
     image: `${import.meta.env.BASE_URL}assets/wildlife/ratSnake.jpg`
   },
   {
-    name: 'Saw-scaled Viper',
-    scientific: 'Echis carinatus',
+    name: 'Indian King Cobra',
+    scientific: 'Ophiophagus hannah',
     category: 'Venomous',
     danger: 'High',
     color: 'red',
-    image: `${import.meta.env.BASE_URL}assets/wildlife/sawScaled.jpg`
+    image: `${import.meta.env.BASE_URL}assets/wildlife/12_-_The_Mystical_King_Cobra_and_Coffee_Forests.jpg`,
+    objectPosition: 'center 15%',
   },
 ];
 
@@ -332,7 +335,7 @@ const TESTIMONIALS_DATA: Testimonial[] = [
   {
     name: 'Priya Malhotra',
     initial: 'PM',
-    location: 'Bangalore',
+    location: 'Whitefield, Bangalore',
     rating: 5,
     text: 'Arrived within 12 minutes and handled the situation with complete professionalism. He saved the snake and kept our family safe.',
     rescue: 'Spectacled Cobra',
@@ -340,7 +343,7 @@ const TESTIMONIALS_DATA: Testimonial[] = [
   {
     name: 'Rajesh Agarwal',
     initial: 'RA',
-    location: 'Mysuru',
+    location: 'Mysuru, Karnataka',
     rating: 5,
     text: 'Outstanding expertise and dedication to wildlife conservation. He educated us on coexistence while safely relocating the python.',
     rescue: 'Indian Rock Python',
@@ -348,15 +351,15 @@ const TESTIMONIALS_DATA: Testimonial[] = [
   {
     name: 'Sneha Kumar',
     initial: 'SK',
-    location: 'Bangalore',
+    location: 'HSR Layout, Bangalore',
     rating: 5,
     text: 'Called at 2 AM with a viper in our bedroom. His rapid response and calm demeanor prevented a potential tragedy.',
     rescue: "Russell's Viper",
   },
   {
-    name: 'Vikram Singh',
-    initial: 'VS',
-    location: 'Pune',
+    name: 'Vikram Nair',
+    initial: 'VN',
+    location: 'Koramangala, Bangalore',
     rating: 5,
     text: 'Best decision to call for professional help. He handled a highly dangerous krait with precision and zero risk to anyone.',
     rescue: 'Common Krait',
@@ -364,18 +367,18 @@ const TESTIMONIALS_DATA: Testimonial[] = [
   {
     name: 'Anjali Sharma',
     initial: 'AS',
-    location: 'Bangalore',
+    location: 'Sarjapur Road, Bangalore',
     rating: 5,
     text: 'Not only rescued the snake from our warehouse but also gave valuable tips to prevent future encounters. Truly professional!',
     rescue: 'Rat Snake',
   },
   {
-    name: 'Rohan Patel',
-    initial: 'RP',
-    location: 'Goa',
+    name: 'Suresh Reddy',
+    initial: 'SR',
+    location: 'Mangaluru, Karnataka',
     rating: 5,
-    text: 'Exceptional service with deep knowledge of snake behavior. He turned a scary situation into an educational experience for my kids.',
-    rescue: "Saw-scaled Viper",
+    text: 'Exceptional knowledge of local snake species. He responded within the hour and relocated the cobra safely into the forest. Highly recommended.',
+    rescue: 'Spectacled Cobra',
   },
 ];
 
@@ -502,117 +505,154 @@ const AnimatedCounter = ({ end, duration = 2, suffix = '' }: { end: number; dura
 
 const HeroSectionComponent = () => (
   <HeroSection>
+    {/* ── Background layers ── */}
     <HeroBackground>
       <HeroBackgroundImage
         style={{ backgroundImage: `url(${import.meta.env.BASE_URL}assets/wildlife/Hero-Background.jpg)` }}
-        initial={{ scale: 1 }}
-        animate={{ scale: [1, 1.02, 1] }}
-        transition={{ duration: 50, repeat: Infinity, ease: "easeInOut" }}
+        initial={{ scale: 1.06 }}
+        animate={{ scale: [1.06, 1.0, 1.04, 1.0] }}
+        transition={{ duration: 40, repeat: Infinity, ease: 'easeInOut' }}
       />
-      {/* <HeroBackgroundOverlay /> */}
+      <HeroBackgroundOverlay />
+      <HeroCinematicOverlay />
     </HeroBackground>
 
+    {/* ── Main content ── */}
     <HeroContent>
-      <HeroBadge
-        initial={{ opacity: 0, y: -20 }}
+      {/* Badge */}
+      <motion.div
+        initial={{ opacity: 0, y: -16 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, delay: 0.2 }}
+        transition={{ duration: 0.7, delay: 0.2, ease: 'easeOut' }}
       >
-        <Shield fontSize="small" />
-        <span>{CONFIG.hero.badge}</span>
-      </HeroBadge>
+        <HeroBadge>
+          <span className="badge-dot" />
+          <Shield fontSize="small" />
+          <span>{CONFIG.hero.badge}</span>
+        </HeroBadge>
+      </motion.div>
 
+      {/* Name + tagline */}
       <HeroTitle
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.3 }}
+        transition={{ duration: 0.9, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
       >
         <h1>
-          <span className="name">{CONFIG.hero.name}</span>
-          <span className="surname">{CONFIG.hero.surname}</span>
+          <motion.span
+            className="name"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.35 }}
+          >
+            {CONFIG.hero.name}
+          </motion.span>
+          <motion.span
+            className="surname"
+            initial={{ opacity: 0, x: -30 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ duration: 0.8, delay: 0.45 }}
+          >
+            {CONFIG.hero.surname}
+          </motion.span>
         </h1>
-        <p className="tagline">{CONFIG.hero.tagline}</p>
+        <motion.p
+          className="tagline"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.6 }}
+        >
+          {CONFIG.hero.tagline}
+        </motion.p>
       </HeroTitle>
 
+      {/* Description */}
       <HeroDescription
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.8, delay: 0.4 }}
+        transition={{ duration: 0.9, delay: 0.55 }}
       >
         {CONFIG.hero.description}
       </HeroDescription>
 
+      {/* CTA Buttons */}
       <HeroButtonGroup
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.5 }}
+        transition={{ duration: 0.8, delay: 0.65 }}
       >
-        <EmergencyButton href={`tel:${CONFIG.contact.phone}`}>
-          <div className="shine" />
-          <Phone />
-          <span>Emergency Hotline</span>
-          <Bolt fontSize="small" />
-        </EmergencyButton>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <EmergencyButton href={`tel:${CONFIG.contact.phone}`}>
+            <div className="shine" />
+            <Phone sx={{ fontSize: 18 }} />
+            <span>Emergency Hotline</span>
+            <Bolt sx={{ fontSize: 16 }} />
+          </EmergencyButton>
+        </motion.div>
 
-        <SecondaryButton href={CONFIG.youtube.channelUrl} target="_blank" rel="noopener noreferrer">
-          <YouTube />
-          <span>Watch Rescues</span>
-        </SecondaryButton>
+        <motion.div whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+          <SecondaryButton href={CONFIG.youtube.channelUrl} target="_blank" rel="noopener noreferrer">
+            <YouTube sx={{ fontSize: 18 }} />
+            <span>Watch Rescues</span>
+          </SecondaryButton>
+        </motion.div>
       </HeroButtonGroup>
 
+      {/* Stats */}
       <StatsGrid
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1, delay: 0.6 }}
+        transition={{ duration: 1, delay: 0.75 }}
       >
-        <Stagger staggerDelay={0.1} style={{ display: 'contents' }}>
-            {IMPACT_STATS.map((stat, index) => {
-              const Icon = stat.icon;
-              const gradientColors = stat.color === 'from-red-500 to-pink-500'
-                ? 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)'
-                : stat.color === 'from-green-500 to-emerald-500'
-                ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
-                : stat.color === 'from-primary to-cyan-500'
-                ? 'linear-gradient(135deg, #D4AF37 0%, #F4D03F 100%)'
-                : 'linear-gradient(135deg, #f97316 0%, #ef4444 100%)';
-
-              return (
-                <StatCard key={index}>
-                  <StatValue>
-                    <AnimatedCounter
-                      end={typeof stat.value === 'string' ? 24 : stat.value}
-                      suffix={stat.suffix || ''}
-                    />
-                  </StatValue>
-
-                  <StatIconWrapper
-                    sx={{
-                      background: gradientColors,
-                    }}
-                  >
-                    <Icon />
-                  </StatIconWrapper>
-
-                  <StatLabel>{stat.label}</StatLabel>
-                </StatCard>
-              );
-            })}
+        <Stagger staggerDelay={0.08} style={{ display: 'contents' }}>
+          {IMPACT_STATS.map((stat, index) => {
+            const Icon = stat.icon;
+            const gradientColors =
+              stat.color === 'from-red-500 to-pink-500'     ? 'linear-gradient(135deg, #ef4444 0%, #ec4899 100%)' :
+              stat.color === 'from-green-500 to-emerald-500' ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' :
+              stat.color === 'from-primary to-cyan-500'      ? 'linear-gradient(135deg, #D4AF37 0%, #b8941f 100%)' :
+                                                               'linear-gradient(135deg, #f97316 0%, #ef4444 100%)';
+            return (
+              <StatCard
+                key={index}
+                whileHover={{ y: -6, transition: { duration: 0.25 } }}
+              >
+                <StatValue>
+                  <AnimatedCounter
+                    end={typeof stat.value === 'string' ? 24 : stat.value}
+                    suffix={stat.suffix || ''}
+                  />
+                </StatValue>
+                <StatIconWrapper sx={{ background: gradientColors }}>
+                  <Icon />
+                </StatIconWrapper>
+                <StatLabel>{stat.label}</StatLabel>
+              </StatCard>
+            );
+          })}
         </Stagger>
       </StatsGrid>
     </HeroContent>
 
+    {/* ── Scroll indicator ── */}
     <ScrollIndicator
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      transition={{ delay: 2, duration: 1 }}
+      transition={{ delay: 2.2, duration: 1 }}
     >
       <motion.div
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem' }}
+        animate={{ y: [0, 7, 0] }}
+        transition={{ duration: 2.2, repeat: Infinity, ease: 'easeInOut' }}
+        style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.6rem' }}
       >
+        <div className="mouse">
+          <motion.div
+            className="mouse-dot"
+            animate={{ y: [0, 8, 0], opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+          />
+        </div>
         <span>{WILDLIFE_CONTENT.hero.scrollText}</span>
-        <KeyboardArrowDown />
       </motion.div>
     </ScrollIndicator>
   </HeroSection>
@@ -873,7 +913,12 @@ const ExpertiseSection = () => (
             </DangerBar>
             
             <SpeciesImage>
-              <img src={species.image} alt={species.name} loading="lazy" />
+              <img
+                src={species.image}
+                alt={species.name}
+                loading="lazy"
+                style={species.objectPosition ? { objectPosition: species.objectPosition } : undefined}
+              />
               <SpeciesImageOverlay />
             </SpeciesImage>
 

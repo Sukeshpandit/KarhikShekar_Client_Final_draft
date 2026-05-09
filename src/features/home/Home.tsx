@@ -337,12 +337,12 @@ const HOME_CONTENT = {
       tag: 'Rescue',
       image: 'https://images.unsplash.com/photo-1531386151447-fd76ad50012f?w=480&q=70',
     },
-    {
-      id: PAGES.JOURNEY,
-      label: 'Journey',
-      tag: 'Path',
-      image: 'https://picsum.photos/seed/karthik-gallery/480/300',
-    },
+    // {
+    //   id: PAGES.JOURNEY,
+    //   label: 'Journey',
+    //   tag: 'Path',
+    //   image: 'https://picsum.photos/seed/karthik-gallery/480/300',
+    // },
   ],
   
   marquee: [

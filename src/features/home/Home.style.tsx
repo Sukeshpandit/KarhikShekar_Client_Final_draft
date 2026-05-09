@@ -854,14 +854,14 @@ export const StatsOverlay = styled(Box)(({ theme }) => ({
 export const StatsGrid = styled(Box)(({ theme }) => ({
   display: 'grid',
   gridTemplateColumns: '1fr',
-  gap: theme.spacing(3),
+  gap: theme.spacing(1.5),
   maxWidth: '1280px',
   margin: '0 auto',
-   marginTop: theme.spacing(3),
-  
+  marginTop: theme.spacing(3),
+
   [theme.breakpoints.up('sm')]: {
     gridTemplateColumns: 'repeat(2, 1fr)',
-    gap: theme.spacing(4),
+    gap: theme.spacing(2.5),
     marginTop: theme.spacing(4),
   },
   
