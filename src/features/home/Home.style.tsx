@@ -79,7 +79,7 @@ export const HeroOverlay = styled(Box)(({ theme }) => ({
   inset: 0,
   zIndex: 1,
   // Mobile: top-to-bottom gradient keeps text readable while showing the centered subject
-  background: `linear-gradient(to bottom, ${theme.palette.background.default}cc 0%, ${theme.palette.background.default}55 45%, ${theme.palette.background.default}99 100%)`,
+  background: `linear-gradient(to bottom, ${theme.palette.background.default}88 0%, ${theme.palette.background.default}22 45%, ${theme.palette.background.default}66 100%)`,
   pointerEvents: 'none',
 
   [theme.breakpoints.up('md')]: {

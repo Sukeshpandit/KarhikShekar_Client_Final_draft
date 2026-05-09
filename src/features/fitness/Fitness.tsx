@@ -446,6 +446,26 @@ export const Fitness = ({ setPage }: FitnessProps) => {
   const [selectedPlanData, setSelectedPlanData] = useState<any>(FITNESS_CONTENT.pricing.sections[0].plans[0]);
   const [supplementCategory, setSupplementCategory] = useState<typeof FITNESS_CONTENT.supplements.categories[0] | null>(FITNESS_CONTENT.supplements.categories[0]);
   const [activeMethodVideo, setActiveMethodVideo] = useState<string | null>(null);
+  const supplementScrollRef  = useRef<HTMLDivElement>(null);
+  const supplementScrollFrame = useRef<number>(0);
+  const supplementScrollPaused = useRef(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      const el = supplementScrollRef.current;
+      if (!el) return;
+      cancelAnimationFrame(supplementScrollFrame.current);
+      const tick = () => {
+        if (!supplementScrollPaused.current) {
+          el.scrollLeft += 0.7;
+          if (el.scrollLeft >= el.scrollWidth / 2) el.scrollLeft = 0;
+        }
+        supplementScrollFrame.current = requestAnimationFrame(tick);
+      };
+      supplementScrollFrame.current = requestAnimationFrame(tick);
+    }, 280);
+    return () => { clearTimeout(timer); cancelAnimationFrame(supplementScrollFrame.current); };
+  }, [supplementCategory]);
 
   const handlePageChange = (page: string) => {
     if (setPage) {
@@ -832,11 +852,31 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                     {supplementCategory.desc}
                   </Box>
                 </Box>
-                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(4, 1fr)', sm: 'repeat(5, 1fr)', md: 'repeat(6, 1fr)' }, gap: { xs: 0.75, md: 1 } }}>
-                  {supplementCategory.products.map((p, i) => (
+                <Box
+                  ref={supplementScrollRef}
+                  onMouseEnter={() => { supplementScrollPaused.current = true; }}
+                  onMouseLeave={() => { supplementScrollPaused.current = false; }}
+                  onTouchStart={() => { supplementScrollPaused.current = true; }}
+                  onTouchEnd={() => { setTimeout(() => { supplementScrollPaused.current = false; }, 800); }}
+                  sx={{
+                    display: 'flex',
+                    flexWrap: 'nowrap',
+                    gap: 1,
+                    overflowX: 'auto',
+                    scrollbarWidth: 'none',
+                    '&::-webkit-scrollbar': { display: 'none' },
+                    cursor: 'grab',
+                    '&:active': { cursor: 'grabbing' },
+                    userSelect: 'none',
+                    pb: 0.5,
+                  }}
+                >
+                  {[...supplementCategory.products, ...supplementCategory.products].map((p, i) => (
                     <Box
                       key={i}
                       sx={{
+                        flexShrink: 0,
+                        width: { xs: '90px', sm: '108px', md: '120px' },
                         display: 'flex', flexDirection: 'column',
                         borderRadius: '8px', overflow: 'hidden',
                         bgcolor: 'rgba(255,255,255,0.04)',
@@ -860,10 +900,10 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                           img.onerror = null;
                           img.src = `https://placehold.co/200x200/0d1f30/D4AF37?text=${encodeURIComponent(p.name.split(' ').slice(0, 2).join(' '))}`;
                         }}
-                        sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', bgcolor: 'rgba(255,255,255,0.06)', display: 'block' }}
+                        sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', bgcolor: 'rgba(255,255,255,0.06)', display: 'block', pointerEvents: 'none' }}
                       />
                       <Box sx={{ p: 0.75, flex: 1 }}>
-                        <Box sx={{ fontSize: '0.62rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>{p.name}</Box>
+                        <Box sx={{ fontSize: '0.6rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>{p.name}</Box>
                       </Box>
                     </Box>
                   ))}
