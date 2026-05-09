@@ -640,7 +640,7 @@ export const Home = (_props: HomeProps) => {
         <HeroSection>
         {/* Mobile hero image — centered, shown only below md */}
         <HeroImageMobile
-            src={`${import.meta.env.BASE_URL}assets/Acting/smoke_background_mobile.png`}
+            src={`${import.meta.env.BASE_URL}assets/Gym/heroImage5.PNG`}
             alt="Karthik Shekar Acharya"
         />
 

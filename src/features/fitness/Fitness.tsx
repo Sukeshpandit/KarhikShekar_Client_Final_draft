@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { Box, Dialog, DialogContent, IconButton } from '@mui/material';
+import { Box, IconButton } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -285,44 +285,68 @@ const FITNESS_CONTENT = {
     ],
     categories: [
       { emoji: '💪', name: 'Whey Protein', desc: 'Fast-absorbing muscle builder', products: [
-        { name: 'ON Gold Standard Whey', desc: 'The #1 selling whey protein globally. 24g protein per serving with minimal fat and carbs — ideal for lean muscle and recovery.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927065725_1_e4cd4d22-bde2-4538-9b43-c261ab1b24c8.jpg?v=1773663774&width=200' },
-        { name: 'MuscleBlaze Biozyme Whey', desc: 'Clinically tested with a BioZyme enzyme blend for superior absorption. 25g protein per serving.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/39078/prd_3907787-MuscleBlaze-Biozyme-Performance-Whey-4.4-lb-Rich-Chocolate_o.jpg' },
-        { name: 'MyProtein Impact Whey', desc: 'Budget-friendly with 21g protein per serving, 50+ flavours, and a clean ingredient profile.', image: 'https://static.thcdn.com/productimg/original/10530943-2175262135686325.jpg' },
+        { name: 'ON Gold Standard Whey', desc: 'The #1 selling whey protein globally. 24g protein per serving — ideal for lean muscle.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927065725_1_e4cd4d22-bde2-4538-9b43-c261ab1b24c8.jpg?v=1773663774&width=200' },
+        { name: 'MuscleBlaze Biozyme Whey', desc: 'BioZyme enzyme blend for superior absorption. 25g protein per serving.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/39078/prd_3907787-MuscleBlaze-Biozyme-Performance-Whey-4.4-lb-Rich-Chocolate_o.jpg' },
+        { name: 'MyProtein Impact Whey', desc: 'Budget-friendly with 21g protein per serving and 50+ flavours.', image: 'https://static.thcdn.com/productimg/original/10530943-2175262135686325.jpg' },
+        { name: 'Dymatize ISO100', desc: 'Hydrolyzed whey isolate — 25g protein, 0g sugar, ultra-fast digestion for post-workout recovery.', image: 'https://dymatize.imgix.net/production/products/ISO100_Chocolate_Coconut_Product_Thumbnail_Product_Detail_Page_540x678.jpg?w=200&h=200&fit=crop&auto=format' },
+        { name: 'Scitron Advance Whey', desc: '24g protein per serving with digestive enzymes. Made for Indian athletes and climate.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/28521/prd_2852064-Scitron-Advance-Whey-Protein-4.4-lb-Chocolate_o.jpg' },
+        { name: 'GNC Pro Performance Whey', desc: 'Clean whey blend with 24g protein and a complete amino acid profile for everyday training.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/20965/prd_2096437-GNC-Pro-Performance-100-Whey-Protein-4.6-lb-Double-Chocolate_o.jpg' },
       ]},
       { emoji: '🏋️', name: 'Mass Gainer', desc: 'High-calorie bulk-up formula', products: [
-        { name: 'ON Serious Mass', desc: '1,250 calories and 50g protein per serving. Loaded with complex carbs and creatine for serious bulking.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/1110152_1_43efaf6f-3293-4107-ba6b-f12d32faae8d.webp?v=1752258610&width=200' },
-        { name: 'MuscleBlaze Super Mass Gainer', desc: '178g carbs and 31g protein per serving with a complex carb blend for sustained energy and size.', image: 'https://img6.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/37800/prd_3779965-MuscleBlaze-Super-Gainer-XXL-Weight-Gainer-6.6-lb-Chocolate_o.jpg' },
-        { name: 'Dymatize Super Mass Gainer', desc: '1,280 calories per serving with added BCAAs and creatine — perfect for hardgainers.', image: 'https://dymatize.imgix.net/production/products/SUPER_MASS_GAINER_GOURMET_VANILLA_Product_Thumbnail_Product_Detail_Page_540x678.jpg?w=200&h=200&fit=crop&auto=format' },
+        { name: 'ON Serious Mass', desc: '1,250 calories and 50g protein per serving — perfect for serious bulking.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/1110152_1_43efaf6f-3293-4107-ba6b-f12d32faae8d.webp?v=1752258610&width=200' },
+        { name: 'MuscleBlaze Super Mass Gainer', desc: '178g carbs and 31g protein with complex carb blend for sustained size gains.', image: 'https://img6.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/37800/prd_3779965-MuscleBlaze-Super-Gainer-XXL-Weight-Gainer-6.6-lb-Chocolate_o.jpg' },
+        { name: 'Dymatize Super Mass Gainer', desc: '1,280 calories per serving with added BCAAs and creatine for hardgainers.', image: 'https://dymatize.imgix.net/production/products/SUPER_MASS_GAINER_GOURMET_VANILLA_Product_Thumbnail_Product_Detail_Page_540x678.jpg?w=200&h=200&fit=crop&auto=format' },
+        { name: 'MuscleTech Mass Tech', desc: '2,000+ calories and 63g protein with a multi-stage carb formula for maximum mass.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/22308/prd_2230735-MuscleTech-Mass-Tech-Extreme-2000-7-lb-Triple-Chocolate-Brownie_o.jpg' },
+        { name: 'Scitron Mass Gainer', desc: '81g carbs and 30g protein per serving with creatine for rapid size and strength.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/29870/prd_2986994-Scitron-Nitro-Series-Mass-Gainer-6.6-lb-Chocolate_o.jpg' },
+        { name: 'Bigmuscles Real Mass', desc: 'High-protein mass gainer with digestive enzymes and low fat — trusted Indian brand.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/24027/prd_2402626-Bigmuscles-Nutrition-Real-Mass-Gainer-11-lb-Chocolate-Fudge_o.jpg' },
       ]},
       { emoji: '⚡', name: 'Pre-Workout', desc: 'Energy, focus & pump booster', products: [
-        { name: 'C4 Original (Cellucor)', desc: "One of the world's most popular pre-workouts. 150mg caffeine, beta-alanine, and creatine nitrate for energy and pumps.", image: 'https://cellucor.com/cdn/shop/files/C4AN_1002_Brand_C4YellowLabel_Transition_C4Original_CoreFlavors_BasicPDPs-OG-IBR-Hero-Grey.png?v=1773235672' },
-        { name: 'ON Gold Standard Pre-Workout', desc: '175mg caffeine with creatine, beta-alanine, and vitamin D for clean, focused energy.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927068900_1_6a4cfdd7-dd35-42eb-a43f-41438aef3738.jpg?v=1772714230&width=200' },
-        { name: 'MuscleBlaze Pre Workout 300', desc: '300mg caffeine plus citrulline and beta-alanine for extreme energy and endurance.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/30066/prd_3006517-MuscleBlaze-PRE-Workout-300-0.55-lb-Fruit-Punch_o.jpg' },
+        { name: 'C4 Original (Cellucor)', desc: "150mg caffeine, beta-alanine, and creatine nitrate for energy and pumps.", image: 'https://cellucor.com/cdn/shop/files/C4AN_1002_Brand_C4YellowLabel_Transition_C4Original_CoreFlavors_BasicPDPs-OG-IBR-Hero-Grey.png?v=1773235672' },
+        { name: 'ON Gold Standard Pre-Workout', desc: '175mg caffeine with creatine and beta-alanine for clean focused energy.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927068900_1_6a4cfdd7-dd35-42eb-a43f-41438aef3738.jpg?v=1772714230&width=200' },
+        { name: 'MuscleBlaze Pre Workout 300', desc: '300mg caffeine plus citrulline and beta-alanine for extreme endurance.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/30066/prd_3006517-MuscleBlaze-PRE-Workout-300-0.55-lb-Fruit-Punch_o.jpg' },
+        { name: 'Ghost Legend V3', desc: 'Fully transparent label with 250mg natural caffeine, L-citrulline, and nootropics for next-level focus.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/40210/prd_4020956-Ghost-Legend-Pre-Workout-Energy-0.66-lb-Cherry-Limeade_o.jpg' },
+        { name: 'Scitron Nitro Pre-Workout', desc: '200mg caffeine and 3g beta-alanine for explosive training sessions.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/29869/prd_2986993-Scitron-Nitro-Series-Pre-Workout-0.66-lb-Fruit-Punch_o.jpg' },
+        { name: 'MyProtein THE Pre-Workout', desc: 'Science-backed formula with citrulline malate, beta-alanine, and caffeine for peak output.', image: 'https://static.thcdn.com/productimg/original/11186726-2185262135686325.jpg' },
       ]},
       { emoji: '🔬', name: 'Creatine', desc: 'Strength & power enhancer', products: [
-        { name: 'ON Micronized Creatine', desc: 'Pure creatine monohydrate — 5g per serving, unflavored, mixes easily. Proven for strength and power gains.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927066623_1.jpg?v=1773302233&width=200' },
-        { name: 'MuscleTech Platinum Creatine', desc: 'Ultra-pure creatine monohydrate, lab-tested for potency and purity with no fillers.', image: 'https://www.muscletech.com/cdn/shop/files/platinum-creatine-grape-freeze.jpg?v=1766074513&width=200' },
-        { name: 'MuscleBlaze Creatine', desc: 'Micronized creatine monohydrate with an added absorption complex for faster uptake and results.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/35711/prd_3571057-MuscleBlaze-Creatine-Monohydrate-CreAMP-0.22-lb-Unflavoured_o.jpg' },
+        { name: 'ON Micronized Creatine', desc: 'Pure creatine monohydrate — 5g per serving, unflavored, proven for strength.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927066623_1.jpg?v=1773302233&width=200' },
+        { name: 'MuscleTech Platinum Creatine', desc: 'Ultra-pure creatine monohydrate, lab-tested for potency with no fillers.', image: 'https://www.muscletech.com/cdn/shop/files/platinum-creatine-grape-freeze.jpg?v=1766074513&width=200' },
+        { name: 'MuscleBlaze Creatine', desc: 'Micronized creatine with absorption complex for faster uptake and results.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/35711/prd_3571057-MuscleBlaze-Creatine-Monohydrate-CreAMP-0.22-lb-Unflavoured_o.jpg' },
+        { name: 'Dymatize Creatine', desc: 'Micronized creatine monohydrate with Creapure® certification for maximum purity.', image: 'https://dymatize.imgix.net/production/products/Creatine_Monohydrate_300g_Product_Thumbnail_Product_Detail_Page_540x678.jpg?w=200&h=200&fit=crop&auto=format' },
+        { name: 'Scitron Creatine Mono', desc: '100% Creapure creatine monohydrate — zero additives, zero fillers.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/29872/prd_2987243-Scitron-Creatine-Monohydrate-0.66-lb-Unflavoured_o.jpg' },
+        { name: 'GNC Pro Creatine', desc: 'Pharmaceutical-grade creatine monohydrate for reliable daily strength support.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/20890/prd_2088948-GNC-Pro-Performance-Creatine-Monohydrate-0.23-lb-Unflavored_o.jpg' },
       ]},
       { emoji: '🌿', name: 'BCAAs', desc: 'Recovery & endurance support', products: [
-        { name: 'Scivation Xtend', desc: 'The #1 BCAA brand. 7g BCAAs in the proven 2:1:1 ratio plus electrolytes for hydration and recovery.', image: 'https://cellucor.com/cdn/shop/files/XTEND_1144_Digital_Relabel_FlowThrough_Assets_PDPs_OnGreyBackground-XTEND-OG30-BRI.png?v=1771552623' },
-        { name: 'ON BCAA 5000', desc: '5g BCAAs per serving with no added sugar — ideal as intra-workout fuel to reduce muscle breakdown.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927068573_1.jpg?v=1772711768&width=200' },
-        { name: 'MusclePharm BCAA', desc: '3:1:2 ratio formula with added glutamine for enhanced recovery and muscle preservation.', image: 'https://musclepharm.com/cdn/shop/files/BCAA_Fruit_Punch.jpg?v=1754064987&width=200' },
+        { name: 'Scivation Xtend', desc: 'The #1 BCAA brand — 7g BCAAs in 2:1:1 ratio with electrolytes for hydration.', image: 'https://cellucor.com/cdn/shop/files/XTEND_1144_Digital_Relabel_FlowThrough_Assets_PDPs_OnGreyBackground-XTEND-OG30-BRI.png?v=1771552623' },
+        { name: 'ON BCAA 5000', desc: '5g BCAAs per serving, no sugar — ideal intra-workout fuel to reduce breakdown.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927068573_1.jpg?v=1772711768&width=200' },
+        { name: 'MusclePharm BCAA', desc: '3:1:2 ratio with added glutamine for enhanced recovery and muscle preservation.', image: 'https://musclepharm.com/cdn/shop/files/BCAA_Fruit_Punch.jpg?v=1754064987&width=200' },
+        { name: 'MyProtein THE BCAA', desc: 'Essential amino acid complex with 6g BCAAs and electrolytes in every scoop.', image: 'https://static.thcdn.com/productimg/original/11352282-2175262135686325.jpg' },
+        { name: 'MuscleBlaze BCAA Pro', desc: 'Advanced BCAA with glutamine and citrulline for complete recovery support.', image: 'https://img8.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/35540/prd_3553987-MuscleBlaze-BCAA-Pro-0.66-lb-Watermelon_o.jpg' },
+        { name: 'BSN Amino X', desc: '10g of amino acids including EAAs and BCAAs — effervescent, caffeine-free formula.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/18000/prd_1799970-BSN-AMINO-X-EAA-BCAA-Powder-70-Servings-1.01-kg-Watermelon_o.jpg' },
       ]},
       { emoji: '💊', name: 'Multivitamins', desc: 'Complete daily micronutrition', products: [
-        { name: 'ON Opti-Men', desc: '75+ active ingredients including 25 vitamins and minerals across 4 blends optimized for active men.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/1156608_1_bd16ce60-fa01-42b4-872a-fd291f8fb5ad.png?v=1773300765&width=200' },
-        { name: 'Animal Pak (Universal)', desc: 'The original sports multivitamin — 44 nutrients plus amino acids and performance complexes in one pack.', image: 'https://www.animalpak.com/cdn/shop/files/Pak_30packs_1200x1200_c93173e6-ae7a-4bb2-af16-26ff14b86cd1.jpg?v=1770220089' },
-        { name: 'MuscleBlaze MB-Vite', desc: 'Complete multivitamin with immunity blend and antioxidants, formulated for Indian athletes.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/39689/prd_3968831-MuscleBlaze-MBVITE-Daily-Multivitamin-for-Enhanced-Energy-Stamina-Gut-Health-60-tablets-Unflavoured_o.jpg' },
+        { name: 'ON Opti-Men', desc: '75+ active ingredients across 4 blends optimized for active men.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/1156608_1_bd16ce60-fa01-42b4-872a-fd291f8fb5ad.png?v=1773300765&width=200' },
+        { name: 'Animal Pak (Universal)', desc: 'The original sports multivitamin — 44 nutrients plus amino acids in one pack.', image: 'https://www.animalpak.com/cdn/shop/files/Pak_30packs_1200x1200_c93173e6-ae7a-4bb2-af16-26ff14b86cd1.jpg?v=1770220089' },
+        { name: 'MuscleBlaze MB-Vite', desc: 'Complete multivitamin with immunity blend formulated for Indian athletes.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/39689/prd_3968831-MuscleBlaze-MBVITE-Daily-Multivitamin-for-Enhanced-Energy-Stamina-Gut-Health-60-tablets-Unflavoured_o.jpg' },
+        { name: 'GNC Mega Men Sport', desc: 'Sport-specific multi with antioxidants, B-vitamins, and metabolic support.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/15420/prd_1541975-GNC-Mega-Men-Sport-Multi-Vitamin-90-tablets_o.jpg' },
+        { name: 'HealthKart HK Vitals', desc: 'Daily essentials for energy, immunity and overall wellness — affordable and effective.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/41265/prd_4126410-HK-Vitals-Multivitamin-for-Men-60-tablets_o.jpg' },
+        { name: 'Avvatar Protein + Vitamin', desc: 'Unique blend combining whey protein with 23 essential vitamins and minerals daily.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/38101/prd_3810088-Avvatar-Absolute-Whey-4.4-lb-Rich-Chocolate_o.jpg' },
       ]},
       { emoji: '🔥', name: 'Fat Burner', desc: 'Metabolism & fat-loss support', products: [
-        { name: 'Hydroxycut Hardcore Elite', desc: "America's #1 selling weight loss brand. Caffeine anhydrous, C. canephora robusta, and L-theanine for thermogenic fat loss.", image: 'https://www.hydroxycut.com/cdn/shop/files/hydroxycut-hardcore.png?v=1720482764' },
-        { name: 'MuscleTech Hydroxycut Hardcore', desc: 'Intense thermogenic formula with caffeine and key weight-loss compounds backed by clinical studies.', image: 'https://www.muscletech.com/cdn/shop/files/mt-hydroxycut-hardcore-elite.png?v=1742823172' },
-        { name: 'MuscleBlaze Fat Burner PRO', desc: 'Thermogenic formula with green tea extract, CLA, and caffeine for sustained metabolism support.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/40259/prd_4025891-MuscleBlaze-MB-Fat-Burner-PRO-60-tablets-Unflavoured_o.jpg' },
+        { name: 'Hydroxycut Hardcore Elite', desc: "America's #1 weight loss brand — caffeine, C. canephora robusta, and L-theanine.", image: 'https://www.hydroxycut.com/cdn/shop/files/hydroxycut-hardcore.png?v=1720482764' },
+        { name: 'MuscleTech Hydroxycut Hardcore', desc: 'Intense thermogenic with caffeine and key weight-loss compounds from clinical studies.', image: 'https://www.muscletech.com/cdn/shop/files/mt-hydroxycut-hardcore-elite.png?v=1742823172' },
+        { name: 'MuscleBlaze Fat Burner PRO', desc: 'Green tea, CLA, and caffeine for sustained thermogenic metabolism support.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/40259/prd_4025891-MuscleBlaze-MB-Fat-Burner-PRO-60-tablets-Unflavoured_o.jpg' },
+        { name: 'GNC Total Lean Burn 60', desc: 'Stimulant-based thermogenic with CLA and L-carnitine for lean body composition.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/15414/prd_1541434-GNC-Total-Lean-Burn-60-60-capsules_o.jpg' },
+        { name: 'Scitron Fat Burner', desc: 'Green coffee bean extract and garcinia cambogia for appetite control and fat oxidation.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/29873/prd_2987302-Scitron-Fat-Burner-90-capsules_o.jpg' },
+        { name: 'MyProtein Thermopure', desc: 'Clean thermogenic with caffeine, green tea, and tyrosine for energy and fat metabolism.', image: 'https://static.thcdn.com/productimg/original/10530966-2175262135686325.jpg' },
       ]},
       { emoji: '🐟', name: 'Omega-3', desc: 'Joint, heart & brain health', products: [
-        { name: 'ON Fish Oil', desc: '300mg EPA + DHA per softgel from deep-water fish. Supports cardiovascular, cognitive, and joint health.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927070439_1.jpg?v=1773300765&width=200' },
-        { name: 'MuscleTech Platinum Omega-3', desc: 'Triple-strength fish oil with 465mg EPA and 375mg DHA per serving for maximum benefit.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927070439_1.jpg?v=1773300765&width=200' },
-        { name: 'MuscleBlaze Fish Oil', desc: 'Cold-processed omega-3 with enteric coating to prevent fishy aftertaste and ensure full absorption.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/32066/prd_3206541-MuscleBlaze-Omega-3-Fish-Oil-Gold-3x-Triple-Strength-EPA-DHA-60-capsules_o.jpg' },
+        { name: 'ON Fish Oil', desc: '300mg EPA + DHA per softgel from deep-water fish for heart and joint health.', image: 'https://www.optimumnutrition.co.in/cdn/shop/files/748927070439_1.jpg?v=1773300765&width=200' },
+        { name: 'MuscleTech Platinum Omega-3', desc: 'Triple-strength fish oil — 465mg EPA and 375mg DHA per serving.', image: 'https://www.muscletech.com/cdn/shop/files/platinum-omega-3.jpg?v=1742823172&width=200' },
+        { name: 'MuscleBlaze Fish Oil', desc: 'Cold-processed omega-3 with enteric coating to prevent fishy aftertaste.', image: 'https://img2.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/32066/prd_3206541-MuscleBlaze-Omega-3-Fish-Oil-Gold-3x-Triple-Strength-EPA-DHA-60-capsules_o.jpg' },
+        { name: 'GNC Triple Strength Fish Oil', desc: 'High-potency 900mg EPA+DHA per serving — one softgel does the work of three.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/20892/prd_2089198-GNC-Triple-Strength-Fish-Oil-1000mg-90-softgels_o.jpg' },
+        { name: 'MyProtein Omega 3', desc: 'Molecularly distilled fish oil — 750mg EPA+DHA per serving, pure and odourless.', image: 'https://static.thcdn.com/productimg/original/10530950-2175262135686325.jpg' },
+        { name: 'Scitron Omega-3 Fish Oil', desc: 'Pharmaceutical-grade fish oil with enteric coating for optimal bioavailability.', image: 'https://img4.hkrtcdn.com/cdn-cgi/image/width=200,height=200,dpr=1/29874/prd_2987401-Scitron-Fish-Oil-1000mg-90-softgels_o.jpg' },
       ]},
     ],
     cta: {
@@ -420,7 +444,7 @@ export const Fitness = ({ setPage }: FitnessProps) => {
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [isPlanFormOpen, setIsPlanFormOpen] = useState(false);
   const [selectedPlanData, setSelectedPlanData] = useState<any>(FITNESS_CONTENT.pricing.sections[0].plans[0]);
-  const [supplementCategory, setSupplementCategory] = useState<typeof FITNESS_CONTENT.supplements.categories[0] | null>(null);
+  const [supplementCategory, setSupplementCategory] = useState<typeof FITNESS_CONTENT.supplements.categories[0] | null>(FITNESS_CONTENT.supplements.categories[0]);
   const [activeMethodVideo, setActiveMethodVideo] = useState<string | null>(null);
 
   const handlePageChange = (page: string) => {
@@ -758,18 +782,95 @@ export const Fitness = ({ setPage }: FitnessProps) => {
             </SupplementBenefitsGrid>
           </Stagger>
 
-          {/* Supplement categories */}
-          <Stagger staggerDelay={0.07}>
-            <SupplementCategoriesGrid>
-              {FITNESS_CONTENT.supplements.categories.map((cat, i) => (
-                <SupplementCategoryCard key={i} whileHover={{ y: -5 }} transition={{ type: 'spring', stiffness: 300 }} onClick={() => setSupplementCategory(cat)} style={{ cursor: 'pointer' }}>
-                  <SupplementCategoryEmoji>{cat.emoji}</SupplementCategoryEmoji>
-                  <SupplementCategoryName>{cat.name}</SupplementCategoryName>
-                  <SupplementCategoryDesc>{cat.desc}</SupplementCategoryDesc>
-                </SupplementCategoryCard>
-              ))}
-            </SupplementCategoriesGrid>
-          </Stagger>
+          {/* Category filter pills */}
+          <Box sx={{ display: 'flex', gap: 1.25, flexWrap: 'wrap', justifyContent: 'center', mb: { xs: 3, md: 4 }, mt: { xs: 2, md: 3 } }}>
+            {FITNESS_CONTENT.supplements.categories.map((cat, i) => {
+              const isActive = supplementCategory?.name === cat.name;
+              return (
+                <Box
+                  key={i}
+                  onClick={() => setSupplementCategory(cat)}
+                  sx={{
+                    px: { xs: 1.75, sm: 2.5 }, py: { xs: 0.75, sm: 1 },
+                    borderRadius: '999px',
+                    border: '1px solid',
+                    borderColor: isActive ? 'rgba(212,175,55,0.75)' : 'rgba(255,255,255,0.12)',
+                    bgcolor: isActive ? 'rgba(212,175,55,0.10)' : 'rgba(255,255,255,0.03)',
+                    color: isActive ? '#D4AF37' : 'rgba(255,255,255,0.55)',
+                    cursor: 'pointer',
+                    fontSize: { xs: '0.75rem', sm: '0.82rem' },
+                    fontWeight: 600,
+                    letterSpacing: '0.03em',
+                    transition: 'all 0.18s ease',
+                    userSelect: 'none',
+                    boxShadow: isActive ? '0 0 0 1px rgba(212,175,55,0.18), inset 0 1px 0 rgba(212,175,55,0.12)' : 'none',
+                    '&:hover': {
+                      borderColor: 'rgba(212,175,55,0.4)',
+                      color: isActive ? '#D4AF37' : 'rgba(255,255,255,0.82)',
+                      bgcolor: isActive ? 'rgba(212,175,55,0.10)' : 'rgba(255,255,255,0.06)',
+                    },
+                  }}
+                >
+                  {cat.name}
+                </Box>
+              );
+            })}
+          </Box>
+
+          {/* Inline product grid */}
+          <AnimatePresence mode="wait">
+            {supplementCategory && (
+              <motion.div
+                key={supplementCategory.name}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -8 }}
+                transition={{ duration: 0.22 }}
+              >
+                <Box sx={{ textAlign: 'center', mb: { xs: 2.5, md: 3 } }}>
+                  <Box sx={{ fontSize: '0.72rem', color: 'rgba(212,175,55,0.65)', letterSpacing: '0.09em', textTransform: 'uppercase', fontWeight: 700 }}>
+                    {supplementCategory.desc}
+                  </Box>
+                </Box>
+                <Box sx={{ display: 'grid', gridTemplateColumns: { xs: 'repeat(4, 1fr)', sm: 'repeat(5, 1fr)', md: 'repeat(6, 1fr)' }, gap: { xs: 0.75, md: 1 } }}>
+                  {supplementCategory.products.map((p, i) => (
+                    <Box
+                      key={i}
+                      sx={{
+                        display: 'flex', flexDirection: 'column',
+                        borderRadius: '8px', overflow: 'hidden',
+                        bgcolor: 'rgba(255,255,255,0.04)',
+                        border: '1px solid rgba(255,255,255,0.08)',
+                        transition: 'all 0.22s ease',
+                        '&:hover': {
+                          bgcolor: 'rgba(255,255,255,0.07)',
+                          borderColor: 'rgba(212,175,55,0.22)',
+                          transform: 'translateY(-3px)',
+                          boxShadow: '0 6px 18px rgba(0,0,0,0.35)',
+                        },
+                      }}
+                    >
+                      <Box
+                        component="img"
+                        src={p.image}
+                        alt={p.name}
+                        referrerPolicy="no-referrer"
+                        onError={(e: React.SyntheticEvent<HTMLImageElement>) => {
+                          const img = e.currentTarget as HTMLImageElement;
+                          img.onerror = null;
+                          img.src = `https://placehold.co/200x200/0d1f30/D4AF37?text=${encodeURIComponent(p.name.split(' ').slice(0, 2).join(' '))}`;
+                        }}
+                        sx={{ width: '100%', aspectRatio: '1 / 1', objectFit: 'cover', bgcolor: 'rgba(255,255,255,0.06)', display: 'block' }}
+                      />
+                      <Box sx={{ p: 0.75, flex: 1 }}>
+                        <Box sx={{ fontSize: '0.62rem', fontWeight: 700, color: '#fff', lineHeight: 1.3 }}>{p.name}</Box>
+                      </Box>
+                    </Box>
+                  ))}
+                </Box>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Order CTA */}
           <FadeIn delay={0.2}>
@@ -965,75 +1066,6 @@ export const Fitness = ({ setPage }: FitnessProps) => {
           </CTAContent>
         </FadeIn>
       </CTASection>
-
-      {/* Supplement Category Popup */}
-      <Dialog
-        open={!!supplementCategory}
-        onClose={() => setSupplementCategory(null)}
-        maxWidth="xs"
-        fullWidth
-        PaperProps={{
-          sx: {
-            bgcolor: '#0a1d2c',
-            backgroundImage: 'linear-gradient(135deg, #0a1d2c 0%, #112240 100%)',
-            border: '1px solid rgba(212,175,55,0.25)',
-            borderRadius: '16px',
-            boxShadow: '0 25px 50px rgba(0,0,0,0.6)',
-            mx: 2,
-          },
-        }}
-        BackdropProps={{ sx: { backdropFilter: 'blur(12px)', bgcolor: 'rgba(0,0,0,0.7)' } }}
-      >
-        <DialogContent sx={{ p: { xs: 2.5, sm: 3 }, position: 'relative' }}>
-          <IconButton
-            onClick={() => setSupplementCategory(null)}
-            size="small"
-            sx={{ position: 'absolute', top: 10, right: 10, color: 'rgba(255,255,255,0.5)', '&:hover': { color: '#D4AF37' } }}
-          >
-            <CloseIcon fontSize="small" />
-          </IconButton>
-
-          {supplementCategory && (
-            <>
-              {/* Header */}
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2.5, pr: 3 }}>
-                <Box sx={{ fontSize: '2rem', lineHeight: 1 }}>{supplementCategory.emoji}</Box>
-                <Box>
-                  <Box sx={{ fontSize: '1.1rem', fontWeight: 700, color: '#fff', lineHeight: 1.2 }}>{supplementCategory.name}</Box>
-                  <Box sx={{ fontSize: '0.75rem', color: 'rgba(212,175,55,0.8)', mt: 0.3 }}>{supplementCategory.desc}</Box>
-                </Box>
-              </Box>
-
-              <Box sx={{ fontSize: '0.7rem', fontWeight: 700, color: 'rgba(212,175,55,0.6)', letterSpacing: '0.12em', textTransform: 'uppercase', mb: 1.5, borderBottom: '1px solid rgba(212,175,55,0.12)', pb: 0.75 }}>
-                Popular Products
-              </Box>
-
-              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
-                {supplementCategory.products.map((p, i) => (
-                  <Box key={i} sx={{ display: 'flex', gap: 1.5, alignItems: 'flex-start', p: 1.5, borderRadius: '10px', bgcolor: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.07)' }}>
-                    <Box
-                      component="img"
-                      src={p.image}
-                      alt={p.name}
-                      referrerPolicy="no-referrer"
-                      onError={(e: React.SyntheticEvent<HTMLImageElement>) => { e.currentTarget.style.display = 'none'; }}
-                      sx={{ width: 60, height: 60, borderRadius: '8px', objectFit: 'cover', flexShrink: 0, bgcolor: 'rgba(255,255,255,0.06)' }}
-                    />
-                    <Box sx={{ minWidth: 0 }}>
-                      <Box sx={{ fontSize: '0.875rem', fontWeight: 600, color: '#fff', mb: 0.4 }}>{p.name}</Box>
-                      <Box sx={{ fontSize: '0.75rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.5 }}>{p.desc}</Box>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
-
-              <Box sx={{ mt: 2.5, textAlign: 'center', fontSize: '0.72rem', color: 'rgba(255,255,255,0.35)' }}>
-                Ask us for best price & availability via WhatsApp
-              </Box>
-            </>
-          )}
-        </DialogContent>
-      </Dialog>
 
       {/* Method Video Fullscreen Modal */}
       <AnimatePresence>
