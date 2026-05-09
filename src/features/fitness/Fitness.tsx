@@ -167,14 +167,14 @@ const FITNESS_CONTENT = {
         description: 'Boost Your Stamina And Resilience With Tailored Cardio And Endurance Workouts Designed To Keep You Moving Stronger For Longer',
         metric: '95',
         metricLabel: 'BPM',
-        image: `${import.meta.env.BASE_URL}assets/Gym/handBalance.jpeg`,
+        image: `${import.meta.env.BASE_URL}assets/Gym/endurence.jpg`,
       },
       {
         title: 'Speed Surge',
         description: 'Boost Your Agility And Explosiveness With High-Intensity Sprint And Movement Drills. Speed Surge Is Designed To Take Your Performance To The Next Level',
         metric: '1024',
         metricLabel: 'STEPS',
-        image: `${import.meta.env.BASE_URL}assets/Gym/body.jpeg`,
+        image: `${import.meta.env.BASE_URL}assets/Gym/speed.jpg`,
       },
     ],
   },
@@ -226,9 +226,9 @@ const FITNESS_CONTENT = {
         title: 'Monthly Gym',
         plans: [
           { duration: '1 Month',  price: '₹2,000', perMonth: '₹2,000', highlighted: false, features: ['Full gym access', 'Basic equipment', 'Open hours', '5 free classes'] },
-          { duration: '3 Months', price: '₹3,500', perMonth: '₹1,167', highlighted: false, features: ['Full gym access', 'All equipment', 'Extended hours', 'Unlimited classes'] },
-          { duration: '6 Months', price: '₹4,800', perMonth: '₹800',   highlighted: true,  features: ['Full gym access', 'Premium equipment', '24/7 access', 'Unlimited classes', 'Nutrition guide'] },
-          { duration: '12 Months',price: '₹6,999', perMonth: '₹583',   highlighted: false, features: ['Everything included', 'Priority booking', 'Guest passes', 'Exclusive community'] },
+          { duration: '3 Months', price: '₹3,500', perMonth: '₹1,167', originalPrice: '₹4,500', highlighted: false, features: ['Full gym access', 'All equipment', 'Extended hours', 'Unlimited classes'] },
+          { duration: '6 Months', price: '₹4,800', perMonth: '₹800',   originalPrice: '₹6,000', savingsLabel: 'Save ₹1,200', highlighted: true,  features: ['Full gym access', 'Premium equipment', '24/7 access', 'Unlimited classes', 'Nutrition guide'] },
+          { duration: '12 Months',price: '₹6,999', perMonth: '₹583',   originalPrice: '₹7,999' ,savingsLabel: 'Save ₹1,000',  highlighted: false, features: ['Everything included', 'Priority booking', 'Guest passes', 'Exclusive community'] },
         ],
       },
       {
@@ -241,7 +241,7 @@ const FITNESS_CONTENT = {
       {
         title: 'Personal Training in Power House Gym',
         plans: [
-          { duration: '12 Sessions', price: '₹5,999', originalPrice: '₹7,999', savingsLabel: 'Save ₹2,000', highlighted: true, features: ['Gym access included', 'Dedicated trainer', 'Custom workout plan', 'Nutrition consultation', 'Progress tracking'] },
+          { duration: '12 Sessions', price: '₹6,999', originalPrice: '₹7,999', savingsLabel: 'Save ₹2,000', highlighted: true, features: ['Gym access included', 'Dedicated trainer', 'Custom workout plan', 'Nutrition consultation', 'Progress tracking'] },
         ],
       },
     ],
@@ -557,12 +557,12 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                     <ExperienceImageOverlay />
                     
                     {/* Metric Badge */}
-                    <ScaleIn delay={0.3}>
+                    {/* <ScaleIn delay={0.3}>
                       <ExperienceMetricBadge>
                         <MetricValue>{exp.metric}</MetricValue>
                         <MetricLabel>{exp.metricLabel}</MetricLabel>
                       </ExperienceMetricBadge>
-                    </ScaleIn>
+                    </ScaleIn> */}
                   </ExperienceImageContainer>
 
                   <ExperienceCardContent>
@@ -660,7 +660,9 @@ export const Fitness = ({ setPage }: FitnessProps) => {
                           {pkg.highlighted && <PopularBadge />}
                           <Box sx={{ mb: 2 }}>
                             <PricingDuration>{pkg.duration}</PricingDuration>
+                            {(pkg as any).originalPrice && <OriginalPrice>{(pkg as any).originalPrice}</OriginalPrice>}
                             <PricingPrice>{pkg.price}</PricingPrice>
+                            {(pkg as any).savingsLabel && <SavingsBadge>{(pkg as any).savingsLabel}</SavingsBadge>}
                             {(pkg as any).perMonth && <PricingPerMonth sx={{ mt: 0.5 }}>({(pkg as any).perMonth}/month)</PricingPerMonth>}
                           </Box>
                           <PricingFeaturesList>
